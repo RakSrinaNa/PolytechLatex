@@ -1,7 +1,7 @@
 deploy:
   script:
     - apt-get update 
-    - apt-get install zip
+    - apt-get install -y zip p7zip-full
     - mkdir polytech
     - find . -maxdepth 1 -type f -not -name ".?*" -exec mv {} polytech/ \;
     - zip -R -x .git polytech.zip polytech
