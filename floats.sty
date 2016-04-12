@@ -1,0 +1,100 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{polytech/floats}[\polytechfiledate\space\polytechfileversion\space Polytech document class sub package]
+\typeout{Package `polytech floats' \polytechfileversion\space<\polytechfiledate>}
+
+% définit le format des légendes
+\DeclareCaptionLabelFormat{polytech}{#1~#2}
+
+\captionsetup{%
+  labelformat=polytech,
+  format=hang,
+  labelfont=bf,
+  font=small,
+  justification=centering,
+  font={small},
+  textfont=it,
+  labelfont={bf},
+  width=\textwidth-2cm,
+  figurename=Figure,
+  tablename=Table,
+  skip=5pt plus 1pt minus 1pt,
+  singlelinecheck=false,
+  figurewithin=chapter,
+  tablewithin=chapter
+}
+
+% save current definition
+\let\polytech@oldfigure\figure
+\let\polytech@endoldfigure\endfigure
+
+\let\polytech@oldtable\table
+\let\polytech@endoldtable\endtable
+
+\newcommand{\polytech@floats@oldfigure}[2]{%
+	\polytech@oldfigure[#1]%
+	{#2}%
+ 	\polytech@endoldfigure%
+}
+
+\newcommand{\polytech@floats@oldtable}[2]{%
+	\polytech@oldtable[#1]%
+	{#2}%
+	\polytech@endoldtable%
+}
+
+%[short], label, caption long
+\NewEnviron{Figure}[3][]{%
+ 	\polytech@floats@oldfigure{htb}{%
+		\begin{center}%
+		\BODY%
+		\end{center}%
+		\ifstrequal{#1}{}{%
+			\caption{#3}%
+		}{%
+			\caption[#1]{#3}%
+		}%
+		\label{#2}%
+	}%
+}
+
+
+%[short], label, caption long
+\NewEnviron{Table}[3][]{
+ 	\polytech@floats@oldtable{htb}{
+ 	  \ifstrequal{#1}{}{%
+			\caption{#3}%
+		}{%
+			\caption[#1]{#3}%
+		}%
+    \label{#2}% must be after caption
+		\begin{center}%
+		\BODY%
+		\end{center}%
+	}%
+}
+
+\renewcommand\floatpagefraction{.9}
+\renewcommand\topfraction{.9}
+\renewcommand\bottomfraction{.9}
+\renewcommand\textfraction{.1}
+\setcounter{totalnumber}{50}
+\setcounter{topnumber}{50}
+\setcounter{bottomnumber}{50}
+
+% add a warning to standard figure and table environments
+
+\renewenvironment{figure}[1][]{%
+\textbf{\color{red}L'utilisation de l'environnement \latexcode{figure} est interdit. Utilisez l'environnement \latexcode{Figure} (cf. mode d'emploi).}%
+\polytech@oldfigure%
+}{%
+\polytech@endoldfigure%
+}
+
+\renewenvironment{table}[1][]{%
+\textbf{\color{red}L'utilisation de l'environnement \latexcode{table} est interdit. Utilisez l'environnement \latexcode{Table} (cf. mode d'emploi).}%
+\polytech@oldtable%
+}{%
+\polytech@endoldtable%
+}
+
+

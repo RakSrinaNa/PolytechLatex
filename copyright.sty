@@ -1,0 +1,97 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{polytech/copyright}[\polytechfiledate\space\polytechfileversion\space Polytech document class sub package]
+\typeout{Package `polytech copyright' \polytechfileversion\space<\polytechfiledate>}
+
+%###
+
+\csdef{polytech@output@citingthedocument}{
+\textbf{Pour citer ce document :}\\
+	\csuse{polytech@output@students@simple}, \textit{\csuse{polytech@output@titlewithsubtitle}}, \polytech@output@typereport, Ecole Polytechnique de l'Université François Rabelais de Tours, Tours, France, \polytech@output@reportyear.
+
+		\noindent{}{@mastersthesis\{\vspace{-0.2em}
+		\begin{description}\setlength\itemsep{-0.2em}
+		\item \hspace{1em}author=\{\csuse{polytech@output@students@bibtex}\},
+		\item \hspace{1em}title=\{\csuse{polytech@output@titlewithsubtitle}\},
+		\item \hspace{1em}type=\{\csuse{polytech@output@typereport@bibtex}\},
+		\item \hspace{1em}school=\{Ecole Polytechnique de l'Université François Rabelais de Tours\},
+		\item \hspace{1em}address=\{Tours, France\},
+		\item \hspace{1em}year=\{\polytech@output@reportyear\}
+		\end{description}\vspace{-0.2em}
+		\}}
+}
+
+\csdef{polytech@copyrightnotice@name@fr}{Avertissement}
+\csdef{polytech@copyrightnotice@name@en}{Notice}
+
+% disable notice for specific type of report
+\csdef{polytech@copyrightnotice@disabled@stage}{}
+\csdef{polytech@copyrightnotice@disabled@custom}{}
+\csdef{polytech@copyrightnotice@disabled@none}{}
+
+\csdef{polytech@output@copyrightnotice}{
+  \ifcsdef{polytech@copyrightnotice@disabled@\csuse{polytech@typereport}}{
+    \cleardoublepage
+    \thispagestyle{empty}%
+    \mbox{ }
+    \vfill
+		\csuse{polytech@output@citingthedocument}
+		\vfill
+		\begin{center}
+			\small
+			Document mis en forme sous \LaTeX\par
+			gr\^ace \`a la classe de document \texttt{polytech.cls} V\polytechfileversion\xspace(\polytechfiledate)
+		\end{center}
+		\cleardoublepage
+  }{
+    \cleardoublepage
+    \thispagestyle{empty}%
+	\pdfbookmark[0]{Copyright}{copyright}
+	\begin{center}
+		\polytech@chapter@titlefont
+		\csuse{polytech@copyrightnotice@name@\csuse{polytech@lang}}
+		\vspace{1cm}
+	\end{center}
+
+
+	Ce document a été rédigé par \csuse{polytech@output@students@simple} \notbool{polytech@students@plural}{susnommé l'auteur}{susnommés les auteurs}.
+
+	\ifcsdef{polytech@output@company@simple}{
+		L'entreprise \csuse{polytech@output@company@simple} est représentée par \csuse{polytech@output@companysupervisors@simple}
+		\notbool{polytech@companysupervisors@plural}{susnommé le tuteur entreprise}{susnommés les tuteurs entreprise}.\par
+	}{}
+
+	L'école polytechnique de l'université François Rabelais de Tours est représentée par \csuse{polytech@output@academicsupervisors@simple}
+	\notbool{polytech@academicsupervisors@plural}{susnommé le tuteur académique}{susnommés les tuteurs académiques}.
+
+	Par l'utilisation de ce modèle de document, l'ensemble des intervenants du projet acceptent les conditions définies ci-après.
+
+	\notbool{polytech@students@plural}{L'auteur reconnait}{Les auteurs reconnaissent} assumer l'entière responsabilité
+	du contenu du document ainsi que toutes suites judiciaires qui pourraient en découler du fait du non respect des lois ou des droits d'auteur.
+
+	\notbool{polytech@students@plural}{L'auteur atteste}{Les auteurs attestent} que les propos du document sont sincères
+	et assument l'entière responsabilité de la véracité des propos.
+
+	\notbool{polytech@students@plural}{L'auteur atteste}{Les auteurs attestent} ne pas s'approprier le travail d'autrui et que
+	le document ne contient aucun plagiat.
+
+	\notbool{polytech@students@plural}{L'auteur atteste}{Les auteurs attestent} que le document ne contient aucun propos diffamatoire ou condamnable devant la loi.
+
+	\notbool{polytech@students@plural}{L'auteur reconnait qu'il ne peut}{Les auteurs reconnaissent qu'ils ne peuvent} diffuser ce document en partie ou en intégralité sous quelque forme que ce soit sans l'accord préalable
+	\notbool{polytech@academicsupervisors@plural}{du tuteur académique}{des tuteurs académiques}%
+	\ifcsdef{polytech@output@company@simple}{ et de l'entreprise}{}.
+
+	\notbool{polytech@students@plural}{L'auteur autorise}{Les auteurs autorisent} l'école polytechnique de l'université François Rabelais de Tours à diffuser tout ou partie de ce document, sous quelque forme que ce soit, y compris après transformation en citant la source. Cette diffusion devra se faire gracieusement et être accompagnée du présent avertissement.
+
+	\vfill
+	\csuse{polytech@output@citingthedocument}
+
+	\vfill
+	\begin{center}
+		\small
+		Document mis en forme sous \LaTeX\par
+		gr\^ace \`a la classe de document \texttt{polytech.cls} V\polytechfileversion\xspace(\polytechfiledate)
+	\end{center}
+	\cleardoublepage
+	}
+}
+%###
