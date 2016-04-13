@@ -253,6 +253,9 @@ Projet PeiP
 
 \@onlypreamble\student
 
+\newcommand{\author}[4][]{\student[#1]{#2}{#3}{#4}}
+\@onlypreamble\author
+
 %%%%%%%%%%% ACADEMIC SUPERVISORS %%%%%%%%%%%%%%%%%
 
 % academicsupervisors genre (singular or plural)
@@ -512,10 +515,10 @@ Projet PeiP
 		\polytech@output@school\par%
 		\vfill%
  		\begin{center}%
- 			{\polytech@font@titlepage@typereport\polytech@output@typereport}\par\vspace{0.2cm}%
- 			{\polytech@font@titlepage@reportyear\polytech@output@reportyear}\par\vspace{1cm}%
- 			{\polytech@font@titlepage@title\polytech@output@title}\par\vspace{0.5cm}%
- 			{\polytech@font@titlepage@subtitle\polytech@output@subtitle}%
+ 			\polytech@font@titlepage@typereport\polytech@output@typereport\par\vspace{0.2cm}%
+ 			\polytech@font@titlepage@reportyear\polytech@output@reportyear\par\vspace{1cm}%
+ 			\polytech@font@titlepage@title\polytech@output@title\par\vspace{0.5cm}%
+ 			\polytech@font@titlepage@subtitle\polytech@output@subtitle%
  			\ifcsdef{polytech@reportlogo}{%
  				\par%
  				\vspace{1cm}%

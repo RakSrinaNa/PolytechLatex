@@ -5,8 +5,9 @@
 %###
 
 \csdef{polytech@output@citingthedocument}{
-\textbf{Pour citer ce document :}\\
-	\csuse{polytech@output@students@simple}, \textit{\csuse{polytech@output@titlewithsubtitle}}, \polytech@output@typereport, Ecole Polytechnique de l'Université François Rabelais de Tours, Tours, France, \polytech@output@reportyear.
+	\notbool{polytech@nociting}{
+    \textbf{Pour citer ce document :}\\
+	  \csuse{polytech@output@students@simple}, \textit{\csuse{polytech@output@titlewithsubtitle}}, \polytech@output@typereport, Ecole Polytechnique de l'Université François Rabelais de Tours, Tours, France, \polytech@output@reportyear.
 
 		\noindent{}{@mastersthesis\{\vspace{-0.2em}
 		\begin{description}\setlength\itemsep{-0.2em}
@@ -18,6 +19,7 @@
 		\item \hspace{1em}year=\{\polytech@output@reportyear\}
 		\end{description}\vspace{-0.2em}
 		\}}
+	}{\mbox{ }}
 }
 
 \csdef{polytech@copyrightnotice@name@fr}{Avertissement}

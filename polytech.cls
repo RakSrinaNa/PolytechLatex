@@ -1,6 +1,6 @@
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 \def\polytechfileversion{1.0}
-\def\polytechfiledate{2016/02/01}
+\def\polytechfiledate{2016/04/13}
 \ProvidesClass{polytech/polytech}[\polytechfiledate\space Polytech document class by Sebastien Aupetit <aupetit@univ-tours.fr>, V\polytechfileversion]
 
 %###
@@ -70,6 +70,9 @@
 
 \newbool{polytech@aiiiposter}
 \DeclareOption{a3poster}{\booltrue{polytech@aiiiposter}\booltrue{polytech@onlyposter}\booltrue{polytech@poster}}
+
+\newbool{polytech@nociting}
+\DeclareOption{nociting}{\booltrue{polytech@nociting}}
 
 
 \DeclareOption*{\PackageWarning{polytech}{Unknown option `\CurrentOption'}}
