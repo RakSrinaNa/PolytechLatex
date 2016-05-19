@@ -20,10 +20,44 @@
 \csdef{polytech@schooldepartment@address@di}{64 avenue Jean Portalis}
 \csdef{polytech@schooldepartment@phone@di}{+33 (0)2 47 36 14 14}
 \csdef{polytech@schooldepartment@poster@di}{Informatique}
+\csdef{polytech@schooldepartment@postershift@di}{0.3cm}
 
-\csdef{polytech@schooldepartment@name@peip}{Département premier cycle}
+\csdef{polytech@schooldepartment@name@dee}{Département Electronique et Energie}
+\csdef{polytech@schooldepartment@address@dee}{7 avenue Marcel Dassault}
+\csdef{polytech@schooldepartment@phone@dee}{+33 (0)2 47 36 13 00}
+\csdef{polytech@schooldepartment@poster@dee}{Électronique et Systèmes de l'Énergie Électrique}
+\csdef{polytech@schooldepartment@postershift@dee}{1cm}
+
+\csdef{polytech@schooldepartment@name@dae}{Département Aménagement et Environnement}
+\csdef{polytech@schooldepartment@address@dae}{35 Allée Ferdinand Lesseps}
+\csdef{polytech@schooldepartment@phone@dae}{+33 (0)2 47 36 14 55}
+\csdef{polytech@schooldepartment@poster@dae}{Génie de l'Aménagement et de l'Environnement}
+\csdef{polytech@schooldepartment@postershift@dae}{0.7cm}
+
+\csdef{polytech@schooldepartment@name@dii}{Département Formations par Alternance / Informatique industrielle par apprentissage}
+\csdef{polytech@schooldepartment@address@dii}{64 avenue Jean Portalis}
+\csdef{polytech@schooldepartment@phone@dii}{+33 (0)2 47 36 11 26}
+\csdef{polytech@schooldepartment@poster@dii}{Informatique industrielle}
+\csdef{polytech@schooldepartment@postershift@dii}{0.4cm}
+
+\csdef{polytech@schooldepartment@name@dms}{Département Mécanique et Systèmes}
+\csdef{polytech@schooldepartment@address@dms}{7 avenue Marcel Dassault}
+\csdef{polytech@schooldepartment@phone@dms}{+33 (0)2 47 36 13 00}
+\csdef{polytech@schooldepartment@poster@dms}{Mécanique et Conception des Systèmes}
+\csdef{polytech@schooldepartment@postershift@dms}{0.8cm}
+
+\csdef{polytech@schooldepartment@name@peip}{Département premier cycle / Parcours des écoles d'ingénieurs Polytech}
 \csdef{polytech@schooldepartment@address@peip}{64 avenue Jean Portalis}
 \csdef{polytech@schooldepartment@phone@peip}{+33 (0)2 47 36 14 14}
+\csdef{polytech@schooldepartment@poster@peip}{Parcours des écoles d'ingénieurs Polytech}
+\csdef{polytech@schooldepartment@postershift@peip}{0.8cm}
+
+
+\csdef{polytech@shortcut@affiliation@di}{Département Informatique}
+\csdef{polytech@shortcut@affiliation@dae}{Département Aménagement et Environnement}
+\csdef{polytech@shortcut@affiliation@dee}{Département Electronique et Energie}
+\csdef{polytech@shortcut@affiliation@dms}{Département Mécanique et Systèmes}
+\csdef{polytech@shortcut@affiliation@dii}{Département Formations par Alternance}
 
 \csdef{polytech@output@schooldepartment}{%
 	\ifcsdef{polytech@schooldepartment@name@\polytech@schooldepartment}{%
@@ -65,16 +99,17 @@
 \@onlypreamble\typereport
 
 \newcommand{\typereportname}[1]{\csdef{polytech@typereport@name@custom}{#1}}
+\@onlypreamble\typereportname
 
-\csdef{polytech@typereport@peip}{
-{\normalfont
-\scalebox{2}{\bfseries P}\hspace{-3mm}arcours des
-\scalebox{1.5}{\bfseries é}coles
-d'\scalebox{1.5}{\bfseries i}ngénieurs
-\scalebox{2}{\bfseries P}\hspace{-3mm}olytech
-}\par\vspace{0.2cm}
-Projet PeiP
-}
+% \csdef{polytech@typereport@peip}{
+% {\normalfont
+% \scalebox{2}{\bfseries P}\hspace{-3mm}arcours des
+% \scalebox{1.5}{\bfseries é}coles
+% d'\scalebox{1.5}{\bfseries i}ngénieurs
+% \scalebox{2}{\bfseries P}\hspace{-3mm}olytech
+% }\par\vspace{0.2cm}
+% Projet
+% }
 
 \csdef{polytech@typereport@name@none}{}
 \csdef{polytech@typereport@name@prd}{Projet Recherche \& Développement}
@@ -83,10 +118,9 @@ Projet PeiP
 \csdef{polytech@typereport@name@pc}{Projet collectif}
 \csdef{polytech@typereport@name@psi}{Projet Systèmes d'Information}
 \csdef{polytech@typereport@name@pasr}{Projet Architecture, Système et Réseaux}
-\csdef{polytech@typereport@name@podi5}{\csuse{polytech@typereport@name@pldi5}}
-\csdef{polytech@typereport@name@pldi5}{Projet libre DI5}
-\csdef{polytech@typereport@name@peip1s2}{\csuse{polytech@typereport@peip}~S2}
-\csdef{polytech@typereport@name@peip2s4}{\csuse{polytech@typereport@peip}~S4}
+\csdef{polytech@typereport@name@pldi5}{Projet libre}
+\csdef{polytech@typereport@name@peip1}{Projet Parcours des écoles d'ingénieurs Polytech 1}
+\csdef{polytech@typereport@name@peip2}{Projet Parcours des écoles d'ingénieurs Polytech 2}
 \csdef{polytech@typereport@name@stage}{Rapport de stage}
 
 \csdef{polytech@output@typereport}{%
@@ -280,18 +314,22 @@ Projet PeiP
 
 \newbool{polytech@academicsupervisors@plural}
 
-\newcommand{\academicsupervisor}[4][]{
-	\appto\polytech@output@academicsupervisors@compact{\polytech@output@academicsupervisor@compact{#1}{#2}{#3}{#4}}
-	\appto\polytech@output@academicsupervisors@expanded{\polytech@output@academicsupervisor@expanded{#1}{#2}{#3}{#4}}
-	\appto\polytech@output@academicsupervisors@split{\polytech@output@academicsupervisor@split{#1}{#2}{#3}{#4}}
-	\ifcsstring{polytech@academicsupervisors@title@genre}{singular}{
-		\appto\polytech@output@academicsupervisors@simple{#2 #3}
-	}{
-		\patchcmd{\polytech@output@academicsupervisors@simple}{\authorand}{, }{}{}
-		\appto\polytech@output@academicsupervisors@simple{\authorand #2 #3}
-		\booltrue{polytech@academicsupervisors@plural}
-	}
-	\ifcsstring{polytech@academicsupervisors@title@genre}{singular}{\csdef{polytech@academicsupervisors@title@genre}{plural}}{}
+\newcommand{\academicsupervisor}[4][]{%
+  \ifcsdef{polytech@shortcut@affiliation@#1}{%
+    \academicsupervisor[\csuse{polytech@shortcut@affiliation@#1}]{#2}{#3}{#4}%
+  }{%
+    \appto\polytech@output@academicsupervisors@compact{\polytech@output@academicsupervisor@compact{#1}{#2}{#3}{#4}}%
+    \appto\polytech@output@academicsupervisors@expanded{\polytech@output@academicsupervisor@expanded{#1}{#2}{#3}{#4}}%
+    \appto\polytech@output@academicsupervisors@split{\polytech@output@academicsupervisor@split{#1}{#2}{#3}{#4}}%
+    \ifcsstring{polytech@academicsupervisors@title@genre}{singular}{%
+      \appto\polytech@output@academicsupervisors@simple{#2 #3}%
+    }{%
+      \patchcmd{\polytech@output@academicsupervisors@simple}{\authorand}{, }{}{}%
+      \appto\polytech@output@academicsupervisors@simple{\authorand #2 #3}%
+      \booltrue{polytech@academicsupervisors@plural}%
+    }%
+    \ifcsstring{polytech@academicsupervisors@title@genre}{singular}{\csdef{polytech@academicsupervisors@title@genre}{plural}}{}%
+  }%
 }
 \@onlypreamble\academicsupervisor
 

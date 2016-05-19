@@ -4,6 +4,7 @@
 
 %###
 
+\newlength{\polytechpostershift}
 
 % a3 paper
 \csdef{polytech@output@poster@aiii}{
@@ -11,11 +12,23 @@
 }
 
 \csdef{polytech@output@poster@school}{%
-	\parskip0pt%
-	\textbf{\textsc{Ecole Polytechnique de l'Université François Rabelais de Tours}}\par %
-	\polytech@output@schooldepartment{}\par%
-	\small\polytech@output@schooladdress, 37200 Tours, France\par%
-	\color{polytechorange}\nolinkurl{www.polytech.univ-tours.fr}%
+  \ifcsdef{polytech@output@poster@school@\polytech@schooldepartment}{%
+    \csuse{polytech@output@poster@school@\polytech@schooldepartment}
+  }{%
+  	\parskip0pt%
+  	\textbf{\textsc{Ecole Polytechnique de l'Université François Rabelais de Tours}}\par %
+  	\polytech@output@schooldepartment{}\par%
+  	\small\polytech@output@schooladdress, 37200 Tours, France\par%
+  	\color{polytechorange}\nolinkurl{www.polytech.univ-tours.fr}%
+	}%
+}
+
+\csdef{polytech@output@poster@school@dii}{%
+  \parskip0pt%
+  \textbf{\textsc{Ecole Polytechnique de l'Université François Rabelais de Tours}}\par %
+  \polytech@output@schooldepartment{}, %
+  \small\polytech@output@schooladdress, 37200 Tours, France\par%
+  \color{polytechorange}\nolinkurl{www.polytech.univ-tours.fr}%
 }
 
 \csdef{polytech@font@poster@typereport}{\bfseries\LARGE}
@@ -25,7 +38,7 @@
 \csdef{polytech@font@poster@authors}{\bfseries\huge}
 \csdef{polytech@font@poster@supervisors}{\bfseries\LARGE\color{polytechlightblue}}
 \csdef{polytech@font@poster@company}{\bfseries\scriptsize}
-\csdef{polytech@font@poster@department}{\bfseries\Large}
+\csdef{polytech@font@poster@department}{\bfseries\large}
 
 \csdef{polytech@font@poster@block@title}{\bfseries\huge\color{polytechdarkblue}}
 \csdef{polytech@font@poster@block@content}{\Large\color{black}}
@@ -147,7 +160,8 @@
 	\node[anchor=south west,color=polytechdarkblue,align=right,inner sep=0cm, outer sep=0cm,text width=13.5cm] (0cm,1cm) {%
 		\csuse{polytech@font@poster@school}\csuse{polytech@output@poster@school}%
 	};
-	\node[anchor=south east,color=black,inner sep=0cm, outer sep=0cm,align=center,text width=6cm,yshift=0.3cm] (logo) at (20cm,0cm) {%
+	\setlength{\polytechpostershift}{\csuse{polytech@schooldepartment@postershift@\polytech@schooldepartment}}
+	\node[anchor=south east,color=black,inner sep=0cm, outer sep=0cm,align=center,text width=6cm,yshift=\polytechpostershift] (logo) at (20cm,0cm) {%
 		\maxsizebox{6cm}{!}{%
 			\minsizebox{6cm}{!}{%
 				\pgfuseimage{polytech@schoollogo}%
