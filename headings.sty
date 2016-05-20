@@ -108,27 +108,32 @@
  	\end{tikzpicture}%
 }
 
-\pagestyle{fancy}
+\pagestyle{empty}
 
 %% common settings
-\fancyhf{} % clear all header and footer fields
+%\fancyhf{} % clear all header and footer fields
 
-\ifbool{polytech@twoside}{
-	\fancyhead[CO]{\polytech@fancyheadodd{\leftmark}}
-	\fancyhead[CE]{\polytech@fancyheadeven{\leftmark}}
-	\fancyfoot[CO]{\polytech@fancyfootodd}
-	\fancyfoot[CE]{\polytech@fancyfooteven}
-}{
-	\fancyhead[CO]{\polytech@fancyheadodd{\leftmark}}
-	\fancyhead[CE]{\polytech@fancyheadodd{\leftmark}}
-	\fancyfoot[CO]{\polytech@fancyfootodd}
-	\fancyfoot[CE]{\polytech@fancyfootodd}
+\fancypagestyle{polytech}{
+  \fancyhf{} % clear all header and footer fields
+  \ifbool{polytech@twoside}{
+  	\fancyhead[CO]{\polytech@fancyheadodd{\leftmark}}
+  	\fancyhead[CE]{\polytech@fancyheadeven{\leftmark}}
+  	\fancyfoot[CO]{\polytech@fancyfootodd}
+  	\fancyfoot[CE]{\polytech@fancyfooteven}
+  }{
+  	\fancyhead[CO]{\polytech@fancyheadodd{\leftmark}}
+  	\fancyhead[CE]{\polytech@fancyheadodd{\leftmark}}
+  	\fancyfoot[CO]{\polytech@fancyfootodd}
+  	\fancyfoot[CE]{\polytech@fancyfootodd}
+  }
 }
+
 
 \renewcommand{\headrulewidth}{0pt}
 \renewcommand{\footrulewidth}{0pt}
 
 \fancypagestyle{plain}{
+  \fancyhf{} % clear all header and footer fields
   \fancyhead[H]{}
   \ifbool{polytech@twoside}{
 		\fancyfoot[CO]{\polytech@fancyfootodd}
@@ -140,6 +145,7 @@
 }
 
 \fancypagestyle{empty}{
+  \fancyhf{} % clear all header and footer fields
   \fancyhead[H]{}
   \fancyfoot[F]{}
 }

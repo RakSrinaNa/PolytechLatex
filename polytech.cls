@@ -12,6 +12,13 @@
 \RequirePackage{atveryend}
 \RequirePackage{etoolbox}
 \RequirePackage{calc}
+\RequirePackage{xstring}
+
+% Simple hook to generate an error if something is undefined at the begining of the preamble
+\csdef{polytech@check@preamble}{}
+\AtBeginDocument{\csuse{polytech@check@preamble}}
+
+\newcommand{\polytechfatalerror}[1]{\errmessage{#1}\stop}
 
 % -----------------------------------------------------------------------------
 % Declare documentclass options
@@ -40,13 +47,6 @@
 \newbool{polytech@hideweeklyreports}
 \DeclareOption{hideweeklyreports}{\booltrue{polytech@hideweeklyreports}}
 
-% define if contributors details (mail and addresses) are included
-\newbool{polytech@contributors@expanded}
-\DeclareOption{expandedcontributors}{\booltrue{polytech@contributors@expanded}}
-
-\newbool{polytech@contributors@noseparatepage}
-\DeclareOption{noseparatecontributorspage}{\booltrue{polytech@contributors@noseparatepage}}
-
 \newbool{polytech@nodate}
 \DeclareOption{nodate}{\booltrue{polytech@nodate}}
 
@@ -70,10 +70,6 @@
 
 \newbool{polytech@aiiiposter}
 \DeclareOption{a3poster}{\booltrue{polytech@aiiiposter}\booltrue{polytech@onlyposter}\booltrue{polytech@poster}}
-
-\newbool{polytech@nociting}
-\DeclareOption{nociting}{\booltrue{polytech@nociting}}
-
 
 \DeclareOption*{\PackageWarning{polytech}{Unknown option `\CurrentOption'}}
 
@@ -146,6 +142,7 @@
 
 \csdef{polytech@output@setupfirstlastpagegeometry}{%
 	\newgeometry{%
+	  papersize={\paperwidth,\paperheight},
     twoside,
     bindingoffset=0cm,
     heightrounded,
@@ -180,7 +177,7 @@
 	minnames=10,
 	autocite=plain,
 	defernumbers,
-	bibencoding=utf8
+	bibencoding=utf8,
 	]{biblatex}
 
 
@@ -205,6 +202,7 @@
 \RequirePackage{stmaryrd}
 \RequirePackage[final]{listings}[2015/06/04]
 \RequirePackage{fancybox}
+\RequirePackage{longtable}
 \RequirePackage{tabu}
 \RequirePackage{lscape}
 \RequirePackage{comment}
@@ -250,6 +248,7 @@
 
 \RequirePackage{bookmark}
 \RequirePackage{pageslts} % to have total page count of the document. Must be at the end for proper functionning
+\RequirePackage{refcount}
 
 \RequirePackage[planb=false]{newfloat}
 \RequirePackage{caption}
@@ -259,9 +258,33 @@
 \definecolor{polytechlightblue}{RGB}{0,156,221}
 \definecolor{polytechorange}{RGB}{221,56,0}
 
+% size, filepath
+\newcommand{\fitimagetoheight}[2]{
+  \maxsizebox{!}{#1}{%
+    \adjincludegraphics[min height=#1]{#2}%
+  }%
+}
+
+% size, filepath
+\newcommand{\fitimagetowidth}[2]{
+  \maxsizebox{#1}{!}{%
+    \adjincludegraphics[min width=#1]{#2}%
+  }%
+}
+
+% size, filepath
+\newcommand{\fitimagetobox}[3]{
+  \maxsizebox{#1}{#2}{%
+    \adjincludegraphics[min height=#1, min width=#2]{#3}%
+  }%
+}
+
+
 % sub packages
+\RequirePackage{polytech/constants}
+\RequirePackage{polytech/citingdoc}
 \RequirePackage{polytech/firstlastpage}
-\RequirePackage{polytech/copyright}
+\RequirePackage{polytech/warning}
 \RequirePackage{polytech/headings}
 \RequirePackage{polytech/sectionning}
 \RequirePackage{polytech/floats}
@@ -270,7 +293,7 @@
 \RequirePackage{polytech/references}
 \RequirePackage{polytech/poster}
 
-\setlength{\parskip}{1ex plus 0.5ex minus 0.5ex}
+\setlength{\parskip}{1ex plus 0.2ex minus 0.2ex}
 \setlength{\topsep}{1pt plus 1pt minus 1pt}
 \setlength{\parsep}{\parskip}
 \setlength{\itemsep}{1pt plus 1pt minus 1pt}
