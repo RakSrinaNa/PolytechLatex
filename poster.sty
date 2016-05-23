@@ -4,6 +4,36 @@
 
 %###
 
+% boolean used to specify if a poster is required by default
+\newbool{polytech@default@poster}
+
+% counter to check requirements
+\newcounter{polytech@poster@block}
+
+% ensure there is an abstract
+\csappto{polytech@check@preamble}{%
+  \ifbool{polytech@noposter}{%
+      % no poster required
+    }{%
+      \ifbool{polytech@poster}{%
+        % poster required
+        \ifnumequal{\value{polytech@poster@block}}{3}{%
+        }{%
+          \polytechfatalerror{A poster is required but an invalid number (\arabic{polytech@poster@block}/3) of block is defined (see \string\posterblock).}%
+        }%
+      }{%
+        % no requirement, we rely on defaults
+        \ifbool{polytech@default@poster}{%
+          \ifnumequal{\value{polytech@poster@block}}{3}{%
+          }{%
+            \polytechfatalerror{A poster is required but an invalid number (\arabic{polytech@poster@block}/3) of block is defined (see \string\posterblock).}%
+          }%
+        }{}%
+      }%
+    }%
+}
+
+
 % constant allowing block to overflow a bit
 \newlength{\polytechblockheightallowedoverflow}
 \setlength{\polytechblockheightallowedoverflow}{0.1cm}
@@ -141,6 +171,7 @@
     % advance position by one block height and 1cm skip
     \addtolength{\polytechposterhorizanchor}{\polytechposterhorizspace+0.3cm}%
   }%
+  \stepcounter{polytech@poster@block}
 } 
 
 % can be used only in preamble
@@ -194,7 +225,7 @@
   			{\csuse{polytech@font@poster@company}En collaboration avec\linebreak[0]\csuse{polytech@output@company@simple}}%
   		};
   	}{
-  		\node[fill=blue,anchor=north west, color=polytechdarkblue,align=justify,inner sep=0cm, outer sep=0cm, text width=20cm, yshift=-0.5cm] (authors) at (title.south west) {%
+  		\node[anchor=north west, color=polytechdarkblue,align=justify,inner sep=0cm, outer sep=0cm, text width=20cm, yshift=-0.5cm] (authors) at (title.south west) {%
   		  \parskip0pt%
   			\csuse{polytech@font@poster@authors}\csuse{polytech@output@students@simple}\par\vspace{0.5em}%
   			\csuse{polytech@font@poster@supervisors}Encadrement : \csuse{polytech@output@academicsupervisors@simple}%
@@ -285,7 +316,7 @@
         {\csuse{polytech@font@poster@company}En collaboration avec\linebreak[0] \csuse{polytech@output@company@simple}}%
       };
     }{
-      \node[fill=blue,anchor=north west, color=polytechdarkblue,align=justify,inner sep=0cm, outer sep=0cm, text width=28cm, yshift=-0.8cm] (authors) at (title.south west) {%
+      \node[anchor=north west, color=polytechdarkblue,align=justify,inner sep=0cm, outer sep=0cm, text width=28cm, yshift=-0.3cm] (authors) at (title.south west) {%
         \parskip0pt%
         \csuse{polytech@font@poster@authors}\csuse{polytech@output@students@simple}\par\vspace{0.5em}%
         \csuse{polytech@font@poster@supervisors}Encadrement : \csuse{polytech@output@academicsupervisors@simple}%
@@ -335,29 +366,26 @@
 
 
 \csdef{polytech@output@poster}{%
-	\ifbool{polytech@poster}{%
-	  \cleardoublepage
-	  % add to PDF bookmark
-	  \bookmarksetupnext{level=part}%
-	  \phantomsection%
-	  \pdfbookmark[0]{Poster 1}{poster1}%
-	  % resize paper
-	  \newgeometry{margin=0cm}%
-	  \thispagestyle{empty}%
-	  \csuse{polytech@output@postervert@aiv}%
-	  \cleardoublepage%  
-	  % add to PDF bookmark
-    \bookmarksetupnext{level=part}%
-    \phantomsection%
-    \pdfbookmark[0]{Poster 2}{poster2}%
-	  \thispagestyle{empty}%
-	  \begin{landscape}
-    \csuse{polytech@output@posterhoriz@aiv}%    
-    \end{landscape}
-    
-	  \cleardoublepage%
-	  \restoregeometry%
-	}{}%
+  \cleardoublepage
+  % add to PDF bookmark
+  \bookmarksetupnext{level=part}%
+  \phantomsection%
+  \pdfbookmark[0]{Poster 1}{poster1}%
+  % resize paper
+  \newgeometry{margin=0cm}%
+  \thispagestyle{empty}%
+  \csuse{polytech@output@postervert@aiv}%
+  \cleardoublepage%  
+  % add to PDF bookmark
+  \bookmarksetupnext{level=part}%
+  \phantomsection%
+  \pdfbookmark[0]{Poster 2}{poster2}%
+  \thispagestyle{empty}%
+  \begin{landscape}
+  \csuse{polytech@output@posterhoriz@aiv}%    
+  \end{landscape}
+  \cleardoublepage%
+  \restoregeometry%
 }
 
 

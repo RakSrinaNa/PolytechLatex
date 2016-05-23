@@ -910,16 +910,16 @@
     \textbf{Abstract}\par%
     \csuse{polytech@output@abstract}\par%
     \textbf{Keywords}\par%
-    \csuse{polytech@output@keywords}\par%\vspace{0.5cm}%
+    \csuse{polytech@output@keywords}\par%
   \end{otherlanguage}%
-  \vspace{0.3cm}
+  \vspace{0.3cm}%
   \vfill%
   \csuse{polytech@output@contributors}%
-  \label{polytech@lastpage@end}
+  \label{polytech@lastpage@end}%
   % test if overflow the page
-  \ifnumequal{\getpagerefnumber{polytech@lastpage@start}}{\getpagerefnumber{polytech@lastpage@end}}{}{
-    \polytechfatalerror{Last page too long. Try reducing \string\resume, \string\abstract, \string\motcle\space or \string\keyword. If you changed things, do not forget to recompile.}
-  }
+  \ifnumequal{\getpagerefnumber{polytech@lastpage@start}}{\getpagerefnumber{polytech@lastpage@end}}{}{%
+    \polytechfatalerror{Last page too long. Try reducing \string\resume, \string\abstract, \string\motcle\space or \string\keyword. If you changed things, do not forget to recompile.}%
+  }%
   \restoregeometry%
 }
 
@@ -928,23 +928,38 @@
   \csuse{polytech@makelastpages}
 }
 
-\csdef{polytech@makelastpages}{
-  \bookmarksetupnext{level=part}
-	\ifbool{polytech@firstlastonly}{%
-	}{%
-		\csuse{polytech@output@weeklyreportspart}%
-		\bookmarksetupnext{level=part}%
-		\printbibliography[heading=bibintoc,type=online,resetnumbers=1,prefixnumbers=WWW,title={\csuse{polytech@output@webography@\csuse{polytech@lang}}}]%
-		\bookmarksetupnext{level=part}%
-		\printbibliography[heading=bibintoc,nottype=online,resetnumbers=1]%
-		\csuse{polytech@output@poster}%
-	}%
-	\backmatter%
-	\pagestyle{empty}%
-	\ifbool{polytech@firstlastonly}{}{
-		\csuse{polytech@roundpagecount}
-	}
-	\csuse{polytech@lastpage}
+\csdef{polytech@makelastpages}{%
+  \ifbool{polytech@onlyposter}{%
+  }{%
+    \bookmarksetupnext{level=part}%
+  	\ifbool{polytech@firstlastonly}{%
+  	}{%
+  		\csuse{polytech@output@weeklyreportspart}%
+  		\bookmarksetupnext{level=part}%
+  		\printbibliography[heading=bibintoc,type=online,resetnumbers=1,prefixnumbers=WWW,title={\csuse{polytech@output@webography@\csuse{polytech@lang}}}]%
+  		\bookmarksetupnext{level=part}%
+  		\printbibliography[heading=bibintoc,nottype=online,resetnumbers=1]%
+  		\ifbool{polytech@noposter}{%
+  		  % no poster required
+  		}{%
+  		  \ifbool{polytech@poster}{%
+  		    % poster required
+  		    \csuse{polytech@output@poster}%
+  		  }{%
+  		    % no requirement, we rely on defaults
+  		    \ifbool{polytech@default@poster}{%
+  		      \csuse{polytech@output@poster}%
+  		    }{}%
+  		  }%
+  		}%
+  	}%
+  	\backmatter%
+  	\pagestyle{empty}%
+  	\ifbool{polytech@firstlastonly}{}{%
+  		\csuse{polytech@roundpagecount}%
+  	}%
+  	\csuse{polytech@lastpage}%
+  }%
 }
 
 

@@ -32,17 +32,13 @@
 	\gdef\polytech@lang{en}
 }
 
-% Display overfullbox marks
-\newbool{polytech@overfullbox}
-\DeclareOption{overfullbox}{\booltrue{polytech@overfullbox}}
+% Make document final disabling useless things
+\newbool{polytech@final}
+\DeclareOption{final}{\booltrue{polytech@final}}
 
 % Force black and white colors
 \newbool{polytech@blackandwhite}
 \DeclareOption{blackandwhite}{\booltrue{polytech@blackandwhite}}
-
-% Open chapter on any page
-\newbool{polytech@openany}
-\DeclareOption{openany}{\booltrue{polytech@openany}}
 
 \newbool{polytech@hideweeklyreports}
 \DeclareOption{hideweeklyreports}{\booltrue{polytech@hideweeklyreports}}
@@ -61,6 +57,9 @@
 
 \newbool{polytech@firstlastonly}
 \DeclareOption{firstlastonly}{\booltrue{polytech@firstlastonly}}
+
+\newbool{polytech@noposter}
+\DeclareOption{noposter}{\booltrue{polytech@noposter}}
 
 \newbool{polytech@poster}
 \DeclareOption{poster}{\booltrue{polytech@poster}}
@@ -105,13 +104,9 @@
     \PassOptionsToPackage{french}{algorithm2e}
 }
 
-\ifbool{polytech@openany}{\PassOptionsToClass{openany}{book}}{}
-
 \ifbool{polytech@twoside}{
 	\PassOptionsToClass{twoside}{book}
-}{
-	\PassOptionsToClass{openany}{book}
-}
+}{}
 
 \PassOptionsToClass{final,11pt}{book}
 \LoadClass{book}
@@ -148,9 +143,11 @@
 }
 
 % enable overbox display as black box. must be after class loading
-\ifbool{polytech@overfullbox}{
-    \setlength{\overfullrule}{5pt}
-}{}
+\notbool{polytech@final}{
+  \setlength{\overfullrule}{5pt}    
+}{
+  \PassOptionsToClass{final}{book}
+}
 
 \RequirePackage[T1]{fontenc}    % OT1 font encoding (must be before inputenc)
 \RequirePackage[utf8]{inputenc} % encoding is set to utf8
