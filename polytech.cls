@@ -14,10 +14,10 @@
 \RequirePackage{calc}
 \RequirePackage{xstring}
 
-% Simple hook to generate an error if something is undefined at the begining of the preamble
-\csdef{polytech@check@preamble}{}
+% Add an early hook at the beginning of the document allowing to do some tests of parameters
 \AtBeginDocument{\csuse{polytech@check@preamble}}
 
+% Display an error message and stop compilation as soone as possible
 \newcommand{\polytechfatalerror}[1]{\errmessage{#1}\stop}
 
 % -----------------------------------------------------------------------------
@@ -108,7 +108,7 @@
 	\PassOptionsToClass{twoside}{book}
 }{}
 
-\PassOptionsToClass{final,11pt}{book}
+\PassOptionsToClass{11pt}{book}
 \LoadClass{book}
 
 \setlength\paperheight{29.7cm}%
@@ -174,9 +174,12 @@
 	\PassOptionsToPackage{light}{kpfonts}	% better printing in light
 }{}
 
-\RequirePackage[nofligatures,nointlimits,sumlimits]{kpfonts} % switch to richer and more scallable fonts
-\RequirePackage[final,babel]{microtype}
+% switch to richer and more scallable fonts
+\RequirePackage[nofligatures,nointlimits,sumlimits]{kpfonts} 
+% improve typography
+\RequirePackage[final,babel]{microtype} 
 
+% allow to customize sectionning
 \RequirePackage[rigidchapters,explicit,toctitles,clearempty]{titlesec}
 
 %-------------- lot of packages -------------
@@ -205,10 +208,10 @@
 
 \RequirePackage{eurosym} % symbol euro
 \RequirePackage[user]{zref} % allow for better \ref and  \label
-\RequirePackage{environ}
+\RequirePackage{environ} % used by Figure and Table
 \RequirePackage[calc]{adjustbox} % box sizing utilities
 
-\RequirePackage{enumitem}
+\RequirePackage{enumitem} % to typeset enums
 
 \usetikzlibrary{decorations.pathmorphing,calc,patterns,positioning,fit}
 
@@ -300,7 +303,7 @@
 \setlength{\partopsep}{1pt plus 1pt minus 1pt}
 \setlength{\parindent}{0in}
 
-\setitemize{noitemsep,topsep=0pt,parsep=0pt,partopsep=0pt}
+\setlist{noitemsep,nosep,topsep=0pt,parsep=0pt,partopsep=0pt}
 
 \widowpenalty=300
 \clubpenalty=300
