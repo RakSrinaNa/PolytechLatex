@@ -933,16 +933,9 @@
 	\ifbool{polytech@firstlastonly}{%
 	}{%
 		\csuse{polytech@output@weeklyreportspart}%
-		%\phantomsection%
-		%\pdfbookmark[0]{\csuse{polytech@output@webography@\csuse{polytech@lang}}}{webography}%
+		\bookmarksetupnext{level=part}%
 		\printbibliography[heading=bibintoc,type=online,resetnumbers=1,prefixnumbers=WWW,title={\csuse{polytech@output@webography@\csuse{polytech@lang}}}]%
-		%\bookmarksetupnext{level=part}%
-		%\phantomsection%
-		%\ifbool{polytech@english}{%
-		%	\pdfbookmark[0]{Bibliography}{bibliography}%
-		%}{%
-		%	\pdfbookmark[0]{Bibliographie}{bibliography}%
-		%}%
+		\bookmarksetupnext{level=part}%
 		\printbibliography[heading=bibintoc,nottype=online,resetnumbers=1]%
 		\csuse{polytech@output@poster}%
 	}%

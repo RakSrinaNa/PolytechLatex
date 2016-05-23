@@ -68,9 +68,6 @@
 \newbool{polytech@onlyposter}
 \DeclareOption{onlyposter}{\booltrue{polytech@onlyposter}\booltrue{polytech@poster}}
 
-\newbool{polytech@aiiiposter}
-\DeclareOption{a3poster}{\booltrue{polytech@aiiiposter}\booltrue{polytech@onlyposter}\booltrue{polytech@poster}}
-
 \DeclareOption*{\PackageWarning{polytech}{Unknown option `\CurrentOption'}}
 
 \ProcessOptions\relax
@@ -119,13 +116,8 @@
 \PassOptionsToClass{final,11pt}{book}
 \LoadClass{book}
 
-\ifbool{polytech@aiiiposter}{%
-	\setlength\paperheight{42cm}%
-	\setlength\paperwidth{29.7cm}%
-}{%
-	\setlength\paperheight{29.7cm}%
-	\setlength\paperwidth{21cm}%
-}
+\setlength\paperheight{29.7cm}%
+\setlength\paperwidth{21cm}%
 
 \RequirePackage[
         papersize={\paperwidth,\paperheight},
@@ -142,7 +134,6 @@
 
 \csdef{polytech@output@setupfirstlastpagegeometry}{%
 	\newgeometry{%
-	  papersize={\paperwidth,\paperheight},
     twoside,
     bindingoffset=0cm,
     heightrounded,
@@ -220,6 +211,8 @@
 \RequirePackage{environ}
 \RequirePackage[calc]{adjustbox} % box sizing utilities
 
+\RequirePackage{enumitem}
+
 \usetikzlibrary{decorations.pathmorphing,calc,patterns,positioning,fit}
 
 \ifbool{polytech@blackandwhite}{
@@ -258,24 +251,34 @@
 \definecolor{polytechlightblue}{RGB}{0,156,221}
 \definecolor{polytechorange}{RGB}{221,56,0}
 
-% size, filepath
-\newcommand{\fitimagetoheight}[2]{
-  \maxsizebox{!}{#1}{%
-    \adjincludegraphics[min height=#1]{#2}%
+\newlength{\polytechfitimageheight}
+\newlength{\polytechfitimagewidth}
+
+% height, filepath
+\newcommand{\fitimagetoheight}[2]{%
+  % compute length to allow expression
+  \setlength{\polytechfitimageheight}{#1}%
+  \maxsizebox{!}{\polytechfitimageheight}{%
+    \adjincludegraphics[min height=\polytechfitimageheight]{#2}%
   }%
 }
 
-% size, filepath
-\newcommand{\fitimagetowidth}[2]{
-  \maxsizebox{#1}{!}{%
-    \adjincludegraphics[min width=#1]{#2}%
+% width, filepath
+\newcommand{\fitimagetowidth}[2]{%
+  % compute length to allow expression
+  \setlength{\polytechfitimagewidth}{#1}%
+  \maxsizebox{\polytechfitimagewidth}{!}{%
+    \adjincludegraphics[min width=\polytechfitimagewidth]{#2}%
   }%
 }
 
-% size, filepath
-\newcommand{\fitimagetobox}[3]{
-  \maxsizebox{#1}{#2}{%
-    \adjincludegraphics[min height=#1, min width=#2]{#3}%
+% width, height, filepath
+\newcommand{\fitimagetobox}[3]{%
+  % compute length to allow expression
+  \setlength{\polytechfitimagewidth}{#1}%
+  \setlength{\polytechfitimageheight}{#2}%
+  \maxsizebox{\polytechfitimagewidth}{\polytechfitimageheight}{%
+      \adjincludegraphics[min height=\polytechfitimagewidth, min width=\polytechfitimageheight]{#3}%
   }%
 }
 
@@ -299,6 +302,8 @@
 \setlength{\itemsep}{1pt plus 1pt minus 1pt}
 \setlength{\partopsep}{1pt plus 1pt minus 1pt}
 \setlength{\parindent}{0in}
+
+\setitemize{noitemsep,topsep=0pt,parsep=0pt,partopsep=0pt}
 
 \widowpenalty=300
 \clubpenalty=300
