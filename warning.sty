@@ -6,12 +6,8 @@
 
 \csdef{polytech@output@copyrightnotice}{
   \ifcsdef{polytech@copyrightnotice@disabled@\csuse{polytech@typereport}}{}{
-    \cleardoublepage
-    \thispagestyle{empty}%
-    \pdfbookmark[0]{\csuse{polytech@warning@name@\csuse{polytech@lang}}}{copyright}
 		\chapter*{\csuse{polytech@warning@name@\csuse{polytech@lang}}}
     \thispagestyle{empty}%
-
 
   	Ce document a été rédigé par \csuse{polytech@output@students@simple} \notbool{polytech@students@plural}{susnommé l'auteur}{susnommés les auteurs}.
   

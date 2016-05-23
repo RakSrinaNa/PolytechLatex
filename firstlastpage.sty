@@ -627,8 +627,6 @@
 %%%%%%%%%%% LIST OF CONTRIBUTORS %%%%%%%%%%%%%%%%%
 % the contributors page
 \csdef{polytech@output@contributorspage}{%
-  \cleardoublepage%
-  \pdfbookmark[0]{\csuse{polytech@contributors@name@\csuse{polytech@lang}}}{contributors}
 	\chapter*{\csuse{polytech@contributors@name@\csuse{polytech@lang}}}%
 	\thispagestyle{empty}%
 	%
@@ -704,7 +702,7 @@
 % automagically call maketitle
 \AtBeginDocument{
   \pagestyle{empty}%
-  \pagenumbering{alph}%
+  \pagenumbering{Alph}%
   % PDF metadata setup
   \hypersetup{%
     pdfauthor={\csuse{polytech@output@students@simple}},
@@ -721,6 +719,7 @@
 		\end{document}%
 	}{}%
 	\csuse{polytech@output@titlepage}
+	\pagenumbering{alph}%
 	\csuse{polytech@output@contributorspage}
 	\csuse{polytech@output@copyrightnotice}
 	\csuse{polytech@output@citingthedocument}
@@ -732,24 +731,16 @@
 	}{%
 		\frontmatter%
 		%
-		\cleardoublepage%
-		\pdfbookmark[0]{\contentsname}{toc}%
 		\tableofcontents%
 		%
 		% automagically add lists of figures, tables and listings if needed (i.e not empty)
 		\iftotalfigures%
-			\cleardoublepage%
-			\pdfbookmark[0]{\listfigurename}{lof}%
 			\listoffigures%
 		\fi%
 		\iftotaltables%
-			\cleardoublepage%
-			\pdfbookmark[0]{\listtablename}{lot}%
 			\listoftables%
 		\fi%
 		\iftotallstlistings%
-			\cleardoublepage%
-			\pdfbookmark[0]{\lstlistlistingname}{lol}%
 			\lstlistoflistings%
 		\fi%
 		\mainmatter%

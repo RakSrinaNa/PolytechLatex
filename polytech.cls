@@ -13,6 +13,7 @@
 \RequirePackage{etoolbox}
 \RequirePackage{calc}
 \RequirePackage{xstring}
+\RequirePackage{xparse}
 
 % Add an early hook at the beginning of the document allowing to do some tests of parameters
 \AtBeginDocument{\csuse{polytech@check@preamble}}
@@ -182,6 +183,88 @@
 % allow to customize sectionning
 \RequirePackage[rigidchapters,explicit,toctitles,clearempty]{titlesec}
 
+% patch standard sectionning command before loading package changing them 
+
+% force long title in TOC but keep short title for headings
+\patchcmd{\@chapter}%
+{\addcontentsline {toc}{chapter}{\protect\numberline {\thechapter }#1}}
+{\addcontentsline {toc}{chapter}{\protect\numberline {\thechapter }#2}%
+}
+{}{
+  \polytechfatalerror{Cannot patch \string\@chapter.}
+}
+\patchcmd{\@chapter}%
+{\addcontentsline {toc}{chapter}{#1}}
+{\addcontentsline {toc}{chapter}{#2}%
+}
+{}{
+  \polytechfatalerror{Cannot patch \string\@chapter.}
+}
+\patchcmd{\@chapter}%
+{\addcontentsline {toc}{chapter}{#1}}
+{\addcontentsline {toc}{chapter}{#2}%
+}
+{}{
+  \polytechfatalerror{Cannot patch \string\@chapter.}
+}
+ 
+% remove calls to \@chapter and \@schapter from the original \chapter command
+\patchcmd{\chapter}
+{\secdef\@chapter\@schapter}
+{}
+{}
+{
+  \polytechfatalerror{Cannot patch \string\chapter.}
+}
+       
+% save current definition     
+\let\polytech@chapter\chapter
+
+% replace \chapter definition to automatically register unnumbered chapter in toc and set heading marks
+\RenewDocumentCommand{\chapter}{som}{%
+  \polytech@chapter%
+   % handle appendix chapter detection
+  \ifbool{polytech@ref@appendix}{\booltrue{polytech@ref@appendixchapter}}{}%
+  \IfBooleanTF{#1}{% starred
+    \booltrue{polytech@ref@unnumberedchapter}%
+    \@schapter{#3}%
+    \addcontentsline {toc}{chapter}{#3}{}
+    \booltrue{polytech@ref@unnumberedchapter}%
+    \IfValueTF{#2}{%
+      \markboth{#2}{}%
+    }{%
+      \markboth{#3}{}%
+    }%
+  }{%
+    \boolfalse{polytech@ref@unnumberedchapter}%
+    \IfValueTF{#2}{%
+      \@chapter[#2]{#3}%
+    }{%
+      \@chapter[#3]{#3}%
+    }%
+  }%
+}
+
+% allow proper handling of unnumbered chapters in \ref
+\newbool{polytech@ref@unnumberedchapter}
+% \appendix called ?
+\newbool{polytech@ref@appendix}
+% is an appendix chapter ?
+\newbool{polytech@ref@appendixchapter}
+
+\preto{\appendix}{\booltrue{polytech@ref@appendix}}
+
+\ifbool{polytech@english}{
+  \appto{\appendix}{\part*{Appendices}}
+}{
+  \appto{\appendix}{\part*{Annexes}}
+}
+
+\preto{\part}{
+  % do not store chapter number for part until new chapter is defined
+  \booltrue{polytech@ref@unnumberedchapter}
+}
+
 %-------------- lot of packages -------------
 
 \RequirePackage{nameref}
@@ -325,33 +408,10 @@
 \extrarowsep=1mm
 \tabulinesep=1mm
 
-% tableofcontents need patching
-\patchcmd{\tableofcontents}
-{\@mkboth{\MakeUppercase\contentsname}{\MakeUppercase\contentsname}}
-{\markboth{\contentsname}{}}
-{}{}
 
-% allow proper handling of unnumbered chapters in \ref
-\newbool{polytech@ref@unnumberedchapter}
 
-% unnumbered chapter but in toc
-\newcommand{\unnumberedchapter}[2][]{
-	\chapter*{#2}
-	\addcontentsline{toc}{chapter}{\numberline{}#2}
-	\booltrue{polytech@ref@unnumberedchapter}
-	\ifstrequal{#1}{}{
-		\markboth{#2}{}
-	}{
-		\markboth{#1}{}
-	}
-}
 
-% force long title in TOC but keep short title for headings
-\patchcmd{\@chapter}%
-{\addcontentsline {toc}{chapter}{\protect\numberline {\thechapter }#1}}
-{\addcontentsline {toc}{chapter}{\protect\numberline {\thechapter }#2}%
-}
-{}{}
+
 
 
 \newbool{polytech@contentsline@lof@written}
@@ -391,30 +451,6 @@
 		\addtocontents{lot}{\protect \contentsline {chapter}{\csuse{polytech@contentsline@current@content}}{\csuse{polytech@contentsline@current@page}}{\csuse{polytech@contentsline@current@href}}}%
 		\global\booltrue{polytech@contentsline@lot@written}%
 	}%
-}
-
-% \appendix called ?
-\newbool{polytech@ref@appendix}
-% is an appendix chapter ?
-\newbool{polytech@ref@appendixchapter}
-
-\preto{\appendix}{\booltrue{polytech@ref@appendix}}
-\ifbool{polytech@english}{
-	\appto{\appendix}{\part*{Appendices}}
-}{
-	\appto{\appendix}{\part*{Annexes}}
-}
-
-\preto{\chapter}{
-	% reset unnumbered chapter boolean
-	\boolfalse{polytech@ref@unnumberedchapter}%
-	% handle appendix chapter detection
-	\ifbool{polytech@ref@appendix}{\booltrue{polytech@ref@appendixchapter}}{}%
-}
-
-\preto{\part}{
-	% do not store chapter number for part until new chapter is defined
-	\booltrue{polytech@ref@unnumberedchapter}
 }
 
 % replace \cleardoublepage by \clearpage on oneside printing

@@ -150,41 +150,66 @@
   \fancyfoot[F]{}
 }
 
-\renewcommand{\chaptermark}[1]{\markboth{\thechapter\xspace#1}{}}
+\patchcmd{\chaptermark}
+{\MakeUppercase}
+{}
+{}
+{
+  \polytechfatalerror{Cannot patch \string\chaptermark.}
+}
+
+\patchcmd{\sectionmark}
+{\MakeUppercase}
+{}
+{}
+{
+  \polytechfatalerror{Cannot patch \string\sectionmark.}
+}
+
 
 % remove uppercade for the title
 \patchcmd{\thebibliography}%
 {\MakeUppercase}%
 {}%
 {}
-{}
+{
+  \polytechfatalerror{Cannot patch \string\thebibliography.}
+}
 
 % remove uppercade for the title
 \patchcmd{\tableofcontents}%
 {\MakeUppercase}%
 {}%
 {}
-{}
+{
+  \polytechfatalerror{Cannot patch \string\tableofcontents.}
+}
 
 % remove uppercade for the title
 \patchcmd{\listoftables}%
 {\MakeUppercase}%
 {}%
 {}
-{}
+{
+  \polytechfatalerror{Cannot patch \string\listoftables.}
+}
 
 % remove uppercade for the title
 \patchcmd{\listoffigures}%
 {\MakeUppercase}%
 {}%
 {}
-{}
+{
+  \polytechfatalerror{Cannot patch \string\listoffigures.}
+}
 
 % remove uppercade for the title
 \patchcmd{\lstlistoflistings}%
 {\MakeUppercase}%
 {}%
 {}
-{}
+{
+  \polytechfatalerror{Cannot patch \string\lstlistoflistings.}
+}
 
 
