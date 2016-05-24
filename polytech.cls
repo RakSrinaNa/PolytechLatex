@@ -316,9 +316,6 @@
 }
 
 
-
-
-
 \preto{\section}{%
   \booltrue{polytech@ref@section}%
 }
@@ -524,8 +521,13 @@
 	}%
 }
 
-\csshow{part}
 
+\preto{\landscape}{\booltrue{polytech@allownewpagesection}}
+\appto{\endlandscape}{\boolfalse{polytech@allownewpagesection}}
+
+
+\csshow{landscape}
+\csshow{endlandscape}
 
 
 % replace \cleardoublepage by \clearpage on oneside printing
