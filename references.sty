@@ -10,13 +10,13 @@
 \zref@newprop{isappendix}{}
 \zref@newprop{issection}{}
 \zref@newprop{isappendices}{}
-\zref@newprop{isdefined}[]{}
+\zref@newprop{isequation}{}
 \zref@addprop{main}{chapter}
 \zref@addprop{main}{chapternumber}
 \zref@addprop{main}{isappendix}
 \zref@addprop{main}{issection}
 \zref@addprop{main}{isappendices}
-\zref@addprop{main}{isdefined}
+\zref@addprop{main}{isequation}
 
 % remove chapter from section, subsection...
 \renewcommand{\thesection}{\arabic{section}}
@@ -35,18 +35,26 @@
 		\zref@def@extract{\polytech@ref@issection}{#1}{issection}%
 		\zref@def@extract{\polytech@ref@chapternumber}{#1}{chapternumber}%
 		\zref@def@extract{\polytech@ref@isappendix}{#1}{isappendix}%
+		\zref@def@extract{\polytech@ref@isequation}{#1}{isequation}%
 		\ifcsempty{polytech@ref@chapter}%
 	  {% no number defined
-	   \setcounter{polytech@chapter@countertemp}{\csuse{polytech@ref@chapternumber}}%
+	   \ifcsempty{polytech@ref@chapternumber}{%
+	     \setcounter{polytech@chapter@countertemp}{-1}%
+	   }{%
+	     \setcounter{polytech@chapter@countertemp}{\csuse{polytech@ref@chapternumber}}%
+	   }%	   
 	   \ifnumequal{\value{polytech@chapter@countertemp}}{\value{polytech@chapter@counter}}%
-      {% same chapter => no problem if it is a section
+      {% same chapter => no problem if it is a section or an equation
         \ifcsempty{polytech@ref@issection}{%
-          \errmessage{You can not self reference this unnumbered chapter.}%
+          \ifcsempty{polytech@ref@isequation}{% 
+            \polytecherror{Reference '#1': You can not self reference this unnumbered chapter.}%
+          }{%
+          }
         }{%
         }%
       }%
       {% no number but different chapter => error
-        \errmessage{You can not reference things in unnumbered chapter from outside the chapter.}%
+        \polytecherror{Reference '#1': You can not reference things in unnumbered chapter from outside the chapter.}%
       }%
 	  }%
 	  {%
@@ -67,7 +75,8 @@
 }
 
 % Get the chapter/appendix of ref
-\newcommand{\refchapterof}[1]{
+\newcommand{\refchapterof}[1]{  
+  \typeout{#1}%
 	\zref@def@extract{\polytech@ref@chapter}{#1}{chapter}%
 	\zref@def@extract{\polytech@ref@chapternumber}{#1}{chapternumber}%
 	\zref@def@extract{\polytech@ref@isappendix}{#1}{isappendix}%
@@ -75,24 +84,17 @@
 	\ifcsempty{polytech@ref@chapternumber}{%
     \protect\G@refundefinedtrue%
     \nfss@text{\reset@font\bfseries ??}%
-    \@latex@warning{%
-      Reference `#1' on page \thepage\space undefined%
-    }%
-    \errmessage{Can not compute referenced chapter from undefined reference.}% 
+    \polytecherror{Reference '#1': Can not compute referenced chapter from undefined reference.}% 
 	}{%
-		\ifcsempty{polytech@ref@chapter}%
-	  {% no number defined
-	  	\errmessage{Can not compute referenced chapter from unnumbered chapter.}%
-	  }%
-	  {%
+		\ifcsempty{polytech@ref@chapter}{% no number defined
+	  	\polytecherror{Reference '#1': Can not compute referenced chapter from unnumbered chapter.}%
+	  }{%
 	    \ifcsempty{polytech@ref@issection}{
-	     \errmessage{Only sections can be referenced using \string\refchapterof.}
+	     \polytecherror{Reference '#1': Only sections can be referenced using \string\refchapterof.}
 	    }{%
-  	    \ifcsempty{polytech@ref@isappendix}%
-  	    {%
+  	    \ifcsempty{polytech@ref@isappendix}{%
   	    	\hyperref[#1]{\csuse{polytech@ref@name@chapter@\polytech@lang}{\polytech@ref@chapter}}%
-  	    }%
-  	    {%
+  	    }{%
   	      \hyperref[#1]{\csuse{polytech@ref@name@appendix@\polytech@lang}{\polytech@ref@chapter}}%
   	    }%
   	    \xspace%
@@ -105,16 +107,16 @@
 \newcommand{\polytech@zlabel}[1]{%
   \zref@setcurrent{isappendices}{\ifbool{polytech@ref@inchapter}{}{1}}%
   \zref@setcurrent{issection}{\ifbool{polytech@ref@section}{1}{}}%
+  \zref@setcurrent{isequation}{\ifbool{polytech@ref@equation}{1}{}}%
   \zref@setcurrent{chapter}{\ifbool{polytech@ref@unnumberedchapter}{}{\thechapter}}%
   \zref@setcurrent{chapternumber}{\csuse{thepolytech@chapter@counter}}%
 	\zref@setcurrent{isappendix}{\ifbool{polytech@ref@appendix}{1}{}}%
-	\zref@setcurrent{isdefined}{1}%
 	\ifbool{polytech@ref@appendix}{%
     \ifbool{polytech@ref@inchapter}{%
-      % in appendix chapter
+      % in an appendix chapter
     }{%
       % in appendices => not allowed here
-      \polytechfatalerror{You can not define a label in appendices outside a chapter. \string\label is forbidden here.}%
+      \polytecherror{Reference '#1': You can not define a label in appendices outside a chapter. \string\label is forbidden here.}%
     }%
 	}{}%
   \zlabel{#1}%
@@ -133,8 +135,6 @@
 \csdef{polytech@ref@nochapter@chapter}{}
 \csdef{polytech@ref@nochapter@part}{}
 \csdef{polytech@ref@nochapter@appendix}{}
-
-%\Hy@SetCatcodes
 
 \def\polytech@ref@type#1.#2\\{#1}
 
@@ -179,13 +179,16 @@
 		\ifcsdef{polytech@ref@isequation@\polytech@ref@thistype}{%
 			\textup{\tagform@{\polytech@oldref{#2}}}\polytech@ref@refchapter{#2}%
 		}{%
-			\textbf{#2 n'est pas une équation.}%
+		  \polytecherror{Reference '#2': This is not an equation. Use \string\ref\space or \string\autoref\space instead.}%
 		}%
   \fi%
-}
+} 
 
 % allow eqref on equation
 \csdef{polytech@ref@isequation@equation}{}
+
+% boolean used to detect equation
+\newbool{polytech@ref@equation}
 
 \AtBeginDocument{
 
@@ -193,36 +196,50 @@
 	\let\polytech@oldautoref\autoref
 	\let\polytech@oldlabel\label
 	\let\polytech@oldlabel@in@display\label@in@display
-	
-	\csshow{autoref}
 
 	% replace Tableau by Table in caption, correct case
-	\def\tableautorefname{Table}
-	\def\sectionautorefname{Section}
-	\ifbool{polytech@english}{
-		\def\chapterautorefname{Chapter}
-		\def\appendixautorefname{Appendix}
-		\def\algorithmautorefname{Algorithm}
-	}{
-		\def\chapterautorefname{Chapitre}
-		\def\appendixautorefname{Annexe}
-		\def\algorithmautorefname{Algorithme}
-	}
+  \def\tableautorefname{\csuse{polytech@ref@name@table@\csuse{polytech@lang}}}
+  \def\figureautorefname{\csuse{polytech@ref@name@figure@\csuse{polytech@lang}}}
+  \def\algorithmautorefname{\csuse{polytech@ref@name@algorithm@\csuse{polytech@lang}}}
+  \def\partautorefname{\csuse{polytech@ref@name@part@\csuse{polytech@lang}}}
+  \def\chapterautorefname{\csuse{polytech@ref@name@chapter@\csuse{polytech@lang}}}
+  \def\appendixautorefname{\csuse{polytech@ref@name@appendix@\csuse{polytech@lang}}}
+  \def\sectionautorefname{\csuse{polytech@ref@name@section@\csuse{polytech@lang}}}
+  \def\subsectionautorefname{\csuse{polytech@ref@name@subsection@\csuse{polytech@lang}}}
+  \def\subsubsectionautorefname{\csuse{polytech@ref@name@subsubsection@\csuse{polytech@lang}}}
+  \def\paragraphautorefname{\csuse{polytech@ref@name@paragraph@\csuse{polytech@lang}}}
+  \def\subparagraphautorefname{\csuse{polytech@ref@name@subparagraph@\csuse{polytech@lang}}}
 
-	% hide chapter from part and chapter
+	% hide extra chapter from part and chapter and appendix
 	\appto\partautorefname{\global\booltrue{polytech@ref@nochapter}}
 	\appto\chapterautorefname{\global\booltrue{polytech@ref@nochapter}}
 	\appto\appendixautorefname{\global\booltrue{polytech@ref@nochapter}}
 
 	% replace standard \ref command
-	\renewcommand{\ref}[1]{\polytech@ref@newref{#1}}
+  \renewcommand{\ref}[1]{%
+    \zref@def@extract{\polytech@ref@isequation}{#1}{isequation}%
+    \ifcsempty{polytech@ref@isequation}{}{%
+      \polytecherror{Reference '#1': This is an equation. Use \string\eqref\space or \string\autoref\space instead.}%
+    }%  
+	  \polytech@ref@newref{#1}%
+	}
 	\robustify{\ref}
 	
 	% complete autoref with the chapter part
 	\renewcommand{\autoref}[1]{% 	  
 		\boolfalse{polytech@ref@nochapter}%
 		\polytech@oldautoref{#1}\relax%
-		\ifbool{polytech@ref@nochapter}{}{\polytech@ref@refchapter{#1}}%
+		\ifbool{polytech@ref@nochapter}{%
+		  % no need to add chapter
+		  \zref@def@extract{\polytech@ref@chapter}{#1}{chapter}%
+		  \ifcsempty{polytech@ref@chapter}{%
+		    % it is a chapter => error
+		    \polytecherror{Reference '#1': You can not reference an unnumbered chapter.}%   
+		  }{%		    
+		  }%
+		}{%
+		  \polytech@ref@refchapter{#1}%
+		}%
 	}
 	\robustify{\autoref} 
 
@@ -232,13 +249,37 @@
 
 	% amsmath replace label in equation, so we patch the replacement :)
 	\renewcommand{\label@in@display}[1]{\polytech@oldlabel@in@display{#1}\relax\polytech@zlabel{#1}}
+	
+	% we need a boolean flag to detect equation and eqnarray
+	\let\polytech@oldequation\equation
+	\let\polytech@oldendequation\endequation
+	
+	\renewenvironment{equation}{%
+	 \booltrue{polytech@ref@equation}%
+	 \begingroup%
+	 \polytech@oldequation%
+	}{%
+    \polytech@oldendequation%
+    \endgroup%
+    \boolfalse{polytech@ref@equation}%
+	}
+	
+	\let\polytech@oldeqnarray\eqnarray
+  \let\polytech@oldendeqnarray\endeqnarray
+  
+  \renewenvironment{eqnarray}{%
+   \booltrue{polytech@ref@equation}%
+   \begingroup%
+   \polytech@oldeqnarray%
+  }{%
+    \polytech@oldendeqnarray%
+    \endgroup%
+    \boolfalse{polytech@ref@equation}%
+  }
 
 	% patch \eqref to move the chapter part outside the parenthesis
 	\renewcommand{\eqref}[1]{\polytech@ref@eqref{#1}}
 	\robustify{\eqref}
-
-	% \nocite is fordibben
-	\csundef{nocite}
 }
 
 %###

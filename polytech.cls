@@ -4,7 +4,7 @@
 \ProvidesClass{polytech/polytech}[\polytechfiledate\space Polytech document class by Sebastien Aupetit <aupetit@univ-tours.fr>, V\polytechfileversion]
 
 %###
-
+ 
 % -----------------------------------------------------------------------------
 % Include generic packages to extend LaTeX memory and add common utility commands
 % -----------------------------------------------------------------------------
@@ -18,8 +18,25 @@
 % Add an early hook at the beginning of the document allowing to do some tests of parameters
 \AtBeginDocument{\csuse{polytech@check@preamble}}
 
+\newcommand{\polytecherror}[1]{%
+  \begingroup
+  \set@display@protect%
+  \errmessage{#1}
+  \endgroup
+}
+
 % Display an error message and stop compilation as soone as possible
-\newcommand{\polytechfatalerror}[1]{\errmessage{#1}\stop}
+\newcommand{\polytechfatalerror}[1]{%
+  \begingroup
+  \set@display@protect%
+  \errmessage{#1}
+  \endgroup
+  \stop%
+}
+
+\csshow{errmessage}
+\csshow{typeout}
+\csshow{GenericWarning}
 
 % -----------------------------------------------------------------------------
 % Declare documentclass options
@@ -266,6 +283,33 @@
 }
 
 
+\preto{\appendix}{\booltrue{polytech@ref@appendix}\boolfalse{polytech@ref@inchapter}}
+\appto{\appendix}{\part*{\csuse{polytech@ref@name@appendices@\csuse{polytech@lang}}}}
+
+\preto{\part}{%
+  \boolfalse{polytech@ref@section}%
+}
+
+\preto{\section}{%
+  \booltrue{polytech@ref@section}%
+}
+
+\preto{\subsection}{%
+  \booltrue{polytech@ref@section}%
+}
+
+\preto{\subsubsection}{%
+  \booltrue{polytech@ref@section}%
+}
+
+\preto{\paragraph}{%
+  \booltrue{polytech@ref@section}%
+}
+
+\preto{\subparagraph}{%
+  \booltrue{polytech@ref@section}%
+}
+
 
 
 
@@ -455,35 +499,9 @@
 \ifbool{polytech@twoside}{}{\renewcommand{\cleardoublepage}{\clearpage}}
 
 
-\preto{\appendix}{\booltrue{polytech@ref@appendix}\boolfalse{polytech@ref@inchapter}}
-\appto{\appendix}{\part*{\csuse{polytech@ref@name@appendices@\csuse{polytech@lang}}}}
 
-\preto{\part}{%
-  \boolfalse{polytech@ref@section}%
-}
-
-\preto{\section}{%
-  \booltrue{polytech@ref@section}%
-}
-
-\preto{\subsection}{%
-  \booltrue{polytech@ref@section}%
-}
-
-\preto{\subsubsection}{%
-  \booltrue{polytech@ref@section}%
-}
-
-\preto{\paragraph}{%
-  \booltrue{polytech@ref@section}%
-}
-
-\preto{\subparagraph}{%
-  \booltrue{polytech@ref@section}%
-}
-
-
-
+  % \nocite is fordibben
+  \csundef{nocite}
 
 \csshow{part}
 
