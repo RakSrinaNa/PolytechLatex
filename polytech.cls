@@ -362,7 +362,7 @@
 \RequirePackage{makerobust}
 \RequirePackage[lined,boxed]{algorithm2e}
 \RequirePackage[figure,table,lstlisting]{totalcount}
-
+\RequirePackage{pdfpages}
 \RequirePackage{eurosym} % symbol euro
 \RequirePackage[user]{zref} % allow for better \ref and  \label
 \RequirePackage{environ} % used by Figure and Table
@@ -525,9 +525,19 @@
 \preto{\landscape}{\booltrue{polytech@allownewpagesection}}
 \appto{\endlandscape}{\boolfalse{polytech@allownewpagesection}}
 
-
-\csshow{landscape}
-\csshow{endlandscape}
+% allow newpage for pdfpages
+\let\polytech@oldincludepdf\includepdf
+\gdef\includepdf[#1]#2{%
+  \booltrue{polytech@allownewpagesection}%
+  \polytech@oldincludepdf[#1]{#2}%
+  \boolfalse{polytech@allownewpagesection}%
+}
+\let\polytech@oldincludepdfmerge\includepdfmerge
+\gdef\includepdfmerge[#1]#2{%
+  \booltrue{polytech@allownewpagesection}%
+  \polytech@oldincludepdfmerge[#1]{#2}%
+  \boolfalse{polytech@allownewpagesection}%
+}
 
 
 % replace \cleardoublepage by \clearpage on oneside printing
