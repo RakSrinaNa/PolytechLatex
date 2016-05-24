@@ -28,26 +28,23 @@
 	\colorlet{polytech@sectionning@part@title@border}{polytechdarkblue}
 }
 
-% override titlesec command to remove superflous blank pages
-\def\ttl@page@ii#1#2#3#4#5#6#7{%
-  \ttl@assign\@tempskipa#3\relax\beforetitleunit
-  \if@openright
-    \cleardoublepage
-  \else
-    \clearpage
-  \fi
-  \@ifundefined{ttl@ps@#6}%
-    {\thispagestyle{plain}}%
-    {\thispagestyle{\@nameuse{ttl@ps@#6}}}%
-  \vspace*{\@tempskipa}%
-  \@afterindenttrue
-  \ifcase#5 \@afterindentfalse\fi
-  \ttl@assign\@tempskipb#4\relax\aftertitleunit
-  \ttl@select{#6}{#1}{#2}{#7}%
-  \ttl@finmarks
-  \@ifundefined{ttlp@#6}{}{\ttlp@write{#6}}%
-  \vspace{\@tempskipb}%
-  \ignorespaces}
+% patch titlesec command to remove superflous blank pages
+\patchcmd{\ttl@page@ii}
+{\if@twocolumn \onecolumn \@tempswatrue \else \@tempswafalse \fi}
+{}
+{}
+{
+  \polytechfatalerror{Can not patch \string\ttl@page@ii (1)}
+}
+
+\patchcmd{\ttl@page@ii}
+{\newpage \if@twoside \if@openright \null \@ifundefined {ttl@ps@#6}{\thispagestyle {empty}}{\thispagestyle {\@nameuse {ttl@ps@#6}}}\newpage \fi \fi \if@tempswa \twocolumn \fi}
+{}
+{}
+{
+  \polytechfatalerror{Can not patch \string\ttl@page@ii (2)}
+}
+
 
 %\titlespacing{\part}{0pt}{3cm}{3cm}
 
@@ -65,6 +62,23 @@
        \draw[color=polytech@sectionning@part@title@border,fill=polytech@sectionning@part@title@bg] (0,0) rectangle (\textwidth-0.4pt,3);
        \node[right,white,text width=\textwidth-1cm,align=center] at (0,1.5) {\color{polytech@sectionning@part@title@fg}\csname polytech@part@titlefont\endcsname#1};
      \end{tikzpicture}%
+}
+
+\let\polytech@newpage@oldpart\part
+
+\RenewDocumentCommand{\part}{som}{%
+  \boolfalse{polytech@ref@section}%
+  \booltrue{polytech@allownewpagesection}%
+  \IfBooleanTF{#1}{% starred
+    \polytech@newpage@oldpart*{#3}%
+  }{%
+    \IfValueTF{#2}{%
+      \polytech@newpage@oldpart[#2]{#3}%
+    }{%
+      \polytech@newpage@oldpart{#3}%
+    }%
+  }%
+  \boolfalse{polytech@allownewpagesection}%
 }
 
 

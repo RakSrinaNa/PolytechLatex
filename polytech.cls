@@ -21,7 +21,7 @@
 \newcommand{\polytecherror}[1]{%
   \begingroup
   \set@display@protect%
-  \errmessage{#1}
+  \errmessage{Polytech: #1}
   \endgroup
 }
 
@@ -29,10 +29,14 @@
 \newcommand{\polytechfatalerror}[1]{%
   \begingroup
   \set@display@protect%
-  \errmessage{#1}
+  \errmessage{Polytech: #1}
   \endgroup
   \stop%
 }
+
+\AtBeginDocument{\booltrue{polytech@allownewpagestartenddoc}}
+\AtEndDocument{\booltrue{polytech@allownewpagestartenddoc}}
+
 
 % -----------------------------------------------------------------------------
 % Declare documentclass options
@@ -196,6 +200,27 @@
 % allow to customize sectionning
 \RequirePackage[rigidchapters,explicit,toctitles,clearempty]{titlesec}
 
+
+%%% newpage disabled flags
+\newbool{polytech@allownewpagesection}
+\newbool{polytech@allownewpagestartenddoc}
+
+\let\polytech@oldnewpage\newpage
+
+\renewcommand{\newpage}{%
+  \ifbool{polytech@allownewpagestartenddoc}{
+    \polytech@oldnewpage%
+  }{%
+    \ifbool{polytech@allownewpagesection}{%
+      \polytech@oldnewpage%
+    }{%
+      \polytech@oldnewpage%
+      \polytecherror{You are not allowed to use \string\newpage, \string\clearpage\space or \string\cleardoublepage.}%
+    }%
+  }%
+}
+
+
 % patch standard sectionning command before loading package changing them 
 
 % force long title in TOC but keep short title for headings
@@ -250,6 +275,7 @@
 % replace \chapter definition to automatically register unnumbered chapter in toc and set heading marks
 % need to be before hyperref
 \RenewDocumentCommand{\chapter}{som}{%  
+  \booltrue{polytech@allownewpagesection}%
   \boolfalse{polytech@ref@section}%
   \booltrue{polytech@ref@inchapter}%
   \polytech@chapter%
@@ -274,16 +300,24 @@
       \@chapter[#3]{#3}%
     }%
   }%
-  \stepcounter{polytech@chapter@counter}
+  \stepcounter{polytech@chapter@counter}%
+  \boolfalse{polytech@allownewpagesection}%
 }
 
 
-\preto{\appendix}{\booltrue{polytech@ref@appendix}\boolfalse{polytech@ref@inchapter}}
-\appto{\appendix}{\part*{\csuse{polytech@ref@name@appendices@\csuse{polytech@lang}}}}
-
-\preto{\part}{%
-  \boolfalse{polytech@ref@section}%
+\preto{\appendix}{%
+  \booltrue{polytech@allownewpagesection}%
+  \booltrue{polytech@ref@appendix}%
+  \boolfalse{polytech@ref@inchapter}%
 }
+\appto{\appendix}{%
+  \part*{\csuse{polytech@ref@name@appendices@\csuse{polytech@lang}}}%
+  \boolfalse{polytech@allownewpagesection}%
+}
+
+
+
+
 
 \preto{\section}{%
   \booltrue{polytech@ref@section}%
@@ -489,6 +523,10 @@
 		\global\booltrue{polytech@contentsline@lot@written}%
 	}%
 }
+
+\csshow{part}
+
+
 
 % replace \cleardoublepage by \clearpage on oneside printing
 \ifbool{polytech@twoside}{}{\renewcommand{\cleardoublepage}{\clearpage}}
