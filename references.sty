@@ -3,21 +3,20 @@
 \typeout{Package `polytech references' \polytechfileversion\space<\polytechfiledate>}
 
 %###
-
-\newcommand{\polytech@ref@from@chapter@en}[1]{\xspace(Chapter~#1)}
-\newcommand{\polytech@ref@from@chapter@fr}[1]{\xspace(Chapitre~#1)}
-\newcommand{\polytech@ref@from@appendix@en}[1]{\xspace(Appendix~#1)}
-\newcommand{\polytech@ref@from@appendix@fr}[1]{\xspace(Annexe~#1)}
-\newcommand{\polytech@ref@name@chapter@en}[1]{Chapter~#1}
-\newcommand{\polytech@ref@name@chapter@fr}[1]{Chapitre~#1}
-\newcommand{\polytech@ref@name@appendix@en}[1]{Appendix~#1}
-\newcommand{\polytech@ref@name@appendix@fr}[1]{Annexe~#1}
-
-% ATTENTION : le code suivant doit s'executer avant le chargement du package typedref
+ 
+% declare new properties
 \zref@newprop{chapter}[]{}
+\zref@newprop{chapternumber}[]{}
 \zref@newprop{isappendix}{}
+\zref@newprop{issection}{}
+\zref@newprop{isappendices}{}
+\zref@newprop{isdefined}[]{}
 \zref@addprop{main}{chapter}
+\zref@addprop{main}{chapternumber}
 \zref@addprop{main}{isappendix}
+\zref@addprop{main}{issection}
+\zref@addprop{main}{isappendices}
+\zref@addprop{main}{isdefined}
 
 % remove chapter from section, subsection...
 \renewcommand{\thesection}{\arabic{section}}
@@ -28,16 +27,30 @@
 % get the reference without the chapter part
 \newcommand{\shortref}[1]{\polytech@oldref{#1}}
 
+\newcounter{polytech@chapter@countertemp}
+
 % get the chapter part of the reference
 \newcommand{\polytech@ref@refchapter}[1]{%
 		\zref@def@extract{\polytech@ref@chapter}{#1}{chapter}%
+		\zref@def@extract{\polytech@ref@issection}{#1}{issection}%
+		\zref@def@extract{\polytech@ref@chapternumber}{#1}{chapternumber}%
 		\zref@def@extract{\polytech@ref@isappendix}{#1}{isappendix}%
 		\ifcsempty{polytech@ref@chapter}%
 	  {% no number defined
+	   \setcounter{polytech@chapter@countertemp}{\csuse{polytech@ref@chapternumber}}%
+	   \ifnumequal{\value{polytech@chapter@countertemp}}{\value{polytech@chapter@counter}}%
+      {% same chapter => no problem if it is a section
+        \ifcsempty{polytech@ref@issection}{%
+          \errmessage{You can not self reference this unnumbered chapter.}%
+        }{%
+        }%
+      }%
+      {% no number but different chapter => error
+        \errmessage{You can not reference things in unnumbered chapter from outside the chapter.}%
+      }%
 	  }%
 	  {%
-	  	\edef\polytech@ref@currentchapter{\thechapter}%
-	    \ifcsequal{polytech@ref@chapter}{polytech@ref@currentchapter}%
+	    \ifcsequal{polytech@ref@chapternumber}{thepolytech@chapter@counter}%
 	    {% same chapter, keep short numbering
 	    }%
 	    {%
@@ -56,45 +69,54 @@
 % Get the chapter/appendix of ref
 \newcommand{\refchapterof}[1]{
 	\zref@def@extract{\polytech@ref@chapter}{#1}{chapter}%
+	\zref@def@extract{\polytech@ref@chapternumber}{#1}{chapternumber}%
 	\zref@def@extract{\polytech@ref@isappendix}{#1}{isappendix}%
-	\ifcsdef{r@#1}{%
-		\ifcsempty{polytech@ref@chapter}%
-	  {% no number defined
-	  	\textbf{\string\refchapterof of #1 undefined}%
-	  }%
-	  {%
-	    \ifcsempty{polytech@ref@isappendix}%
-	    {%
-	    	\hyperref[#1]{\csuse{polytech@ref@name@chapter@\polytech@lang}{\polytech@ref@chapter}}%
-	    }%
-	    {%
-	      \hyperref[#1]{\csuse{polytech@ref@name@appendix@\polytech@lang}{\polytech@ref@chapter}}%
-	    }%
-	    \xspace%
-	  }%
-	}{%
-		\protect\G@refundefinedtrue%
+	\zref@def@extract{\polytech@ref@issection}{#1}{issection}%
+	\ifcsempty{polytech@ref@chapternumber}{%
+    \protect\G@refundefinedtrue%
     \nfss@text{\reset@font\bfseries ??}%
     \@latex@warning{%
       Reference `#1' on page \thepage\space undefined%
     }%
-	}%
+    \errmessage{Can not compute referenced chapter from undefined reference.}% 
+	}{%
+		\ifcsempty{polytech@ref@chapter}%
+	  {% no number defined
+	  	\errmessage{Can not compute referenced chapter from unnumbered chapter.}%
+	  }%
+	  {%
+	    \ifcsempty{polytech@ref@issection}{
+	     \errmessage{Only sections can be referenced using \string\refchapterof.}
+	    }{%
+  	    \ifcsempty{polytech@ref@isappendix}%
+  	    {%
+  	    	\hyperref[#1]{\csuse{polytech@ref@name@chapter@\polytech@lang}{\polytech@ref@chapter}}%
+  	    }%
+  	    {%
+  	      \hyperref[#1]{\csuse{polytech@ref@name@appendix@\polytech@lang}{\polytech@ref@chapter}}%
+  	    }%
+  	    \xspace%
+  	  }%
+	  }%
+	}{}%
 }
 
 % redefine label to store additional data with zref
 \newcommand{\polytech@zlabel}[1]{%
-	\ifbool{polytech@ref@unnumberedchapter}{%
-		\zref@setcurrent{chapter}{}%
-	}{%
-  	\zref@setcurrent{chapter}{\thechapter}%
-	  \ifbool{polytech@ref@appendixchapter}%
-	  {%
-	    \zref@setcurrent{isappendix}{1}%
-	  }%
-	  {%
-	    \zref@setcurrent{isappendix}{}%
-	  }%
-	}%
+  \zref@setcurrent{isappendices}{\ifbool{polytech@ref@inchapter}{}{1}}%
+  \zref@setcurrent{issection}{\ifbool{polytech@ref@section}{1}{}}%
+  \zref@setcurrent{chapter}{\ifbool{polytech@ref@unnumberedchapter}{}{\thechapter}}%
+  \zref@setcurrent{chapternumber}{\csuse{thepolytech@chapter@counter}}%
+	\zref@setcurrent{isappendix}{\ifbool{polytech@ref@appendix}{1}{}}%
+	\zref@setcurrent{isdefined}{1}%
+	\ifbool{polytech@ref@appendix}{%
+    \ifbool{polytech@ref@inchapter}{%
+      % in appendix chapter
+    }{%
+      % in appendices => not allowed here
+      \polytechfatalerror{You can not define a label in appendices outside a chapter. \string\label is forbidden here.}%
+    }%
+	}{}%
   \zlabel{#1}%
 }
 
@@ -171,11 +193,12 @@
 	\let\polytech@oldautoref\autoref
 	\let\polytech@oldlabel\label
 	\let\polytech@oldlabel@in@display\label@in@display
+	
+	\csshow{autoref}
 
 	% replace Tableau by Table in caption, correct case
 	\def\tableautorefname{Table}
 	\def\sectionautorefname{Section}
-	\def\appendixautorefname{Appendix}
 	\ifbool{polytech@english}{
 		\def\chapterautorefname{Chapter}
 		\def\appendixautorefname{Appendix}
@@ -194,14 +217,14 @@
 	% replace standard \ref command
 	\renewcommand{\ref}[1]{\polytech@ref@newref{#1}}
 	\robustify{\ref}
-
+	
 	% complete autoref with the chapter part
-	\renewcommand{\autoref}[1]{%
+	\renewcommand{\autoref}[1]{% 	  
 		\boolfalse{polytech@ref@nochapter}%
 		\polytech@oldautoref{#1}\relax%
 		\ifbool{polytech@ref@nochapter}{}{\polytech@ref@refchapter{#1}}%
 	}
-	\robustify{\autoref}
+	\robustify{\autoref} 
 
 	% replace standard \label command
 	\renewcommand{\label}[1]{\polytech@label{#1}}

@@ -920,6 +920,8 @@
 }
 
 \csdef{polytech@makelastpages}{%
+  % allow unnumbered chapter again
+  \boolfalse{polytech@ref@appendix}%
   \ifbool{polytech@onlyposter}{%
   }{%
     \bookmarksetupnext{level=part}%

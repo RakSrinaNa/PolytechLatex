@@ -220,50 +220,54 @@
 % save current definition     
 \let\polytech@chapter\chapter
 
+% allow to differentiate chapter/part of sections
+\newbool{polytech@ref@section} 
+
+% allow to detect if we are in a chapter
+\newbool{polytech@ref@inchapter}
+
+% allow proper handling of unnumbered chapters in \ref
+\newbool{polytech@ref@unnumberedchapter}
+
+\newcounter{polytech@chapter@counter}[part]
+
+% \appendix called ?
+\newbool{polytech@ref@appendix}
+
+
 % replace \chapter definition to automatically register unnumbered chapter in toc and set heading marks
-\RenewDocumentCommand{\chapter}{som}{%
+% need to be before hyperref
+\RenewDocumentCommand{\chapter}{som}{%  
+  \boolfalse{polytech@ref@section}%
+  \booltrue{polytech@ref@inchapter}%
   \polytech@chapter%
-   % handle appendix chapter detection
-  \ifbool{polytech@ref@appendix}{\booltrue{polytech@ref@appendixchapter}}{}%
   \IfBooleanTF{#1}{% starred
-    \booltrue{polytech@ref@unnumberedchapter}%
+    % if unnumbered appendix => error
+    \ifbool{polytech@ref@appendix}{%
+      \polytechfatalerror{Appendix chapter must be numbered. \string\chapter* is forbidden here.}%
+    }{}%
+    \global\booltrue{polytech@ref@unnumberedchapter}%
     \@schapter{#3}%
-    \addcontentsline {toc}{chapter}{#3}{}
-    \booltrue{polytech@ref@unnumberedchapter}%
+    \addcontentsline {toc}{chapter}{#3}{}%
     \IfValueTF{#2}{%
       \markboth{#2}{}%
     }{%
       \markboth{#3}{}%
     }%
   }{%
-    \boolfalse{polytech@ref@unnumberedchapter}%
+    \global\boolfalse{polytech@ref@unnumberedchapter}%
     \IfValueTF{#2}{%
       \@chapter[#2]{#3}%
     }{%
       \@chapter[#3]{#3}%
     }%
   }%
+  \stepcounter{polytech@chapter@counter}
 }
 
-% allow proper handling of unnumbered chapters in \ref
-\newbool{polytech@ref@unnumberedchapter}
-% \appendix called ?
-\newbool{polytech@ref@appendix}
-% is an appendix chapter ?
-\newbool{polytech@ref@appendixchapter}
 
-\preto{\appendix}{\booltrue{polytech@ref@appendix}}
 
-\ifbool{polytech@english}{
-  \appto{\appendix}{\part*{Appendices}}
-}{
-  \appto{\appendix}{\part*{Annexes}}
-}
 
-\preto{\part}{
-  % do not store chapter number for part until new chapter is defined
-  \booltrue{polytech@ref@unnumberedchapter}
-}
 
 %-------------- lot of packages -------------
 
@@ -408,12 +412,6 @@
 \extrarowsep=1mm
 \tabulinesep=1mm
 
-
-
-
-
-
-
 \newbool{polytech@contentsline@lof@written}
 \newbool{polytech@contentsline@lot@written}
 
@@ -456,5 +454,37 @@
 % replace \cleardoublepage by \clearpage on oneside printing
 \ifbool{polytech@twoside}{}{\renewcommand{\cleardoublepage}{\clearpage}}
 
+
+\preto{\appendix}{\booltrue{polytech@ref@appendix}\boolfalse{polytech@ref@inchapter}}
+\appto{\appendix}{\part*{\csuse{polytech@ref@name@appendices@\csuse{polytech@lang}}}}
+
+\preto{\part}{%
+  \boolfalse{polytech@ref@section}%
+}
+
+\preto{\section}{%
+  \booltrue{polytech@ref@section}%
+}
+
+\preto{\subsection}{%
+  \booltrue{polytech@ref@section}%
+}
+
+\preto{\subsubsection}{%
+  \booltrue{polytech@ref@section}%
+}
+
+\preto{\paragraph}{%
+  \booltrue{polytech@ref@section}%
+}
+
+\preto{\subparagraph}{%
+  \booltrue{polytech@ref@section}%
+}
+
+
+
+
+\csshow{part}
 
 %###

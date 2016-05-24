@@ -225,3 +225,19 @@
 %%% LAST PAGE %%%
 \csdef{polytech@lastpage@en}{Last page}
 \csdef{polytech@lastpage@fr}{Dernière page}
+
+%%% CHAPTER AND APPENDIX %%%
+
+\newcommand{\polytech@ref@from@chapter@en}[1]{\xspace(Chapter~#1)}
+\newcommand{\polytech@ref@from@chapter@fr}[1]{\xspace(Chapitre~#1)}
+\newcommand{\polytech@ref@from@appendix@en}[1]{\xspace(Appendix~#1)}
+\newcommand{\polytech@ref@from@appendix@fr}[1]{\xspace(Annexe~#1)}
+\newcommand{\polytech@ref@name@chapter@en}[1]{Chapter~#1}
+\newcommand{\polytech@ref@name@chapter@fr}[1]{Chapitre~#1}
+\newcommand{\polytech@ref@name@appendix@en}[1]{Appendix~#1}
+\newcommand{\polytech@ref@name@appendix@fr}[1]{Annexe~#1}
+
+\csdef{polytech@ref@name@appendices@en}{Appendices}
+\csdef{polytech@ref@name@appendices@fr}{Annexes}
+
+
