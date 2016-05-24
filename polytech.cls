@@ -34,10 +34,6 @@
   \stop%
 }
 
-\csshow{errmessage}
-\csshow{typeout}
-\csshow{GenericWarning}
-
 % -----------------------------------------------------------------------------
 % Declare documentclass options
 % -----------------------------------------------------------------------------
@@ -250,7 +246,6 @@
 
 % \appendix called ?
 \newbool{polytech@ref@appendix}
-
 
 % replace \chapter definition to automatically register unnumbered chapter in toc and set heading marks
 % need to be before hyperref
@@ -503,6 +498,5 @@
   % \nocite is fordibben
   \csundef{nocite}
 
-\csshow{part}
 
 %###
