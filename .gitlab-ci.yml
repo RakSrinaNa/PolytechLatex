@@ -1,21 +1,25 @@
 
 test_14.04_latex_default:
   image: projectsforge/ubuntu-14.04-latex-default
+  stage: test
   script:
     - tests/runtests.sh
 
 test_15.04_latex_default:
   image: projectsforge/ubuntu-15.10-latex-default
+  stage: test
   script:
     - tests/runtests.sh
 
 test_14.04_latex_texlive_2015:
   image: projectsforge/ubuntu-14.04-latex-texlive-2015
+  stage: test
   script:
     - tests/runtests.sh
 
 
 deploy:
+  stage: deploy
   script:
     - which zip || (apt-get update && apt-get install -y zip)
     - zip -r polytech.zip polytech
