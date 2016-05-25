@@ -1,7 +1,22 @@
-test:
+
+test_14.04_latex_default:
+  image: projectsforge/ubuntu-14.04-latex-default
   script:
     - chmod +x tests/runtests.sh
     - tests/runtests.sh
+
+test_15.04_latex_default:
+  image: projectsforge/ubuntu-15.04-latex-default
+  script:
+    - chmod +x tests/runtests.sh
+    - tests/runtests.sh
+
+test_14.04_latex_texlive_2015:
+  image: projectsforge/ubuntu-14.04-latex-texlive-2015
+  script:
+    - chmod +x tests/runtests.sh
+    - tests/runtests.sh
+
 
 deploy:
   script:
