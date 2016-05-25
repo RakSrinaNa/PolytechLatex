@@ -18,7 +18,12 @@
 % Add an early hook at the beginning of the document allowing to do some tests of parameters
 \AtBeginDocument{\csuse{polytech@check@preamble}}
 
-\newcommand{\polytechwarning}[1]{\@warning{Polytech : #1}}
+\newcommand{\polytechwarning}[1]{%
+  %\begingroup%
+  %\set@display@protect%
+  \@warning{Polytech : #1}%
+  %\endgroup%
+}
 
 % Display an error message and stop compilation as soone as possible
 \newcommand{\polytechfatalerror}[1]{%
@@ -385,6 +390,7 @@
 
 %-------------- lot of packages -------------
 
+%\RequirePackage{refcheck}
 \RequirePackage{nameref}
 \RequirePackage{fancyhdr}
 \RequirePackage{makeidx}
@@ -410,8 +416,8 @@
 \RequirePackage{pdfpages}
 \RequirePackage{eurosym} % symbol euro
 \RequirePackage[user]{zref} % allow for better \ref and  \label
-\RequirePackage{environ} % used by Figure and Table
 \RequirePackage[calc]{adjustbox} % box sizing utilities
+
 
 \RequirePackage{enumitem} % to typeset enums
 
@@ -441,12 +447,19 @@
                 linktocpage=true,
                 bookmarks=true]{hyperref}
 
+
+
 \RequirePackage{bookmark}
 \RequirePackage{pageslts} % to have total page count of the document. Must be at the end for proper functionning
 \RequirePackage{refcount}
 
+
 \RequirePackage[planb=false]{newfloat}
 \RequirePackage{caption}
+\RequirePackage{subfig}
+
+
+
 
 % colors
 \definecolor{polytechdarkblue}{RGB}{0,74,117}

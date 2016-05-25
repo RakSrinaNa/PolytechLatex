@@ -2,6 +2,8 @@
 \ProvidesPackage{polytech/floats}[\polytechfiledate\space\polytechfileversion\space Polytech document class sub package]
 \typeout{Package `polytech floats' \polytechfileversion\space<\polytechfiledate>}
 
+%###
+
 % définit le format des légendes
 \DeclareCaptionLabelFormat{polytech}{#1~#2}
 
@@ -14,7 +16,7 @@
   font={small},
   textfont=it,
   labelfont={bf},
-  width=\textwidth-2cm,
+  margin=1cm,
   figurename=Figure,
   tablename=Table,
   skip=5pt plus 1pt minus 1pt,
@@ -23,6 +25,19 @@
   tablewithin=chapter
 }
 
+\captionsetup[subfloat]{%
+  format=hang,
+  margin=0cm,
+}
+
+\captionsetup[subfigure]{%
+  margin=0pt, parskip=0pt,
+hangindent=0pt, indention=0pt, singlelinecheck=true,
+  margin=0cm,
+}
+
+
+
 % save current definition
 \let\polytech@oldfigure\figure
 \let\polytech@endoldfigure\endfigure
@@ -30,48 +45,72 @@
 \let\polytech@oldtable\table
 \let\polytech@endoldtable\endtable
 
-\newcommand{\polytech@floats@oldfigure}[2]{%
-	\polytech@oldfigure[#1]%
-	{#2}%
- 	\polytech@endoldfigure%
-}
+\csshow{figure}
 
-\newcommand{\polytech@floats@oldtable}[2]{%
-	\polytech@oldtable[#1]%
-	{#2}%
-	\polytech@endoldtable%
-}
-
-%[short], label, caption long
-\NewEnviron{Figure}[3][]{%
- 	\polytech@floats@oldfigure{htb}{%
-		\begin{center}%
-		\BODY%
-		\end{center}%
-		\ifstrequal{#1}{}{%
-			\caption{#3}%
-		}{%
-			\caption[#1]{#3}%
-		}%
-		\label{#2}%
-	}%
-}
+% \RenewDocumentEnvironment{figure}{o}{%
+%   % #1 if ignored
+%   \IfValueTF{#1}{%
+%   }{%
+%   }%
+%   \let\polytech@figure@oldcaption\caption%
+%   \let\polytech@figure@oldlabel\label%
+%   \polytech@oldfigure%
+%   \centering%
+% }{%
+%   \polytech@endoldfigure%
+% }
 
 
-%[short], label, caption long
-\NewEnviron{Table}[3][]{
- 	\polytech@floats@oldtable{htb}{
- 	  \ifstrequal{#1}{}{%
-			\caption{#3}%
-		}{%
-			\caption[#1]{#3}%
-		}%
-    \label{#2}% must be after caption
-		\begin{center}%
-		\BODY%
-		\end{center}%
-	}%
-}
+
+
+
+
+
+%\RequirePackage{environ} % used by Figure and Table
+
+% 
+% \newcommand{\polytech@floats@oldfigure}[2]{%
+% 	\polytech@oldfigure[#1]%
+% 	{#2}%
+%  	\polytech@endoldfigure%
+% }
+% 
+% \newcommand{\polytech@floats@oldtable}[2]{%
+% 	\polytech@oldtable[#1]%
+% 	{#2}%
+% 	\polytech@endoldtable%
+% }
+% 
+% %[short], label, caption long
+% \NewEnviron{Figure}[3][]{%
+%  	\polytech@floats@oldfigure{htb}{%
+% 		\begin{center}%
+% 		\BODY%
+% 		\end{center}%
+% 		\ifstrequal{#1}{}{%
+% 			\caption{#3}%
+% 		}{%
+% 			\caption[#1]{#3}%
+% 		}%
+% 		\label{#2}%
+% 	}%
+% }
+% 
+% 
+% %[short], label, caption long
+% \NewEnviron{Table}[3][]{
+%  	\polytech@floats@oldtable{htb}{
+%  	  \ifstrequal{#1}{}{%
+% 			\caption{#3}%
+% 		}{%
+% 			\caption[#1]{#3}%
+% 		}%
+%     \label{#2}% must be after caption
+% 		\begin{center}%
+% 		\BODY%
+% 		\end{center}%
+% 	}%
+% }
 
 \renewcommand\floatpagefraction{.9}
 \renewcommand\topfraction{.9}
@@ -82,19 +121,19 @@
 \setcounter{bottomnumber}{50}
 
 % add a warning to standard figure and table environments
-
-\renewenvironment{figure}[1][]{%
-\textbf{\color{red}L'utilisation de l'environnement \latexcode{figure} est interdit. Utilisez l'environnement \latexcode{Figure} (cf. mode d'emploi).}%
-\polytech@oldfigure%
-}{%
-\polytech@endoldfigure%
-}
-
-\renewenvironment{table}[1][]{%
-\textbf{\color{red}L'utilisation de l'environnement \latexcode{table} est interdit. Utilisez l'environnement \latexcode{Table} (cf. mode d'emploi).}%
-\polytech@oldtable%
-}{%
-\polytech@endoldtable%
-}
+% 
+% \renewenvironment{figure}[1][]{%
+% \textbf{\color{red}L'utilisation de l'environnement \latexcode{figure} est interdit. Utilisez l'environnement \latexcode{Figure} (cf. mode d'emploi).}%
+% \polytech@oldfigure%
+% }{%
+% \polytech@endoldfigure%
+% }
+% 
+% \renewenvironment{table}[1][]{%
+% \textbf{\color{red}L'utilisation de l'environnement \latexcode{table} est interdit. Utilisez l'environnement \latexcode{Table} (cf. mode d'emploi).}%
+% \polytech@oldtable%
+% }{%
+% \polytech@endoldtable%
+% }
 
 

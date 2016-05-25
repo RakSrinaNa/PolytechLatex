@@ -60,7 +60,12 @@
       }%
 	  }%
 	  {%
-	    \ifcsequal{polytech@ref@chapternumber}{thepolytech@chapter@counter}%
+	    \ifcsempty{polytech@ref@chapternumber}{%
+        \setcounter{polytech@chapter@countertemp}{-1}%
+      }{%
+        \setcounter{polytech@chapter@countertemp}{\csuse{polytech@ref@chapternumber}}%
+      }% 
+	    \ifnumequal{\value{polytech@chapter@countertemp}}{\value{polytech@chapter@counter}}%
 	    {% same chapter, keep short numbering
 	    }%
 	    {%
@@ -206,6 +211,7 @@
 	% replace Tableau by Table in caption, correct case
   \def\tableautorefname{\csuse{polytech@ref@name@table@\csuse{polytech@lang}}}
   \def\figureautorefname{\csuse{polytech@ref@name@figure@\csuse{polytech@lang}}}
+  \def\subfigureautorefname{\csuse{polytech@ref@name@subfigure@\csuse{polytech@lang}}}
   \def\algorithmautorefname{\csuse{polytech@ref@name@algorithm@\csuse{polytech@lang}}}
   \def\partautorefname{\csuse{polytech@ref@name@part@\csuse{polytech@lang}}}
   \def\chapterautorefname{\csuse{polytech@ref@name@chapter@\csuse{polytech@lang}}}
@@ -229,6 +235,7 @@
       \textbf{ERROR}%
     }%  
 	  \polytech@ref@newref{#1}%
+	  \polytech@label@register{#1}%
 	}
 	\robustify{\ref}
 	
@@ -248,11 +255,15 @@
 		}{%
 		  \polytech@ref@refchapter{#1}%
 		}%
+		\polytech@label@register{#1}%
 	}
 	\robustify{\autoref} 
 
 	% replace standard \label command
-	\renewcommand{\label}[1]{\polytech@label{#1}}
+	\renewcommand{\label}[1]{%
+	   \polytech@label{#1}%
+	   \polytech@label@newlabel{#1}%
+	}
 	\robustify{\label}
 
 	% amsmath replace label in equation, so we patch the replacement :)
@@ -286,8 +297,35 @@
   }
 
 	% patch \eqref to move the chapter part outside the parenthesis
-	\renewcommand{\eqref}[1]{\polytech@ref@eqref{#1}}
+	\renewcommand{\eqref}[1]{%
+	  \polytech@ref@eqref{#1}%
+	  \polytech@label@register{#1}%
+	}
 	\robustify{\eqref}
+}
+
+\newcommand{\polytech@label@newlabel}[1]{%
+  \catcode`\:=12% make : an ordinary letter
+  \listcsgadd{polytech@label@list}{#1}%
+}
+
+\newcommand{\polytech@label@register}[1]{%
+  \catcode`\:=12% make : an ordinary letter
+  \csdef{polytech@label@registered@#1}{}%
+}
+
+\newcommand{\polytech@label@unused}[1]{%
+  \catcode`\:=12% make : an ordinary letter
+  \ifcsdef{polytech@label@registered@#1}{}{\appto{\polytech@label@unused@display}{#1, }}%
+}
+
+\AtEndDocument{
+  % check for unused label  
+  \csundef{polytech@label@unused@display}%
+  \forlistcsloop{\polytech@label@unused}{polytech@label@list}%
+  \ifcsdef{polytech@label@unused@display}{%
+    \polytechwarning{Labels defined but unused : \csuse{polytech@label@unused@display}}%
+  }{}%
 }
 
 %###

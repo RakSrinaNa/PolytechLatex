@@ -915,6 +915,9 @@
   \ifnumequal{\getpagerefnumber{polytech@lastpage@start}}{\getpagerefnumber{polytech@lastpage@end}}{}{%
     \polytechwarning{Last page too long. Try reducing \string\resume, \string\abstract, \string\motcle\space or \string\keyword. If you changed things, do not forget to recompile.}%
   }%
+  % to make unused but defined label happy :)
+  \polytech@label@register{polytech@lastpage@start}%
+  \polytech@label@register{polytech@lastpage@end}%
   \restoregeometry%
 }
 
