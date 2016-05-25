@@ -1,0 +1,4 @@
+*.log
+*.bbl
+*.xml
+tests/*/polytech

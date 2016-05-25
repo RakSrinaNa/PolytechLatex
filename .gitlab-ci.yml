@@ -1,9 +1,11 @@
+test:
+  script:
+    - chmod +x tests/runtests.sh
+    - tests/runtests.sh
+
 deploy:
   script:
-    - apt-get update 
-    - apt-get install -y zip p7zip-full
-    - mkdir polytech
-    - find . -maxdepth 1 -type f -not -name ".?*" -exec mv {} polytech/ \;
+    - which zip || (apt-get update && apt-get install -y zip)
     - zip -r polytech.zip polytech
   artifacts:
     paths:
