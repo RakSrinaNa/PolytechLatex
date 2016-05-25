@@ -64,22 +64,6 @@
      \end{tikzpicture}%
 }
 
-\let\polytech@newpage@oldpart\part
-
-\RenewDocumentCommand{\part}{som}{%
-  \boolfalse{polytech@ref@section}%
-  \booltrue{polytech@allownewpagesection}%
-  \IfBooleanTF{#1}{% starred
-    \polytech@newpage@oldpart*{#3}%
-  }{%
-    \IfValueTF{#2}{%
-      \polytech@newpage@oldpart[#2]{#3}%
-    }{%
-      \polytech@newpage@oldpart{#3}%
-    }%
-  }%
-  \boolfalse{polytech@allownewpagesection}%
-}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

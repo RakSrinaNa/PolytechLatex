@@ -304,6 +304,46 @@
   \boolfalse{polytech@allownewpagesection}%
 }
 
+% for \part we need the complete definition which is modified by titlesec in sectionning.sty
+\AtEndOfClass{
+  \let\polytech@newpage@oldpart\part
+  
+  \RenewDocumentCommand{\part}{som}{%
+    \boolfalse{polytech@ref@section}%
+    \booltrue{polytech@allownewpagesection}%
+    \IfBooleanTF{#1}{% starred
+      \polytech@newpage@oldpart*{#3}%
+    }{%
+      \IfValueTF{#2}{%
+        \polytech@newpage@oldpart[#2]{#3}%
+      }{%
+        \polytech@newpage@oldpart{#3}%
+      }%
+    }%
+    \boolfalse{polytech@allownewpagesection}%
+  }
+}
+
+% patch some commands for newpage. The commands are defined later.
+\AtEndOfClass{
+  \preto{\landscape}{\booltrue{polytech@allownewpagesection}}
+  \appto{\endlandscape}{\boolfalse{polytech@allownewpagesection}}
+  
+  % allow newpage for pdfpages
+  \let\polytech@oldincludepdf\includepdf
+  \gdef\includepdf[#1]#2{%
+    \booltrue{polytech@allownewpagesection}%
+    \polytech@oldincludepdf[#1]{#2}%
+    \boolfalse{polytech@allownewpagesection}%
+  }
+  \let\polytech@oldincludepdfmerge\includepdfmerge
+  \gdef\includepdfmerge[#1]#2{%
+    \booltrue{polytech@allownewpagesection}%
+    \polytech@oldincludepdfmerge[#1]{#2}%
+    \boolfalse{polytech@allownewpagesection}%
+  }
+}
+
 
 \preto{\appendix}{%
   \booltrue{polytech@allownewpagesection}%
@@ -521,23 +561,6 @@
 	}%
 }
 
-
-\preto{\landscape}{\booltrue{polytech@allownewpagesection}}
-\appto{\endlandscape}{\boolfalse{polytech@allownewpagesection}}
-
-% allow newpage for pdfpages
-\let\polytech@oldincludepdf\includepdf
-\gdef\includepdf[#1]#2{%
-  \booltrue{polytech@allownewpagesection}%
-  \polytech@oldincludepdf[#1]{#2}%
-  \boolfalse{polytech@allownewpagesection}%
-}
-\let\polytech@oldincludepdfmerge\includepdfmerge
-\gdef\includepdfmerge[#1]#2{%
-  \booltrue{polytech@allownewpagesection}%
-  \polytech@oldincludepdfmerge[#1]{#2}%
-  \boolfalse{polytech@allownewpagesection}%
-}
 
 
 % replace \cleardoublepage by \clearpage on oneside printing
