@@ -32,6 +32,10 @@
 \AtBeginDocument{\booltrue{polytech@allownewpagestartenddoc}}
 \AtEndDocument{\booltrue{polytech@allownewpagestartenddoc}}
 
+% suppress warning : PDF inclusion: multiple pdfs with page group included in a single page
+\pdfsuppresswarningpagegroup=1
+
+\showboxbreadth=50 \showboxdepth=50
 
 % -----------------------------------------------------------------------------
 % Declare documentclass options
@@ -253,6 +257,8 @@
   \polytechfatalerror{Cannot patch \string\chapter.}
 }
        
+\csdef{polytechlinebreak}{}       
+       
 % save current definition     
 \let\polytech@chapter\chapter
 
@@ -400,6 +406,7 @@
 \RequirePackage{makerobust}
 \RequirePackage[lined,boxed]{algorithm2e}
 \RequirePackage[figure,table,lstlisting]{totalcount}
+\RequirePackage{pax} % for proper handling of pdfpages with hyperref
 \RequirePackage{pdfpages}
 \RequirePackage{eurosym} % symbol euro
 \RequirePackage[user]{zref} % allow for better \ref and  \label

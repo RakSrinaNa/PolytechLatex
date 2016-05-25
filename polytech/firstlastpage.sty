@@ -628,6 +628,7 @@
 % the contributors page
 \csdef{polytech@output@contributorspage}{%
 	\chapter*{\csuse{polytech@contributors@name@\csuse{polytech@lang}}}%
+	\vfill
 	\thispagestyle{empty}%
 	%
 	\ifcsdef{polytech@company@db@name}{%
@@ -635,17 +636,18 @@
 			\textbf{\csuse{polytech@output@company@title}}\\[0.2cm]%
 			\fbox{\csuse{polytech@output@company@split}}%
 		\end{center}%
-		\vspace{1cm}%
+		\vfill%
 	}{}%
-	{
+	{%
   	\small%
   	\begin{longtabu}{|X[-1,c]X[c]X[c,-1]|}%
   		\hline%
   		\rowfont{\bfseries}%
-  		\csuse{polytech@contributorspage@name@\csuse{polytech@lang}}&%
-  		\csuse{polytech@contributorspage@mail@\csuse{polytech@lang}}&%
-  		\csuse{polytech@contributorspage@quality@\csuse{polytech@lang}}\\\hline%
-  		\csuse{polytech@output@students@split}\hline%
+   		\csuse{polytech@contributorspage@name@\csuse{polytech@lang}}&%
+   		\csuse{polytech@contributorspage@mail@\csuse{polytech@lang}}&%
+   		\csuse{polytech@contributorspage@quality@\csuse{polytech@lang}}\\\hline%
+   		\endhead
+   		\csuse{polytech@output@students@split}\hline%
   		\ifcsdef{polytech@output@academicsupervisors@split}{%
   		  \csuse{polytech@output@academicsupervisors@split}\hline%
   		}{}%
@@ -653,8 +655,9 @@
   			\csuse{polytech@output@industrialsupervisors@split}\hline%
   		}{}%
   	\end{longtabu}%
+  	\vfill%
 	}%
-	\newpage%
+	%\newpage%
 }
 
 % the title page

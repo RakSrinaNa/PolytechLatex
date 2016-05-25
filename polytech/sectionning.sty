@@ -57,10 +57,19 @@
     \begin{tikzpicture}
        \ifbool{polytech@titlesec@hasnumber}{%
        		\draw[color=polytech@sectionning@part@num@border,fill=polytech@sectionning@part@num@bg] (1cm,3) rectangle (\textwidth-0.4pt-1cm,4.4);
-       		\node[right,text width=\textwidth-1cm,align=center] at (0,3.7) {\color{polytech@sectionning@part@num@fg}\csname polytech@part@numberfont\endcsname\partname};
+       		\node[right,text width=\textwidth-1cm,align=center] at (0,3.7) {%
+       		   \color{polytech@sectionning@part@num@fg}%
+       		   \csuse{polytech@part@numberfont}%
+       		   \partname%
+       	  };
        }{}
        \draw[color=polytech@sectionning@part@title@border,fill=polytech@sectionning@part@title@bg] (0,0) rectangle (\textwidth-0.4pt,3);
-       \node[right,white,text width=\textwidth-1cm,align=center] at (0,1.5) {\color{polytech@sectionning@part@title@fg}\csname polytech@part@titlefont\endcsname#1};
+       \node[right,white,text width=\textwidth-1cm,align=center] at (0,1.5) {%
+          \color{polytech@sectionning@part@title@fg}
+          \csuse{polytech@part@titlefont}%
+          \csdef{polytechlinebreak}{\\}%
+          #1%
+       };
      \end{tikzpicture}%
 }
 
@@ -107,9 +116,16 @@
        \draw[line width=0pt,color=polytech@sectionning@chapter@title@border,fill=polytech@sectionning@chapter@title@bg] (0,0) rectangle (\textwidth-2pt,2.5);%
        \draw[color=polytech@sectionning@chapter@num@border,fill=polytech@sectionning@chapter@num@bg] (0.25,0.25) rectangle (3.25,3.25);%
        \ifbool{polytech@titlesec@hasnumber}{%
-         \node[inner sep=2em,color=polytech@sectionning@chapter@num@fg,align=center] at (1.75,1.75) {\csname polytech@chapter@numberfont\endcsname\thechapter};%
+         \node[inner sep=2em,color=polytech@sectionning@chapter@num@fg,align=center] at (1.75,1.75) {%
+            \csuse{polytech@chapter@numberfont}%
+            \thechapter%
+         };%
        }{}%
-       \node[right,color=polytech@sectionning@chapter@title@fg, align=justify, outer sep=0cm,text width={\textwidth-4.1cm}] at (3.5,1.25) {\csname polytech@chapter@titlefont\endcsname#1};%
+       \node[right,color=polytech@sectionning@chapter@title@fg, align=justify, outer sep=0cm,text width={\textwidth-4.1cm}] at (3.5,1.25) {%
+          \csuse{polytech@chapter@titlefont}%
+          \csdef{polytechlinebreak}{\\}%
+          #1%
+       };%
      \end{tikzpicture}%
    }
 

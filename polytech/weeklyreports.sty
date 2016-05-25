@@ -36,10 +36,10 @@
 % output the weekly report chapter
 \csdef{polytech@output@weeklyreportspart}{
   \ifbool{polytech@hideweeklyreports}{}{
-    \chapter*{\csuse{polytech@weeklyreports@title@\csuse{polytech@lang}}}
-    \pdfbookmark[0]{\csuse{polytech@weeklyreports@title@\csuse{polytech@lang}}}{weeklyreports}
-    \@mkboth{\csuse{polytech@weeklyreports@title@\csuse{polytech@lang}}}{\csuse{polytech@weeklyreports@title@\csuse{polytech@lang}}}
-    \csuse{polytech@output@weeklyreports}
+    \ifcsdef{polytech@output@weeklyreports}{
+      \chapter*{\csuse{polytech@weeklyreports@title@\csuse{polytech@lang}}}
+      \csuse{polytech@output@weeklyreports}
+    }{}
   }
 }
   
