@@ -47,14 +47,16 @@
       {% same chapter => no problem if it is a section or an equation
         \ifcsempty{polytech@ref@issection}{%
           \ifcsempty{polytech@ref@isequation}{% 
-            \polytecherror{Reference '#1': You can not self reference this unnumbered chapter.}%
+            \polytechwarning{Reference '#1': You can not self reference this unnumbered chapter.}%
+            \textbf{ERROR}%
           }{%
           }
         }{%
         }%
       }%
       {% no number but different chapter => error
-        \polytecherror{Reference '#1': You can not reference things in unnumbered chapter from outside the chapter.}%
+        \polytechwarning{Reference '#1': You can not reference things in unnumbered chapter from outside the chapter.}%
+        \textbf{ERROR}%
       }%
 	  }%
 	  {%
@@ -84,13 +86,16 @@
 	\ifcsempty{polytech@ref@chapternumber}{%
     \protect\G@refundefinedtrue%
     \nfss@text{\reset@font\bfseries ??}%
-    \polytecherror{Reference '#1': Can not compute referenced chapter from undefined reference.}% 
+    \polytechwarning{Reference '#1': Can not compute referenced chapter from undefined reference.}% 
+    \textbf{ERROR}%
 	}{%
 		\ifcsempty{polytech@ref@chapter}{% no number defined
-	  	\polytecherror{Reference '#1': Can not compute referenced chapter from unnumbered chapter.}%
+	  	\polytechwarning{Reference '#1': Can not compute referenced chapter from unnumbered chapter.}%
+	  	\textbf{ERROR}%
 	  }{%
 	    \ifcsempty{polytech@ref@issection}{
-	     \polytecherror{Reference '#1': Only sections can be referenced using \string\refchapterof.}
+	     \polytechwarning{Reference '#1': Only sections can be referenced using \string\refchapterof.}
+	     \textbf{ERROR}%
 	    }{%
   	    \ifcsempty{polytech@ref@isappendix}{%
   	    	\hyperref[#1]{\csuse{polytech@ref@name@chapter@\polytech@lang}{\polytech@ref@chapter}}%
@@ -116,7 +121,7 @@
       % in an appendix chapter
     }{%
       % in appendices => not allowed here
-      \polytecherror{Reference '#1': You can not define a label in appendices outside a chapter. \string\label is forbidden here.}%
+      \polytechwarning{Reference '#1': You can not define a label in appendices outside a chapter. \string\label is forbidden here.}%
     }%
 	}{}%
   \zlabel{#1}%
@@ -179,7 +184,8 @@
 		\ifcsdef{polytech@ref@isequation@\polytech@ref@thistype}{%
 			\textup{\tagform@{\polytech@oldref{#2}}}\polytech@ref@refchapter{#2}%
 		}{%
-		  \polytecherror{Reference '#2': This is not an equation. Use \string\ref\space or \string\autoref\space instead.}%
+		  \polytechwarning{Reference '#2': This is not an equation. Use \string\ref\space or \string\autoref\space instead.}%
+		  \textbf{ERROR}%
 		}%
   \fi%
 } 
@@ -219,7 +225,8 @@
   \renewcommand{\ref}[1]{%
     \zref@def@extract{\polytech@ref@isequation}{#1}{isequation}%
     \ifcsempty{polytech@ref@isequation}{}{%
-      \polytecherror{Reference '#1': This is an equation. Use \string\eqref\space or \string\autoref\space instead.}%
+      \polytechwarning{Reference '#1': This is an equation. Use \string\eqref\space or \string\autoref\space instead.}%
+      \textbf{ERROR}%
     }%  
 	  \polytech@ref@newref{#1}%
 	}
@@ -234,7 +241,8 @@
 		  \zref@def@extract{\polytech@ref@chapter}{#1}{chapter}%
 		  \ifcsempty{polytech@ref@chapter}{%
 		    % it is a chapter => error
-		    \polytecherror{Reference '#1': You can not reference an unnumbered chapter.}%   
+		    \polytechwarning{Reference '#1': You can not reference an unnumbered chapter.}%   
+		    \textbf{ERROR}%
 		  }{%		    
 		  }%
 		}{%

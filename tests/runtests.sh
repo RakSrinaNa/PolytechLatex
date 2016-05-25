@@ -7,13 +7,13 @@ SCRIPTPATH=`dirname $SCRIPT`
 
 cd "$SCRIPTPATH"
 
-find . -maxdepth 1 -mindepth 1 -type d | while read TESTDIR; do
+find . -maxdepth 1 -mindepth 1 -type d | sort | while read TESTDIR; do
     echo -e "\e[93m"
     echo -n "Running test $TESTDIR : "
     cd "$SCRIPTPATH/$TESTDIR"
     ln -sf ../../polytech
     rm -f test-latexmk.log
-    latexmk -gg -pdf -silent test.tex >> test-latexmk.log 2>> test-latexmk.log
+    latexmk -gg -pdf -interaction=nonstopmode test.tex >> test-latexmk.log 2>> test-latexmk.log
     result=$?
     
     if [ -n "$(echo $TESTDIR | grep -i mustfail)" ]; then

@@ -676,7 +676,7 @@
       \csuse{polytech@font@titlepage@subtitle}\csuse{polytech@output@subtitle}\par%
       \ifcsdef{polytech@reportlogo}{%
         \vfill%
-        \fitimagetoheight{5cm}{\csuse{polytech@reportlogo}}%
+        \fitimagetobox{\textwidth}{5cm}{\csuse{polytech@reportlogo}}%
       }{}%
       \ifcsdef{polytech@output@confidential}{%
         \vfill%
@@ -910,7 +910,7 @@
   \label{polytech@lastpage@end}%
   % test if overflow the page
   \ifnumequal{\getpagerefnumber{polytech@lastpage@start}}{\getpagerefnumber{polytech@lastpage@end}}{}{%
-    \polytechfatalerror{Last page too long. Try reducing \string\resume, \string\abstract, \string\motcle\space or \string\keyword. If you changed things, do not forget to recompile.}%
+    \polytechwarning{Last page too long. Try reducing \string\resume, \string\abstract, \string\motcle\space or \string\keyword. If you changed things, do not forget to recompile.}%
   }%
   \restoregeometry%
 }

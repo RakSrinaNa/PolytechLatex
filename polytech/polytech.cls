@@ -9,7 +9,7 @@
 % Include generic packages to extend LaTeX memory and add common utility commands
 % -----------------------------------------------------------------------------
 \RequirePackage{etex}
-\RequirePackage{atveryend}
+\RequirePackage{atveryend} % required before etoolbox by pageslts
 \RequirePackage{etoolbox}
 \RequirePackage{calc}
 \RequirePackage{xstring}
@@ -18,19 +18,14 @@
 % Add an early hook at the beginning of the document allowing to do some tests of parameters
 \AtBeginDocument{\csuse{polytech@check@preamble}}
 
-\newcommand{\polytecherror}[1]{%
-  \begingroup
-  \set@display@protect%
-  \errmessage{Polytech: #1}
-  \endgroup
-}
+\newcommand{\polytechwarning}[1]{\@warning{Polytech : #1}}
 
 % Display an error message and stop compilation as soone as possible
 \newcommand{\polytechfatalerror}[1]{%
-  \begingroup
+  \begingroup%
   \set@display@protect%
-  \errmessage{Polytech: #1}
-  \endgroup
+  \errmessage{Polytech: #1}%
+  \endgroup%
   \stop%
 }
 
@@ -53,6 +48,9 @@
 % Make document final disabling useless things
 \newbool{polytech@final}
 \DeclareOption{final}{\booltrue{polytech@final}}
+
+\newbool{polytech@debug}
+\DeclareOption{final}{\booltrue{polytech@debug}}
 
 % Force black and white colors
 \newbool{polytech@blackandwhite}
@@ -214,8 +212,8 @@
     \ifbool{polytech@allownewpagesection}{%
       \polytech@oldnewpage%
     }{%
-      \polytech@oldnewpage%
-      \polytecherror{You are not allowed to use \string\newpage, \string\clearpage\space or \string\cleardoublepage.}%
+      \ifbool{polytech@debug}{\polytech@oldnewpage}{}% while debugging, we must output \newpage to allow patching new command
+      \polytechwarning{You are not allowed to use \string\newpage, \string\clearpage\space or \string\cleardoublepage. Command suppressed.}%
     }%
   }%
 }
