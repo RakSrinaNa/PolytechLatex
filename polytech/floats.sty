@@ -4,9 +4,19 @@
 
 %###
 
+% set caption below
+\floatstyle{plain}
+\restylefloat{figure}
+
+% set caption above
+\floatstyle{plaintop}
+\restylefloat{table}
+
 % définit le format des légendes
+%\DeclareCaptionLabelFormat{polytech}{#1~#2}
 \DeclareCaptionLabelFormat{polytech}{#1~#2}
 
+% general caption setup
 \captionsetup{%
   labelformat=polytech,
   format=hang,
@@ -22,95 +32,129 @@
   skip=5pt plus 1pt minus 1pt,
   singlelinecheck=false,
   figurewithin=chapter,
-  tablewithin=chapter
+  tablewithin=chapter,
+  subrefformat=subsimple
 }
 
+% we remove the margin in subfloat
 \captionsetup[subfloat]{%
-  format=hang,
   margin=0cm,
+  labelformat=parens,
+  subrefformat=subsimple
 }
 
-\captionsetup[subfigure]{%
-  margin=0pt, parskip=0pt,
-hangindent=0pt, indention=0pt, singlelinecheck=true,
-  margin=0cm,
-}
+% we add parenthesis for subfigure number
+%\renewcommand\thesubfigure{(\alph{subfigure}):}
 
-
+\renewcommand\thefigure{\arabic{figure}}
+\renewcommand\thetable{\arabic{table}}
 
 % save current definition
 \let\polytech@oldfigure\figure
 \let\polytech@endoldfigure\endfigure
-
 \let\polytech@oldtable\table
 \let\polytech@endoldtable\endtable
+\let\polytech@oldsubfloat\subfloat
 
-\csshow{figure}
+% we override subfloat to disable label storage
+\RenewDocumentCommand{\subfloat}{oom}{%
+  \global\boolfalse{polytech@ref@savelabel}% disable save label
+  \IfValueTF{#1}{%
+    \IfValueTF{#2}{%
+      \polytech@oldsubfloat[#1][#2]{#3}%
+    }{%
+      \polytech@oldsubfloat[#1]{#3}%
+    }%
+  }{%
+    \polytech@oldsubfloat{#3}%
+  }%
+  \global\booltrue{polytech@ref@savelabel}% enable save label
+}
 
-% \RenewDocumentEnvironment{figure}{o}{%
-%   % #1 if ignored
-%   \IfValueTF{#1}{%
-%   }{%
-%   }%
-%   \let\polytech@figure@oldcaption\caption%
-%   \let\polytech@figure@oldlabel\label%
-%   \polytech@oldfigure%
-%   \centering%
-% }{%
-%   \polytech@endoldfigure%
-% }
+% we redefine the figure environment
+\RenewDocumentEnvironment{figure}{o}{%
+  % #1 if ignored since we impose it
+  \polytech@oldfigure[htb]%
+  % prepare caption saving
+  \global\csletcs{polytech@oldcaption}{caption}%
+  \csundef{polytech@figure@caption}%
+  \csundef{polytech@figure@captionalt}%
+  \RenewDocumentCommand{\caption}{om}{%
+    \IfValueTF{##1}{% we save the short caption
+      \csdef{polytech@figure@captionalt}{##1}%
+    }{}%
+    \csdef{polytech@figure@caption}{##2}%
+  }%
+  % we need the label later
+  \global\booltrue{polytech@ref@savelabel}%
+  \csundef{polytech@ref@savedlabel}{}%
+  % we center things
+  \centering%
+}{%
+  % we restore caption
+  \csletcs{caption}{polytech@oldcaption}%
+  % we set the caption
+  \ifcsdef{polytech@figure@captionalt}{%
+    \caption[\csuse{polytech@figure@captionalt}]{\csuse{polytech@figure@caption}}%
+  }{%
+    \ifcsdef{polytech@figure@caption}{%
+      \caption{\csuse{polytech@figure@caption}}%
+    }{%
+      \polytechwarning{Missing caption on figure}%
+    }%
+  }%
+  \ifcsdef{polytech@ref@savedlabel}{%
+    \label{\csuse{polytech@ref@savedlabel}}%
+  }{%
+    \polytechwarning{Missing label on figure}%
+  }%
+  % restore normal \label behavior 
+  \global\boolfalse{polytech@ref@savelabel}%
+  \polytech@endoldfigure%
+}
 
 
-
-
-
-
-
-%\RequirePackage{environ} % used by Figure and Table
-
-% 
-% \newcommand{\polytech@floats@oldfigure}[2]{%
-% 	\polytech@oldfigure[#1]%
-% 	{#2}%
-%  	\polytech@endoldfigure%
-% }
-% 
-% \newcommand{\polytech@floats@oldtable}[2]{%
-% 	\polytech@oldtable[#1]%
-% 	{#2}%
-% 	\polytech@endoldtable%
-% }
-% 
-% %[short], label, caption long
-% \NewEnviron{Figure}[3][]{%
-%  	\polytech@floats@oldfigure{htb}{%
-% 		\begin{center}%
-% 		\BODY%
-% 		\end{center}%
-% 		\ifstrequal{#1}{}{%
-% 			\caption{#3}%
-% 		}{%
-% 			\caption[#1]{#3}%
-% 		}%
-% 		\label{#2}%
-% 	}%
-% }
-% 
-% 
-% %[short], label, caption long
-% \NewEnviron{Table}[3][]{
-%  	\polytech@floats@oldtable{htb}{
-%  	  \ifstrequal{#1}{}{%
-% 			\caption{#3}%
-% 		}{%
-% 			\caption[#1]{#3}%
-% 		}%
-%     \label{#2}% must be after caption
-% 		\begin{center}%
-% 		\BODY%
-% 		\end{center}%
-% 	}%
-% }
+% we redefine the figure environment
+\RenewDocumentEnvironment{table}{o}{%
+  % #1 if ignored since we impose it
+  \polytech@oldtable[htb]%
+  % prepare caption saving
+  \global\csletcs{polytech@oldcaption}{caption}%
+  \csundef{polytech@figure@caption}%
+  \csundef{polytech@figure@captionalt}%
+  \RenewDocumentCommand{\caption}{om}{%
+    \IfValueTF{##1}{% we save the short caption
+      \csdef{polytech@figure@captionalt}{##1}%
+    }{}%
+    \csdef{polytech@figure@caption}{##2}%
+  }%
+  % we need the label later
+  \global\booltrue{polytech@ref@savelabel}%
+  \csundef{polytech@ref@savedlabel}{}%
+  % we center things
+  \centering%
+}{%
+  % we restore caption
+  \csletcs{caption}{polytech@oldcaption}%
+  % we set the caption
+  \ifcsdef{polytech@figure@captionalt}{%
+    \caption[\csuse{polytech@figure@captionalt}]{\csuse{polytech@figure@caption}}%
+  }{%
+    \ifcsdef{polytech@figure@caption}{%
+      \caption{\csuse{polytech@figure@caption}}%
+    }{%
+      \polytechwarning{Missing caption on figure}%
+    }%
+  }%
+  \ifcsdef{polytech@ref@savedlabel}{%
+    \label{\csuse{polytech@ref@savedlabel}}%
+  }{%
+    \polytechwarning{Missing label on figure}%
+  }%
+  % restore normal \label behavior 
+  \global\boolfalse{polytech@ref@savelabel}%
+  \polytech@endoldtable%
+}
 
 \renewcommand\floatpagefraction{.9}
 \renewcommand\topfraction{.9}
@@ -120,20 +164,15 @@ hangindent=0pt, indention=0pt, singlelinecheck=true,
 \setcounter{topnumber}{50}
 \setcounter{bottomnumber}{50}
 
-% add a warning to standard figure and table environments
-% 
-% \renewenvironment{figure}[1][]{%
-% \textbf{\color{red}L'utilisation de l'environnement \latexcode{figure} est interdit. Utilisez l'environnement \latexcode{Figure} (cf. mode d'emploi).}%
-% \polytech@oldfigure%
-% }{%
-% \polytech@endoldfigure%
-% }
-% 
-% \renewenvironment{table}[1][]{%
-% \textbf{\color{red}L'utilisation de l'environnement \latexcode{table} est interdit. Utilisez l'environnement \latexcode{Table} (cf. mode d'emploi).}%
-% \polytech@oldtable%
-% }{%
-% \polytech@endoldtable%
-% }
-
+ \patchcmd{\sf@@sub@label}
+  {\sf@oldlabel{#1}}
+  {%
+    \sf@oldlabel{#1}%
+    \zref@setcurrent{issubfloat}{1}%
+    \polytech@zlabel{sub@#1}%    
+  }
+  {}
+  {
+    \polytechfatalerror{Can not patch \string\sf@@sub@label.}
+  }
 

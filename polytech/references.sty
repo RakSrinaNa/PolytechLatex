@@ -11,12 +11,14 @@
 \zref@newprop{issection}{}
 \zref@newprop{isappendices}{}
 \zref@newprop{isequation}{}
+\zref@newprop{issubfloat}{}
 \zref@addprop{main}{chapter}
 \zref@addprop{main}{chapternumber}
 \zref@addprop{main}{isappendix}
 \zref@addprop{main}{issection}
 \zref@addprop{main}{isappendices}
 \zref@addprop{main}{isequation}
+\zref@addprop{main}{issubfloat}
 
 % remove chapter from section, subsection...
 \renewcommand{\thesection}{\arabic{section}}
@@ -31,13 +33,14 @@
 
 % get the chapter part of the reference
 \newcommand{\polytech@ref@refchapter}[1]{%
-		\zref@def@extract{\polytech@ref@chapter}{#1}{chapter}%
-		\zref@def@extract{\polytech@ref@issection}{#1}{issection}%
-		\zref@def@extract{\polytech@ref@chapternumber}{#1}{chapternumber}%
-		\zref@def@extract{\polytech@ref@isappendix}{#1}{isappendix}%
-		\zref@def@extract{\polytech@ref@isequation}{#1}{isequation}%
-		\ifcsempty{polytech@ref@chapter}%
-	  {% no number defined
+	\zref@def@extract{\polytech@ref@chapter}{#1}{chapter}%
+	\zref@def@extract{\polytech@ref@issection}{#1}{issection}%
+	\zref@def@extract{\polytech@ref@chapternumber}{#1}{chapternumber}%
+	\zref@def@extract{\polytech@ref@isappendix}{#1}{isappendix}%
+	\zref@def@extract{\polytech@ref@isequation}{#1}{isequation}%
+	\zref@def@extract{\polytech@ref@issubfloat}{#1}{issubfloat}%
+	\ifcsempty{polytech@ref@issubfloat}{% it is not a subfloat ref
+		\ifcsempty{polytech@ref@chapter}{% no number defined
 	   \ifcsempty{polytech@ref@chapternumber}{%
 	     \setcounter{polytech@chapter@countertemp}{-1}%
 	   }{%
@@ -58,8 +61,7 @@
         \polytechwarning{Reference '#1': You can not reference things in unnumbered chapter from outside the chapter.}%
         \textbf{ERROR}%
       }%
-	  }%
-	  {%
+	  }{%
 	    \ifcsempty{polytech@ref@chapternumber}{%
         \setcounter{polytech@chapter@countertemp}{-1}%
       }{%
@@ -79,6 +81,8 @@
 	      \xspace%
 	    }%
 	  }%
+	 }{% it is a subfloat subref => add nothing
+	 }%
 }
 
 % Get the chapter/appendix of ref
@@ -134,8 +138,15 @@
 
 % redefine label to store additional data with zref
 \newcommand{\polytech@label}[1]{%
-	\polytech@oldlabel{#1}%
-  \polytech@zlabel{#1}%
+  \ifbool{polytech@ref@savelabel}{% we need to save the label for later use (see floats)
+     \global\boolfalse{polytech@ref@savelabel}%
+     \csgdef{polytech@ref@savedlabel}{#1}%
+   }{% we label the location
+     \polytech@oldlabel{#1}%
+     \zref@setcurrent{issubfloat}{}%
+     \polytech@zlabel{#1}%
+     \polytech@label@newlabel{#1}%
+   }%
 }
 
 % boolean used to not include chapter in autoref
@@ -201,14 +212,18 @@
 % boolean used to detect equation
 \newbool{polytech@ref@equation}
 
+% boolean used to instruct \label to save the label in \polytech@ref@savedlabel instead of really labelling location
+% this is used by floats to ensure a label is defined at the proper location
+\newbool{polytech@ref@savelabel}
+
 \AtBeginDocument{
-
-	\let\polytech@oldref\ref
-	\let\polytech@oldautoref\autoref
-	\let\polytech@oldlabel\label
-	\let\polytech@oldlabel@in@display\label@in@display
-
-	% replace Tableau by Table in caption, correct case
+  
+  \let\polytech@oldref\ref
+  \let\polytech@oldautoref\autoref
+  \let\polytech@oldlabel\label
+  \let\polytech@oldlabel@in@display\label@in@display
+  
+  % replace Tableau by Table in caption, correct case
   \def\tableautorefname{\csuse{polytech@ref@name@table@\csuse{polytech@lang}}}
   \def\figureautorefname{\csuse{polytech@ref@name@figure@\csuse{polytech@lang}}}
   \def\subfigureautorefname{\csuse{polytech@ref@name@subfigure@\csuse{polytech@lang}}}
@@ -221,69 +236,68 @@
   \def\subsubsectionautorefname{\csuse{polytech@ref@name@subsubsection@\csuse{polytech@lang}}}
   \def\paragraphautorefname{\csuse{polytech@ref@name@paragraph@\csuse{polytech@lang}}}
   \def\subparagraphautorefname{\csuse{polytech@ref@name@subparagraph@\csuse{polytech@lang}}}
-
-	% hide extra chapter from part and chapter and appendix
-	\appto\partautorefname{\global\booltrue{polytech@ref@nochapter}}
-	\appto\chapterautorefname{\global\booltrue{polytech@ref@nochapter}}
-	\appto\appendixautorefname{\global\booltrue{polytech@ref@nochapter}}
-
-	% replace standard \ref command
+  
+  % hide extra chapter from part and chapter and appendix
+  \appto\partautorefname{\global\booltrue{polytech@ref@nochapter}}
+  \appto\chapterautorefname{\global\booltrue{polytech@ref@nochapter}}
+  \appto\appendixautorefname{\global\booltrue{polytech@ref@nochapter}}
+  
+  % replace standard \ref command
   \renewcommand{\ref}[1]{%
     \zref@def@extract{\polytech@ref@isequation}{#1}{isequation}%
     \ifcsempty{polytech@ref@isequation}{}{%
-      \polytechwarning{Reference '#1': This is an equation. Use \string\eqref\space or \string\autoref\space instead.}%
+      \polytechwarning{Reference '#1': This is an equation. Use \string\eqref\space or \string\autoref\space instead (\polytech@ref@isequation).}%
       \textbf{ERROR}%
     }%  
-	  \polytech@ref@newref{#1}%
-	  \polytech@label@register{#1}%
-	}
-	\robustify{\ref}
-	
-	% complete autoref with the chapter part
-	\renewcommand{\autoref}[1]{% 	  
-		\boolfalse{polytech@ref@nochapter}%
-		\polytech@oldautoref{#1}\relax%
-		\ifbool{polytech@ref@nochapter}{%
-		  % no need to add chapter
-		  \zref@def@extract{\polytech@ref@chapter}{#1}{chapter}%
-		  \ifcsempty{polytech@ref@chapter}{%
-		    % it is a chapter => error
-		    \polytechwarning{Reference '#1': You can not reference an unnumbered chapter.}%   
-		    \textbf{ERROR}%
-		  }{%		    
-		  }%
-		}{%
-		  \polytech@ref@refchapter{#1}%
-		}%
-		\polytech@label@register{#1}%
-	}
-	\robustify{\autoref} 
-
-	% replace standard \label command
-	\renewcommand{\label}[1]{%
-	   \polytech@label{#1}%
-	   \polytech@label@newlabel{#1}%
-	}
-	\robustify{\label}
-
-	% amsmath replace label in equation, so we patch the replacement :)
-	\renewcommand{\label@in@display}[1]{\polytech@oldlabel@in@display{#1}\relax\polytech@zlabel{#1}}
-	
-	% we need a boolean flag to detect equation and eqnarray
-	\let\polytech@oldequation\equation
-	\let\polytech@oldendequation\endequation
-	
-	\renewenvironment{equation}{%
-	 \booltrue{polytech@ref@equation}%
-	 \begingroup%
-	 \polytech@oldequation%
-	}{%
+    \polytech@ref@newref{#1}%
+    \polytech@label@register{#1}%
+  }
+  \robustify{\ref}
+  
+  % complete autoref with the chapter part
+  \renewcommand{\autoref}[1]{% 	  
+  	\boolfalse{polytech@ref@nochapter}%
+  	\polytech@oldautoref{#1}\relax%
+  	\ifbool{polytech@ref@nochapter}{%
+  	  % no need to add chapter
+  	  \zref@def@extract{\polytech@ref@chapter}{#1}{chapter}%
+  	  \ifcsempty{polytech@ref@chapter}{%
+  	    % it is a chapter => error
+  	    \polytechwarning{Reference '#1': You can not reference an unnumbered chapter.}%   
+  	    \textbf{ERROR}%
+  	  }{%		    
+  	  }%
+  	}{%
+  	  \polytech@ref@refchapter{#1}%
+  	}%
+  	\polytech@label@register{#1}%
+  }
+  \robustify{\autoref} 
+  
+  % replace standard \label command
+  \renewcommand{\label}[1]{\polytech@label{#1}}
+  \robustify{\label}
+  
+  % amsmath replace label in equation, so we patch the replacement :)
+  \renewcommand{\label@in@display}[1]{\polytech@oldlabel@in@display{#1}\relax\polytech@zlabel{#1}}
+  
+  
+  
+  % we need a boolean flag to detect equation and eqnarray
+  \let\polytech@oldequation\equation
+  \let\polytech@oldendequation\endequation
+  
+  \renewenvironment{equation}{%
+   \booltrue{polytech@ref@equation}%
+   \begingroup%
+   \polytech@oldequation%
+  }{%
     \polytech@oldendequation%
     \endgroup%
     \boolfalse{polytech@ref@equation}%
-	}
-	
-	\let\polytech@oldeqnarray\eqnarray
+  }
+  
+  \let\polytech@oldeqnarray\eqnarray
   \let\polytech@oldendeqnarray\endeqnarray
   
   \renewenvironment{eqnarray}{%
@@ -295,13 +309,17 @@
     \endgroup%
     \boolfalse{polytech@ref@equation}%
   }
+  
+  % patch \eqref to move the chapter part outside the parenthesis
+  \renewcommand{\eqref}[1]{%
+    \polytech@ref@eqref{#1}%
+    \polytech@label@register{#1}%
+  }
+  \robustify{\eqref}
+  
+  
+ 
 
-	% patch \eqref to move the chapter part outside the parenthesis
-	\renewcommand{\eqref}[1]{%
-	  \polytech@ref@eqref{#1}%
-	  \polytech@label@register{#1}%
-	}
-	\robustify{\eqref}
 }
 
 \newcommand{\polytech@label@newlabel}[1]{%

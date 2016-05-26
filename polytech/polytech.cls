@@ -102,8 +102,6 @@
 %\expandafter\show\csname lrbox*\endcsname % uncomment to see if it has worked
 \cslet{endlrbox*}\endlrbox
 
-
-
 %-------------- Configuration ----------------
 
 % upgrade PDF version of the document
@@ -133,7 +131,12 @@
 	\PassOptionsToClass{twoside}{book}
 }{}
 
+\ifbool{polytech@final}{
+  \PassOptionsToClass{final}{book}
+}{}
+
 \PassOptionsToClass{11pt}{book}
+
 \LoadClass{book}
 
 \setlength\paperheight{29.7cm}%
@@ -170,9 +173,7 @@
 % enable overbox display as black box. must be after class loading
 \notbool{polytech@final}{
   \setlength{\overfullrule}{5pt}    
-}{
-  \PassOptionsToClass{final}{book}
-}
+}{}
 
 \RequirePackage[T1]{fontenc}    % OT1 font encoding (must be before inputenc)
 \RequirePackage[utf8]{inputenc} % encoding is set to utf8
@@ -206,7 +207,6 @@
 
 % allow to customize sectionning
 \RequirePackage[rigidchapters,explicit,toctitles,clearempty]{titlesec}
-
 
 %%% newpage disabled flags
 \newbool{polytech@allownewpagesection}
@@ -453,14 +453,6 @@
 \RequirePackage{pageslts} % to have total page count of the document. Must be at the end for proper functionning
 \RequirePackage{refcount}
 
-
-\RequirePackage[planb=false]{newfloat}
-\RequirePackage{caption}
-\RequirePackage{subfig}
-
-
-
-
 % colors
 \definecolor{polytechdarkblue}{RGB}{0,74,117}
 \definecolor{polytechlightblue}{RGB}{0,156,221}
@@ -497,10 +489,18 @@
   }%
 }
 
+\RequirePackage{polytech/constants}
+\RequirePackage{polytech/references}
+
+\RequirePackage[planb=false]{newfloat} % needed for biblatex: why ? I don't know
+\RequirePackage{float} % to force caption position
+\RequirePackage[tableposition=top]{caption} % for typesetting captions
+\RequirePackage[labelformat=simple]{subfig} % for subfloat
 
 % sub packages
-\RequirePackage{polytech/constants}
+
 \RequirePackage{polytech/citingdoc}
+
 \RequirePackage{polytech/firstlastpage}
 \RequirePackage{polytech/warning}
 \RequirePackage{polytech/headings}
@@ -508,8 +508,9 @@
 \RequirePackage{polytech/floats}
 \RequirePackage{polytech/weeklyreports}
 \RequirePackage{polytech/listings}
-\RequirePackage{polytech/references}
 \RequirePackage{polytech/poster}
+
+
 
 \setlength{\parskip}{1ex plus 0.2ex minus 0.2ex}
 \setlength{\topsep}{1pt plus 1pt minus 1pt}
