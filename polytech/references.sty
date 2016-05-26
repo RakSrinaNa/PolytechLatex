@@ -329,22 +329,19 @@
 
 \newcommand{\polytech@label@register}[1]{%
   \catcode`\:=12% make : an ordinary letter
-  \csdef{polytech@label@registered@#1}{}%
+  \csgdef{polytech@label@registered@#1}{}%
 }
 
 \newcommand{\polytech@label@unused}[1]{%
   \catcode`\:=12% make : an ordinary letter
-  \ifcsdef{polytech@label@registered@#1}{}{\appto{\polytech@label@unused@display}{#1, }}%
+  \ifcsdef{polytech@label@registered@#1}{}{
+    \polytechwarning{Label defined but unused : #1}
+  }%
 }
 
 \AtEndDocument{
   % check for unused label  
-  \csundef{polytech@label@unused@display}%
-  \csdef{polytech@label@unused@display}{}
-  \forlistloop{\polytech@label@unused}{\polytech@label@list}%
-  \ifcsempty{polytech@label@unused@display}{}{%
-    \polytechwarning{Labels defined but unused : '\polytech@label@unused@display'}%
-  }%
+  \forlistcsloop{\polytech@label@unused}{polytech@label@list}%
 }
 
 %###
