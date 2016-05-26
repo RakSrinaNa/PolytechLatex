@@ -340,10 +340,11 @@
 \AtEndDocument{
   % check for unused label  
   \csundef{polytech@label@unused@display}%
+  \csdef{polytech@label@unused@display}{}
   \forlistloop{\polytech@label@unused}{\polytech@label@list}%
-  \ifcsdef{polytech@label@unused@display}{%
+  \ifcsempty{polytech@label@unused@display}{}{%
     \polytechwarning{Labels defined but unused : '\polytech@label@unused@display'}%
-  }{}%
+  }%
 }
 
 %###
