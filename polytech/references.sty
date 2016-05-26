@@ -341,7 +341,7 @@
 
 \AtEndDocument{
   % check for unused label  
-  \forlistcsloop{\polytech@label@unused}{polytech@label@list}%
+  \forlistloop{\polytech@label@unused}{\csname polytech@label@list\endcsname}%
 }
 
 %###
