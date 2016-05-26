@@ -38,9 +38,10 @@
 \AtEndDocument{\booltrue{polytech@allownewpagestartenddoc}}
 
 % suppress warning : PDF inclusion: multiple pdfs with page group included in a single page
-\pdfsuppresswarningpagegroup=1
+\ifcsdef{pdfsuppresswarningpagegroup}{%
+  \pdfsuppresswarningpagegroup=1%
+}{}
 
-\showboxbreadth=50 \showboxdepth=50
 
 % -----------------------------------------------------------------------------
 % Declare documentclass options
@@ -75,7 +76,7 @@
 \DeclareOption{nobibannotations}{\booltrue{polytech@nobibannotations}}
 
 \newbool{polytech@roundtofour}
-\DeclareOption{roundtofour}{\booltrue{polytech@roundtofour}}
+\DeclareOption{roundtofour}{\booltrue{polytech@roundtofour}\booltrue{polytech@twoside}}
 
 \newbool{polytech@twoside}
 \DeclareOption{twoside}{\booltrue{polytech@twoside}}
