@@ -196,33 +196,6 @@ E=mc2
 
 \lipsum[1]
            
-\section{Pour ne pas se casser la tête}
-
-\label{sec:cassetete}
-
-Pour ne pas se casser la tête à rédiger mon rapport, je lis le mode d'emploi (cf. \ref{fig:modeemploi})
-Toute figure ou table doit avoir un titre et être référencée dans le texte (sinon ça ne sert à rien).
-Pour cela, vous devez utiliser deux environnements \texttt{Figure} et \texttt{Table}. Chacun de ces environments admet deux paramètres : le label et le titre de la figure/table. Le positionnement de la figure/table étant contrôlé par la classe de document, il est très important que ces figures/tables soient référencées dans le texte (ex: \autoref{fig:modeemploi}, \autoref{fig:modeemploi2}, \autoref{tab:deficits}).
-
-\begin{Figure}{fig:modeemploi}{Ma superbe image}
-\pgfimage{polytech/polytech}
-\end{Figure}
-
-\begin{Figure}[Titre court pour la liste des figures]{fig:modeemploi}{Ma superbe image avec un très long titre qui n'est pas pratique dans la table des matière !}
-\pgfimage{modeemploi}
-\end{Figure}
-
-\begin{Table}{tab:deficits}{Déficit public de la France : on est mal barré !}
-\begin{tabu}{cccccccc}
-	&2007	&2008	&2009	&2010	&2011	&2012	&2013\\\hline
-Milliards \euro&1216	&1324	&1499	&1602	&1725	&1841	&1925\\\hline
-\% PIB	&64.4\%	&68.5\%	&79.5\%	&82.7\%	&86.2\%	&90.6\%	&93.5\%\\\hline
-\end{tabu}
-\end{Table}
-
-\begin{Figure}{fig:modeemploi2}{Ma superbe image encore une fois !!}
-\pgfimage{polytech/polytech}
-\end{Figure}
 
 \part{essai}
 \label{part:essai}
@@ -274,7 +247,6 @@ Milliards \euro&1216	&1324	&1499	&1602	&1725	&1841	&1925\\\hline
 \chapter{Ma première annexe}
 
 \label{ann:chap1}
-cf \autoref{algo:howto}
         
 \lipsum[1-4]
 
@@ -290,7 +262,6 @@ E=mc2
 \chapter{Ma deuxième annexe}
   
 \label{ann:chap2}
-cf \autoref{algo:howto}
      
 \lipsum[1-4]
 
