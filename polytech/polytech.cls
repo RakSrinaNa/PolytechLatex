@@ -14,6 +14,7 @@
 \RequirePackage{calc}
 \RequirePackage{xstring}
 \RequirePackage{xparse}
+\RequirePackage{forloop}
 
 % Add an early hook at the beginning of the document allowing to do some tests of parameters
 \AtBeginDocument{\csuse{polytech@check@preamble}}

@@ -316,32 +316,40 @@
     \polytech@label@register{#1}%
   }
   \robustify{\eqref}
-  
-  
- 
-
 }
 
+% counter used to store defined labels
+\newcounter{polytech@label@counter}
+\newcounter{polytech@label@loopcounter}
+
+% used to store a defined label
 \newcommand{\polytech@label@newlabel}[1]{%
   \catcode`\:=12% make : an ordinary letter
-  \listgadd{\polytech@label@list}{#1}%
+  \csgdef{polytech@label@newlabel@\arabic{polytech@label@counter}}{#1}%
+  \stepcounter{polytech@label@counter}%
 }
 
+% used to register an used label (\ref, \autoref, ...)
 \newcommand{\polytech@label@register}[1]{%
   \catcode`\:=12% make : an ordinary letter
   \csgdef{polytech@label@registered@#1}{}%
 }
 
-\newcommand{\polytech@label@unused}[1]{%
+% used to check for unused labels
+\newcommand{\polytech@label@check}{%
   \catcode`\:=12% make : an ordinary letter
-  \ifcsdef{polytech@label@registered@#1}{}{
-    \polytechwarning{Label defined but unused : #1}
+  \setcounter{polytech@label@loopcounter}{0}%
+  \forloop{polytech@label@loopcounter}{0}{\value{polytech@label@loopcounter} < \value{polytech@label@counter}}{%
+    \ifcsdef{polytech@label@registered@\csuse{polytech@label@newlabel@\arabic{polytech@label@loopcounter}}}{%
+    }{%
+      \polytechwarning{Label defined but unused : \csuse{polytech@label@newlabel@\arabic{polytech@label@loopcounter}}}%
+    }%
   }%
 }
 
 \AtEndDocument{
   % check for unused label  
-  \forlistloop{\polytech@label@unused}{\csname polytech@label@list\endcsname}%
+  \csuse{polytech@label@check}
 }
 
 %###
