@@ -20,9 +20,6 @@ test_14.04_latex_texlive_2015:
 
 deploy:
   stage: deploy
-  script:
-    - which zip || (apt-get update && apt-get install -y zip)
-    - zip -r polytech.zip polytech
   artifacts:
     paths:
-      - polytech.zip
+      - polytech
