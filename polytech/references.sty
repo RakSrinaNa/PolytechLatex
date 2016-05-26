@@ -324,7 +324,7 @@
 
 \newcommand{\polytech@label@newlabel}[1]{%
   \catcode`\:=12% make : an ordinary letter
-  \listcsgadd{polytech@label@list}{#1}%
+  \listgadd{\polytech@label@list}{#1}%
 }
 
 \newcommand{\polytech@label@register}[1]{%
@@ -340,9 +340,9 @@
 \AtEndDocument{
   % check for unused label  
   \csundef{polytech@label@unused@display}%
-  \forlistcsloop{\polytech@label@unused}{polytech@label@list}%
+  \forlistloop{\polytech@label@unused}{\polytech@label@list}%
   \ifcsdef{polytech@label@unused@display}{%
-    \polytechwarning{Labels defined but unused : \csuse{polytech@label@unused@display}}%
+    \polytechwarning{Labels defined but unused : '\polytech@label@unused@display'}%
   }{}%
 }
 
