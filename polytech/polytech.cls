@@ -284,6 +284,7 @@
 % replace \chapter definition to automatically register unnumbered chapter in toc and set heading marks
 % need to be before hyperref
 \RenewDocumentCommand{\chapter}{som}{%  
+  \FloatBarrier% flush floats before a new chapter
   \booltrue{polytech@allownewpagesection}%
   \boolfalse{polytech@ref@section}%
   \booltrue{polytech@ref@inchapter}%
@@ -318,6 +319,7 @@
   \let\polytech@newpage@oldpart\part
   
   \RenewDocumentCommand{\part}{som}{%
+    \FloatBarrier% flush floats before a new part
     \boolfalse{polytech@ref@section}%
     \booltrue{polytech@allownewpagesection}%
     \IfBooleanTF{#1}{% starred
@@ -417,6 +419,7 @@
 \RequirePackage{eurosym} % symbol euro
 \RequirePackage[user]{zref} % allow for better \ref and  \label
 \RequirePackage[calc]{adjustbox} % box sizing utilities
+\RequirePackage{placeins} % to flush pending floats
 
 
 \RequirePackage{enumitem} % to typeset enums
