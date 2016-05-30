@@ -20,12 +20,13 @@
 \@onlypreamble\schooldepartment
 
 % ensure it has been called in the preamble
-\csappto{polytech@check@preamble}{%
-  \ifcsdef{polytech@schooldepartment}{}{%
-    \polytechfatalerror{\string\schooldepartment\space has not been called.}%
-  }%
+\ifbool{polytech@bare}{}{
+  \csappto{polytech@check@preamble}{%
+    \ifcsdef{polytech@schooldepartment}{}{%
+      \polytechfatalerror{\string\schooldepartment\space has not been called.}%
+    }%
+  }
 }
-
 % Output a text containing the expanded department properties
 \csdef{polytech@output@schooldepartment}{\csuse{polytech@schooldepartment@name@\polytech@schooldepartment}}
 \csdef{polytech@output@schooladdress}{\csuse{polytech@schooldepartment@address@\polytech@schooldepartment}}
@@ -74,10 +75,12 @@
 \@onlypreamble\typereport
 
 % ensure it has been called in the preamble
-\appto\polytech@check@preamble{%
-  \ifcsdef{polytech@typereport}{}{%
-    \polytechfatalerror{\string\typereport\space has not been called.}%
-  }%
+\ifbool{polytech@bare}{}{
+  \appto\polytech@check@preamble{%
+    \ifcsdef{polytech@typereport}{}{%
+      \polytechfatalerror{\string\typereport\space has not been called.}%
+    }%
+  }
 }
 
 % Define the name of a custom report (\typereport{custom})
@@ -124,10 +127,12 @@
 \@onlypreamble\reportyear
 
 % ensure it has been called in the preamble
-\appto\polytech@check@preamble{%
-  \ifcsdef{polytech@reportyear}{}{%
-    \polytechfatalerror{\string\reportyear\space has not been called.}%
-  }%
+\ifbool{polytech@bare}{}{
+  \appto\polytech@check@preamble{%
+    \ifcsdef{polytech@reportyear}{}{%
+      \polytechfatalerror{\string\reportyear\space has not been called.}%
+    }%
+  }
 }
 
 % Output a text containing the expanded date
@@ -146,10 +151,12 @@
 \@onlypreamble\title
 
 % ensure it has been called in the preamble
-\csappto{polytech@check@preamble}{%
-  \ifcsdef{polytech@title}{}{%
-    \polytechfatalerror{\string\title\space has not been called.}%
-  }%
+\ifbool{polytech@bare}{}{
+  \csappto{polytech@check@preamble}{%
+    \ifcsdef{polytech@title}{}{%
+      \polytechfatalerror{\string\title\space has not been called.}%
+    }%
+  }
 }
 
 % Output a text containing the expanded title
@@ -180,9 +187,9 @@
 % used for PDF metadata
 \csdef{polytech@output@titlewithsubtitle}{%
 	\ifcsdef{polytech@subtitle}{%
-		\polytech@title: \polytech@subtitle%
+		\csuse{polytech@title}: \csuse{polytech@subtitle}%
 	}{%
-		\polytech@title%
+		\csuse{polytech@title}%
 	}%
 }
 
@@ -338,12 +345,13 @@
 \@onlypreamble\author
 
 % ensure there is at least an author
-\csappto{polytech@check@preamble}{%
-  \ifcsdef{polytech@output@students@simple}{}{%
-    \polytechfatalerror{There is no author for the document (\string\student or \string\author needed).}%
-  }%
+\ifbool{polytech@bare}{}{
+  \csappto{polytech@check@preamble}{%
+    \ifcsdef{polytech@output@students@simple}{}{%
+      \polytechfatalerror{There is no author for the document (\string\student or \string\author needed).}%
+    }%
+  }
 }
-
 
 %%%%%%%%%%% ACADEMIC SUPERVISORS %%%%%%%%%%%%%%%%%
 
@@ -717,36 +725,41 @@
 
 % output the begining of the document
 \csdef{polytech@maketitle}{%
-	\ifbool{polytech@onlyposter}{%
-		\csuse{polytech@output@poster}%
-		\end{document}%
-	}{}%
-	\csuse{polytech@output@titlepage}
-	\pagenumbering{alph}%
-	\csuse{polytech@output@contributorspage}
-	\csuse{polytech@output@copyrightnotice}
-	\csuse{polytech@output@citingthedocument}
-  \pagestyle{polytech}
-	\ifbool{polytech@firstlastonly}{%
-		\mainmatter%
-		\makelastpages%
-		\end{document}%
-	}{%
-		\frontmatter%
-		%
-		\tableofcontents%
-		%
-		% automagically add lists of figures, tables and listings if needed (i.e not empty)
-		\iftotalfigures%
-			\listoffigures%
-		\fi%
-		\iftotaltables%
-			\listoftables%
-		\fi%
-		\iftotallstlistings%
-			\lstlistoflistings%
-		\fi%
-		\mainmatter%
+  \ifbool{polytech@bare}{%
+    \pagestyle{polytech}%
+    \mainmatter%
+  }{%
+  	\ifbool{polytech@onlyposter}{%
+  		\csuse{polytech@output@poster}%
+  		\end{document}%
+  	}{}%
+  	\csuse{polytech@output@titlepage}%
+  	\pagenumbering{alph}%
+  	\csuse{polytech@output@contributorspage}%
+  	\csuse{polytech@output@copyrightnotice}%
+  	\csuse{polytech@output@citingthedocument}%
+    \pagestyle{polytech}%
+  	\ifbool{polytech@firstlastonly}{%
+  		\mainmatter%
+  		\makelastpages%
+  		\end{document}%
+  	}{%
+  		\frontmatter%
+  		%
+  		\tableofcontents%
+  		%
+  		% automagically add lists of figures, tables and listings if needed (i.e not empty)
+  		\iftotalfigures%
+  			\listoffigures%
+  		\fi%
+  		\iftotaltables%
+  			\listoftables%
+  		\fi%
+  		\iftotallstlistings%
+  			\lstlistoflistings%
+  		\fi%
+  		\mainmatter%
+  	}%
 	}%
 	\boolfalse{polytech@allownewpagestartenddoc}% disable newpage, clearpage, cleardoublepage
 }
@@ -768,10 +781,12 @@
 \@onlypreamble\motcle
 
 % ensure there is at least a motcle
-\csappto{polytech@check@preamble}{%
-  \ifcsdef{polytech@output@motcles}{}{%
-    \polytechfatalerror{No french keyword defined (\string\motcle needed).}%
-  }%
+\ifbool{polytech@bare}{}{
+  \csappto{polytech@check@preamble}{%
+    \ifcsdef{polytech@output@motcles}{}{%
+      \polytechfatalerror{No french keyword defined (\string\motcle needed).}%
+    }%
+  }
 }
 
 % Define an english keyword 
@@ -788,12 +803,13 @@
 \@onlypreamble\keyword
 
 % ensure there is at least a keyword
-\csappto{polytech@check@preamble}{%
-  \ifcsdef{polytech@output@keywords}{}{%
-    \polytechfatalerror{No english keyword defined (\string\keyword needed).}%
-  }%
+\ifbool{polytech@bare}{}{
+  \csappto{polytech@check@preamble}{%
+    \ifcsdef{polytech@output@keywords}{}{%
+      \polytechfatalerror{No english keyword defined (\string\keyword needed).}%
+    }%
+  }
 }
-
 
 %%%%%%%%%%% ABSTRACT %%%%%%%%%%%%%%%%%
 
@@ -812,10 +828,12 @@
 \@onlypreamble\resume
 
 % ensure there is a resume
-\csappto{polytech@check@preamble}{%
-  \ifcsdef{polytech@output@resume}{}{%
-    \polytechfatalerror{No resume defined (\string\resume needed).}%
-  }%
+\ifbool{polytech@bare}{}{
+  \csappto{polytech@check@preamble}{%
+    \ifcsdef{polytech@output@resume}{}{%
+      \polytechfatalerror{No resume defined (\string\resume needed).}%
+    }%
+  }
 }
 
 % Define an english abstract 
@@ -833,10 +851,12 @@
 \@onlypreamble\abstract
 
 % ensure there is an abstract
-\csappto{polytech@check@preamble}{%
-  \ifcsdef{polytech@output@abstract}{}{%
-    \polytechfatalerror{No resume defined (\string\abstract needed).}%
-  }%
+\ifbool{polytech@bare}{}{
+  \csappto{polytech@check@preamble}{%
+    \ifcsdef{polytech@output@abstract}{}{%
+      \polytechfatalerror{No resume defined (\string\abstract needed).}%
+    }%
+  }
 }
 
 %%%%%%%%%%% LAST PAGES %%%%%%%%%%%%%%%%%
@@ -927,38 +947,40 @@
 }
 
 \csdef{polytech@makelastpages}{%
-  % allow unnumbered chapter again
-  \boolfalse{polytech@ref@appendix}%
-  \ifbool{polytech@onlyposter}{%
-  }{%
-    \bookmarksetupnext{level=part}%
-  	\ifbool{polytech@firstlastonly}{%
-  	}{%
-  		\csuse{polytech@output@weeklyreportspart}%
-  		\bookmarksetupnext{level=part}%
-  		\printbibliography[heading=bibintoc,type=online,resetnumbers=1,prefixnumbers=WWW,title={\csuse{polytech@output@webography@\csuse{polytech@lang}}}]%
-  		\bookmarksetupnext{level=part}%
-  		\printbibliography[heading=bibintoc,nottype=online,resetnumbers=1]%
-  		\ifbool{polytech@noposter}{%
-  		  % no poster required
-  		}{%
-  		  \ifbool{polytech@poster}{%
-  		    % poster required
-  		    \csuse{polytech@output@poster}%
-  		  }{%
-  		    % no requirement, we rely on defaults
-  		    \ifbool{polytech@default@poster}{%
-  		      \csuse{polytech@output@poster}%
-  		    }{}%
-  		  }%
-  		}%
-  	}%
-  	\backmatter%
-  	\pagestyle{empty}%
-  	\ifbool{polytech@firstlastonly}{}{%
-  		\csuse{polytech@roundpagecount}%
-  	}%
-  	\csuse{polytech@lastpage}%
+  \ifbool{polytech@bare}{}{%
+    % allow unnumbered chapter again
+    \boolfalse{polytech@ref@appendix}%
+    \ifbool{polytech@onlyposter}{%
+    }{%
+      \bookmarksetupnext{level=part}%
+    	\ifbool{polytech@firstlastonly}{%
+    	}{%
+    		\csuse{polytech@output@weeklyreportspart}%
+    		\bookmarksetupnext{level=part}%
+    		\printbibliography[heading=bibintoc,type=online,resetnumbers=1,prefixnumbers=WWW,title={\csuse{polytech@output@webography@\csuse{polytech@lang}}}]%
+    		\bookmarksetupnext{level=part}%
+    		\printbibliography[heading=bibintoc,nottype=online,resetnumbers=1]%
+    		\ifbool{polytech@noposter}{%
+    		  % no poster required
+    		}{%
+    		  \ifbool{polytech@poster}{%
+    		    % poster required
+    		    \csuse{polytech@output@poster}%
+    		  }{%
+    		    % no requirement, we rely on defaults
+    		    \ifbool{polytech@default@poster}{%
+    		      \csuse{polytech@output@poster}%
+    		    }{}%
+    		  }%
+    		}%
+    	}%
+    	\backmatter%
+    	\pagestyle{empty}%
+    	\ifbool{polytech@firstlastonly}{}{%
+    		\csuse{polytech@roundpagecount}%
+    	}%
+    	\csuse{polytech@lastpage}%
+    }%
   }%
 }
 

@@ -57,6 +57,10 @@
 }
 
 % Make document final disabling useless things
+\newbool{polytech@bare}
+\DeclareOption{bare}{\booltrue{polytech@bare}}
+
+
 \newbool{polytech@final}
 \DeclareOption{final}{\booltrue{polytech@final}}
 
