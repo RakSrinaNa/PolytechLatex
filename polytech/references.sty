@@ -87,11 +87,12 @@
 
 % Get the chapter/appendix of ref
 \newcommand{\refchapterof}[1]{  
-  \typeout{#1}%
 	\zref@def@extract{\polytech@ref@chapter}{#1}{chapter}%
 	\zref@def@extract{\polytech@ref@chapternumber}{#1}{chapternumber}%
 	\zref@def@extract{\polytech@ref@isappendix}{#1}{isappendix}%
 	\zref@def@extract{\polytech@ref@issection}{#1}{issection}%
+	\zref@def@extract{\polytech@ref@isequation}{#1}{isequation}%
+  \zref@def@extract{\polytech@ref@issubfloat}{#1}{issubfloat}%
 	\ifcsempty{polytech@ref@chapternumber}{%
     \protect\G@refundefinedtrue%
     \nfss@text{\reset@font\bfseries ??}%
@@ -102,17 +103,12 @@
 	  	\polytechwarning{Reference '#1': Can not compute referenced chapter from unnumbered chapter.}%
 	  	\textbf{ERROR}%
 	  }{%
-	    \ifcsempty{polytech@ref@issection}{
-	     \polytechwarning{Reference '#1': Only sections can be referenced using \string\refchapterof.}
-	     \textbf{ERROR}%
+	    \ifcsempty{polytech@ref@isappendix}{%
+	    	\hyperref[#1]{\csuse{polytech@refchapter@name@chapter@\polytech@lang}{\polytech@ref@chapter}}%
 	    }{%
-  	    \ifcsempty{polytech@ref@isappendix}{%
-  	    	\hyperref[#1]{\csuse{polytech@ref@name@chapter@\polytech@lang}{\polytech@ref@chapter}}%
-  	    }{%
-  	      \hyperref[#1]{\csuse{polytech@ref@name@appendix@\polytech@lang}{\polytech@ref@chapter}}%
-  	    }%
-  	    \xspace%
-  	  }%
+	      \hyperref[#1]{\csuse{polytech@refchapter@name@appendix@\polytech@lang}{\polytech@ref@chapter}}%
+	    }%
+	    \xspace%
 	  }%
 	}{}%
 }
