@@ -222,6 +222,7 @@
   \let\polytech@oldautoref\autoref
   \let\polytech@oldlabel\label
   \let\polytech@oldlabel@in@display\label@in@display
+  \let\polytech@oldpageref\pageref
   
   % replace Tableau by Table in caption, correct case
   \def\tableautorefname{\csuse{polytech@ref@name@table@\csuse{polytech@lang}}}
@@ -241,6 +242,12 @@
   \appto\partautorefname{\global\booltrue{polytech@ref@nochapter}}
   \appto\chapterautorefname{\global\booltrue{polytech@ref@nochapter}}
   \appto\appendixautorefname{\global\booltrue{polytech@ref@nochapter}}
+  
+  % replace standard \pageref
+  \renewcommand{\pageref}[1]{%
+    \polytech@oldpageref{#1}%
+    \polytech@label@register{#1}%
+  }
   
   % replace standard \ref command
   \renewcommand{\ref}[1]{%
