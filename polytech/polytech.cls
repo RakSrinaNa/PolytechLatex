@@ -413,14 +413,16 @@
 \RequirePackage{tabu}
 \RequirePackage{lscape}
 \RequirePackage{comment}
-\RequirePackage{pgf}
 \RequirePackage{tikz}
 \RequirePackage{url}
 \RequirePackage{framed}
 \RequirePackage{fancyvrb}
 \RequirePackage{makerobust}
-\RequirePackage[lined,boxed]{algorithm2e}
 \RequirePackage[figure,table,lstlisting]{totalcount}
+\RequirePackage[lined,boxed]{algorithm2e}
+% to count algorithm using totalcount
+\DeclareTotalCounter{algocf}
+
 \RequirePackage{pax} % for proper handling of pdfpages with hyperref
 \RequirePackage{pdfpages}
 \RequirePackage[user]{zref} % allow for better \ref and  \label

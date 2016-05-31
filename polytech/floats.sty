@@ -56,6 +56,9 @@
 \let\polytech@endoldtable\endtable
 \let\polytech@oldsubfloat\subfloat
 
+\let\polytech@oldalgorithm\algorithm
+\let\polytech@oldendalgorithm\endalgorithm
+
 % we override subfloat to disable label storage
 \RenewDocumentCommand{\subfloat}{oom}{%
   \global\boolfalse{polytech@ref@savelabel}% disable save label
@@ -154,6 +157,45 @@
   % restore normal \label behavior 
   \global\boolfalse{polytech@ref@savelabel}%
   \polytech@endoldtable%
+}
+
+% we redefine the figure environment
+\RenewDocumentEnvironment{algorithm}{o}{%
+  \polytech@oldalgorithm[htb]%
+  % prepare caption saving
+  \global\csletcs{polytech@oldcaption}{caption}%
+  \csundef{polytech@figure@caption}%
+  \csundef{polytech@figure@captionalt}%
+  \RenewDocumentCommand{\caption}{om}{%
+    \IfValueTF{##1}{% we save the short caption
+      \csdef{polytech@figure@captionalt}{##1}%
+    }{}%
+    \csdef{polytech@figure@caption}{##2}%
+  }%
+  % we need the label later
+  \global\booltrue{polytech@ref@savelabel}%
+  \csundef{polytech@ref@savedlabel}{}%
+}{
+   % we restore caption
+  \csletcs{caption}{polytech@oldcaption}%
+  % we set the caption
+  \ifcsdef{polytech@figure@captionalt}{%
+    \caption[\csuse{polytech@figure@captionalt}]{\csuse{polytech@figure@caption}}%
+  }{%
+    \ifcsdef{polytech@figure@caption}{%
+      \caption{\csuse{polytech@figure@caption}}%
+    }{%
+      \polytechwarning{Missing caption on figure}%
+    }%
+  }%
+  \ifcsdef{polytech@ref@savedlabel}{%
+    \label{\csuse{polytech@ref@savedlabel}}%
+  }{%
+    \polytechwarning{Missing label on figure}%
+  }%
+  % restore normal \label behavior 
+  \global\boolfalse{polytech@ref@savelabel}%
+  \polytech@oldendalgorithm%
 }
 
 \renewcommand\floatpagefraction{.9}
