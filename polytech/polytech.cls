@@ -409,6 +409,7 @@
 \RequirePackage[final]{listings}[2015/06/04]
 \RequirePackage{fancybox}
 \RequirePackage{longtable}
+\RequirePackage{colortbl}
 \RequirePackage{tabu}
 \RequirePackage{lscape}
 \RequirePackage{comment}
@@ -422,7 +423,6 @@
 \RequirePackage[figure,table,lstlisting]{totalcount}
 \RequirePackage{pax} % for proper handling of pdfpages with hyperref
 \RequirePackage{pdfpages}
-\RequirePackage{eurosym} % symbol euro
 \RequirePackage[user]{zref} % allow for better \ref and  \label
 \RequirePackage[calc]{adjustbox} % box sizing utilities
 \RequirePackage{placeins} % to flush pending floats
