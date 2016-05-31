@@ -54,6 +54,29 @@
 
 %%% TYPE OF REPORT %%%
 \csdef{polytech@typereport@name@none}{}
+
+
+\csdef{polytech@typereport@name@peip1}{Projet Parcours des écoles d'ingénieurs Polytech 1}
+\csdef{polytech@typereport@hook@peip1}{%
+  \schooldepartment{peip}
+  \csgdef{polytech@students@defaultgrade}{peip1}
+  \booltrue{polytech@default@poster}%
+}
+
+\csdef{polytech@typereport@name@peip2}{Projet Parcours des écoles d'ingénieurs Polytech 2}
+\csdef{polytech@typereport@hook@peip2}{%
+  \schooldepartment{peip}
+  \csgdef{polytech@students@defaultgrade}{peip2}
+  \booltrue{polytech@default@poster}%
+}
+
+\csdef{polytech@typereport@name@stagepeip}{Rapport de stage}
+\csdef{polytech@typereport@hook@stagepeip}{%
+  \schooldepartment{peip}
+  \csgdef{polytech@students@defaultgrade}{peip1}
+}
+
+
 \csdef{polytech@typereport@name@prddi5}{Projet Recherche \& Développement}
 \csdef{polytech@typereport@hook@prddi5}{%
   \schooldepartment{di}%
@@ -62,60 +85,57 @@
   \booltrue{polytech@default@poster}%
 }
 \csdef{polytech@typereport@name@bibtex@prddi5}{Projet Recherche \textbackslash\& Développement}
+
 \csdef{polytech@typereport@name@ppgldi4}{Projet de programmation et génie logiciel}
 \csdef{polytech@typereport@hook@ppgldi4}{%
   \schooldepartment{di}%
   \csgdef{polytech@students@defaultgrade}{di4}%
   \csgdef{polytech@academicsupervisors@defaultaffiliation}{di}%
 }
+
 \csdef{polytech@typereport@name@pcdi4}{Projet collectif}
 \csdef{polytech@typereport@hook@pcdi4}{%
   \schooldepartment{di}%
   \csgdef{polytech@students@defaultgrade}{di4}%
   \csgdef{polytech@academicsupervisors@defaultaffiliation}{di}%
 }
+
 \csdef{polytech@typereport@name@psidi5}{Projet Systèmes d'Information}
 \csdef{polytech@typereport@hook@psidi5}{%
   \schooldepartment{di}%
   \csgdef{polytech@students@defaultgrade}{di5}%
   \csgdef{polytech@academicsupervisors@defaultaffiliation}{di}%
 }
+
 \csdef{polytech@typereport@name@pasrdi5}{Projet Architecture, Système et Réseaux}
 \csdef{polytech@typereport@hook@pasrdi5}{%
   \schooldepartment{di}%
   \csgdef{polytech@students@defaultgrade}{di5}%
   \csgdef{polytech@academicsupervisors@defaultaffiliation}{di}%
 }
+
 \csdef{polytech@typereport@name@pldi5}{Projet libre}
 \csdef{polytech@typereport@hook@pldi5}{%
   \schooldepartment{di}
   \csgdef{polytech@students@defaultgrade}{di5}%
   \csgdef{polytech@academicsupervisors@defaultaffiliation}{di}%
 }
-\csdef{polytech@typereport@name@peip1}{Projet Parcours des écoles d'ingénieurs Polytech 1}
-\csdef{polytech@typereport@hook@peip1}{%
-  \schooldepartment{peip}
-  \csgdef{polytech@students@defaultgrade}{peip1}
-  \booltrue{polytech@default@poster}%
-}
-\csdef{polytech@typereport@name@peip2}{Projet Parcours des écoles d'ingénieurs Polytech 2}
-\csdef{polytech@typereport@hook@peip2}{%
-  \schooldepartment{peip}
-  \csgdef{polytech@students@defaultgrade}{peip2}
-  \booltrue{polytech@default@poster}%
-}
+
+
 \csdef{polytech@typereport@name@stagedi3}{Rapport de stage}
 \csdef{polytech@typereport@hook@stagedi3}{%
   \schooldepartment{di}
   \csgdef{polytech@students@defaultgrade}{di3}
   \csgdef{polytech@academicsupervisors@defaultaffiliation}{di}%
 }
+
 \csdef{polytech@typereport@name@stagedi4}{Rapport de stage}
 \csdef{polytech@typereport@hook@stagedi4}{%
   \schooldepartment{di}
   \csgdef{polytech@students@defaultgrade}{di4}
   \csgdef{polytech@academicsupervisors@defaultaffiliation}{di}%
 }
+
 \csdef{polytech@typereport@name@stagedi5}{Rapport de stage}
 \csdef{polytech@typereport@hook@stagedi5}{%
   \schooldepartment{di}
