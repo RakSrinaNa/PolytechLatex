@@ -26,10 +26,10 @@ find . -maxdepth 1 -mindepth 1 -type d | sort | while read TESTDIR; do
     fi
 
     if [ $result = 0 ]; then
-	echo -e "\e[92mOK\e[39m\n"
+	echo -e "\e[92mOK\e[39m"
 	latexmk -C > /dev/null 2>/dev/null
     else
-	echo -e "\e[91mERROR\e[39m\n"
+	echo -e "\e[91mERROR\e[39m"
 	cat test-latexmk.log
 	exit 1
     fi
