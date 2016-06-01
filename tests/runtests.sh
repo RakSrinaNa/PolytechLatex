@@ -13,6 +13,7 @@ find . -maxdepth 1 -mindepth 1 -type d | sort | while read TESTDIR; do
     cd "$SCRIPTPATH/$TESTDIR"
     ln -sf ../../polytech
     rm -f test-latexmk.log
+    find . -iname "*.bbl" -delete
     latexmk -gg -pdf -interaction=nonstopmode test.tex >> test-latexmk.log 2>> test-latexmk.log
     result=$?
     
