@@ -26,13 +26,15 @@ echo $ARCHIVE > list.txt
 
 # Check for missing files
 cat oldlist.txt | while read f; do
-    curl -v -f -u $NEXUS_USER:$NEXUS_PASSWORD $REPOSITORY/$f
-    result=$?
-    if [ "$result" = "0" ]; then
-        echo "Found $f"
-        echo $f >> list.txt
-    else
-        echo "File $f is missing"
+    if [ ! "$ARCHIVE" = "$f" ]; then
+	curl -v -f -u $NEXUS_USER:$NEXUS_PASSWORD $BASEURL/$f
+	result=$?
+	if [ "$result" = "0" ]; then
+    	    echo "Found $f"
+    	    echo $f >> list.txt
+	else
+    	    echo "File $f is missing"
+	fi
     fi
 done
 
@@ -44,9 +46,9 @@ done
 echo "</ul></body></html>" >> index.html
 
 # Upload the new list.txt
-curl -f -u $NEXUS_USER:$NEXUS_PASSWORD --upload-file list.txt $REPOSITORY/list.txt
+curl -f -u $NEXUS_USER:$NEXUS_PASSWORD --upload-file list.txt $BASEURL/list.txt
 # Upload the new index.html
-curl -f -u $NEXUS_USER:$NEXUS_PASSWORD --upload-file index.html $REPOSITORY/index.html
+curl -f -u $NEXUS_USER:$NEXUS_PASSWORD --upload-file index.html $BASEURL/index.html
 
 
 
