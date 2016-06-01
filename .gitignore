@@ -2,3 +2,4 @@
 *.bbl
 *.xml
 tests/*/polytech
+builds
