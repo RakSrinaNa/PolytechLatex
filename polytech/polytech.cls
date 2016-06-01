@@ -579,8 +579,4 @@
 % \nocite is fordibben
 \csundef{nocite}
 
-\AtEndEnvironment{table}{\gdef\there@is@a@table{}}%
-\AtEndDocument{\ifdefined\there@is@a@table\label{tab:was:used:in:doc}\fi}%
-
-
 %###
