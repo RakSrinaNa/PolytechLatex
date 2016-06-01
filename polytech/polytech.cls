@@ -20,17 +20,14 @@
 \AtBeginDocument{\csuse{polytech@check@preamble}}
 
 \newcommand{\polytechwarning}[1]{%
-  %\begingroup%
-  %\set@display@protect%
   \@warning{Polytech : #1}%
-  %\endgroup%
 }
 
 % Display an error message and stop compilation as soone as possible
 \newcommand{\polytechfatalerror}[1]{%
   \begingroup%
-  \set@display@protect%
-  \errmessage{Polytech: #1}%
+    \set@display@protect%
+    \errmessage{Polytech: #1}%
   \endgroup%
   \stop%
 }
@@ -50,16 +47,15 @@
 
 % Prepare document in english
 \newbool{polytech@english}
-\def\polytech@lang{fr}
+\csdef{polytech@lang}{fr}
 \DeclareOption{english}{
 	\setbool{polytech@english}{true}
-	\gdef\polytech@lang{en}
+	\csgdef{polytech@lang}{en}
 }
 
 % Make document final disabling useless things
 \newbool{polytech@bare}
 \DeclareOption{bare}{\booltrue{polytech@bare}}
-
 
 \newbool{polytech@final}
 \DeclareOption{final}{\booltrue{polytech@final}}
@@ -110,8 +106,10 @@
 
 %-------------- Configuration ----------------
 
-% upgrade PDF version of the document
-\pdfoptionpdfminorversion=6
+% upgrade PDF version of the document to reduce some warnings
+\ifcsdef{pdfoptionpdfminorversion}{%
+  \pdfoptionpdfminorversion=6
+}{}
 
 % allow url to break on multiple lines
 \PassOptionsToPackage{hyphens}{url}
@@ -186,6 +184,13 @@
 \RequirePackage[full]{textcomp}
 \DeclareUnicodeCharacter{B0}{\textdegree}
 
+
+% add last pages at end of document. Must be before biblatex to allow biblatex to handle the result from printbibliography
+\AtEndDocument{
+  \csuse{polytech@makelastpages}
+}
+
+% csquote and biblatex need to be after 
 \RequirePackage{csquotes}
 \RequirePackage[%
 	backend=biber,
@@ -196,10 +201,10 @@
 	maxnames=10,
 	minnames=10,
 	autocite=plain,
-	defernumbers,
+	defernumbers=true,
 	bibencoding=utf8,
+	autolang=other
 	]{biblatex}
-
 
 % options are processed then we do some update
 \ifbool{polytech@blackandwhite}{
@@ -218,8 +223,8 @@
 \newbool{polytech@allownewpagesection}
 \newbool{polytech@allownewpagestartenddoc}
 
+% change the behavior of \newpage
 \let\polytech@oldnewpage\newpage
-
 \renewcommand{\newpage}{%
   \ifbool{polytech@allownewpagestartenddoc}{
     \polytech@oldnewpage%
@@ -232,7 +237,6 @@
     }%
   }%
 }
-
 
 % patch standard sectionning command before loading package changing them 
 
@@ -290,7 +294,7 @@
 % replace \chapter definition to automatically register unnumbered chapter in toc and set heading marks
 % need to be before hyperref
 \RenewDocumentCommand{\chapter}{som}{%  
-  \FloatBarrier% flush floats before a new chapter
+  \csuse{FloatBarrier}% flush floats before a new chapter
   \booltrue{polytech@allownewpagesection}%
   \boolfalse{polytech@ref@section}%
   \booltrue{polytech@ref@inchapter}%
@@ -325,7 +329,7 @@
   \let\polytech@newpage@oldpart\part
   
   \RenewDocumentCommand{\part}{som}{%
-    \FloatBarrier% flush floats before a new part
+    \csuse{FloatBarrier}% flush floats before a new part
     \boolfalse{polytech@ref@section}%
     \booltrue{polytech@allownewpagesection}%
     \IfBooleanTF{#1}{% starred
@@ -361,7 +365,6 @@
   }
 }
 
-
 \preto{\appendix}{%
   \booltrue{polytech@allownewpagesection}%
   \booltrue{polytech@ref@appendix}%
@@ -371,7 +374,6 @@
   \part*{\csuse{polytech@ref@name@appendices@\csuse{polytech@lang}}}%
   \boolfalse{polytech@allownewpagesection}%
 }
-
 
 \preto{\section}{%
   \booltrue{polytech@ref@section}%
@@ -393,13 +395,7 @@
   \booltrue{polytech@ref@section}%
 }
 
-
-
-
 %-------------- lot of packages -------------
-
-%\RequirePackage{refcheck}
-\RequirePackage{nameref}
 \RequirePackage{fancyhdr}
 \RequirePackage{makeidx}
 \RequirePackage{amsmath}
@@ -422,14 +418,11 @@
 \RequirePackage[lined,boxed]{algorithm2e}
 % to count algorithm using totalcount
 \DeclareTotalCounter{algocf}
-
 \RequirePackage{pax} % for proper handling of pdfpages with hyperref
 \RequirePackage{pdfpages}
 \RequirePackage[user]{zref} % allow for better \ref and  \label
 \RequirePackage[calc]{adjustbox} % box sizing utilities
 \RequirePackage{placeins} % to flush pending floats
-
-
 \RequirePackage{enumitem} % to typeset enums
 
 \usetikzlibrary{decorations.pathmorphing,calc,patterns,positioning,fit}
@@ -437,8 +430,7 @@
 \ifbool{polytech@blackandwhite}{
 	% disable hyperlinks
 	\PassOptionsToPackage{draft,linkcolor=black,citecolor=black,filecolor=black,urlcolor=black}{hyperref}
-}
-{
+}{
 	\PassOptionsToPackage{final,linkcolor=red,citecolor=green,filecolor=cyan,urlcolor=magenta}{hyperref}
 }
 
@@ -458,11 +450,8 @@
                 linktocpage=true,
                 bookmarks=true]{hyperref}
 
-
-
 \RequirePackage{bookmark}
 \RequirePackage{pageslts} % to have total page count of the document. Must be at the end for proper functionning
-\RequirePackage{refcount}
 
 % colors
 \definecolor{polytechdarkblue}{RGB}{0,74,117}
@@ -502,16 +491,11 @@
 
 \RequirePackage{polytech/constants}
 \RequirePackage{polytech/references}
-
-\RequirePackage[planb=false]{newfloat} % needed for biblatex: why ? I don't know
+\RequirePackage[planb=false]{newfloat} % needed for biblatex: why ? I don't know or remember
 \RequirePackage{float} % to force caption position
 \RequirePackage[tableposition=top]{caption} % for typesetting captions
 \RequirePackage[labelformat=simple]{subfig} % for subfloat
-
-% sub packages
-
 \RequirePackage{polytech/citingdoc}
-
 \RequirePackage{polytech/firstlastpage}
 \RequirePackage{polytech/warning}
 \RequirePackage{polytech/headings}
@@ -521,8 +505,6 @@
 \RequirePackage{polytech/listings}
 \RequirePackage{polytech/poster}
 
-
-
 \setlength{\parskip}{1ex plus 0.2ex minus 0.2ex}
 \setlength{\topsep}{1pt plus 1pt minus 1pt}
 \setlength{\parsep}{\parskip}
@@ -530,11 +512,12 @@
 \setlength{\partopsep}{1pt plus 1pt minus 1pt}
 \setlength{\parindent}{0in}
 
-\setlist{noitemsep,nosep,topsep=0pt,parsep=0pt,partopsep=0pt}
+\ifcsdef{setlist}{
+  \setlist{noitemsep,nosep,topsep=0pt,parsep=0pt,partopsep=0pt}
+}{}
 
 \widowpenalty=300
 \clubpenalty=300
-
 
 \setcounter{tocdepth}{3}
 \renewcommand{\@dotsep}{0.1}
@@ -552,11 +535,12 @@
 \extrarowsep=1mm
 \tabulinesep=1mm
 
+% patch \addcontentsline to remove empty chapter from the list of figures and tables
+
 \newbool{polytech@contentsline@lof@written}
 \newbool{polytech@contentsline@lot@written}
 
 \let\polytech@contentsline@oldaddcontentsline\addcontentsline
-
 
 \renewcommand{\addcontentsline}[3]{
 	\ifcsdef{polytech@contentsline@add@#1@#2}{
@@ -576,30 +560,27 @@
 
 \newcommand{\polytech@contentsline@add@lof@figure}[3]{
 	\ifbool{polytech@contentsline@lof@written}{%
-	}%
-	{%
+	}{%
 		\addtocontents{lof}{\protect \contentsline {chapter}{\csuse{polytech@contentsline@current@content}}{\csuse{polytech@contentsline@current@page}}{\csuse{polytech@contentsline@current@href}}}%
 		\global\booltrue{polytech@contentsline@lof@written}%
 	}%
 }
 \newcommand{\polytech@contentsline@add@lot@table}[3]{%
 	\ifbool{polytech@contentsline@lot@written}{%
-	}%
-	{%
+	}{%
 		\addtocontents{lot}{\protect \contentsline {chapter}{\csuse{polytech@contentsline@current@content}}{\csuse{polytech@contentsline@current@page}}{\csuse{polytech@contentsline@current@href}}}%
 		\global\booltrue{polytech@contentsline@lot@written}%
 	}%
 }
 
-
-
 % replace \cleardoublepage by \clearpage on oneside printing
 \ifbool{polytech@twoside}{}{\renewcommand{\cleardoublepage}{\clearpage}}
 
+% \nocite is fordibben
+\csundef{nocite}
 
-
-  % \nocite is fordibben
-  \csundef{nocite}
+\AtEndEnvironment{table}{\gdef\there@is@a@table{}}%
+\AtEndDocument{\ifdefined\there@is@a@table\label{tab:was:used:in:doc}\fi}%
 
 
 %###

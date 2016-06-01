@@ -1,6 +1,5 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{polytech/firstlastpage}[\polytechfiledate\space\polytechfileversion\space Polytech document class sub package]
-\typeout{Package `polytech firstlastpage' \polytechfileversion\space<\polytechfiledate>}
 
 %###
 
@@ -763,6 +762,7 @@
   		\fi%
   		\mainmatter%
   	}%
+  	\setcounter{table}{0}%
 	}%
 	\boolfalse{polytech@allownewpagestartenddoc}% disable newpage, clearpage, cleardoublepage
 }
@@ -944,11 +944,6 @@
   \restoregeometry%
 }
 
-% add last pages at end of document
-\AtEndDocument{
-  \csuse{polytech@makelastpages}
-}
-
 \csdef{polytech@makelastpages}{%
   \ifbool{polytech@bare}{}{%
     % allow unnumbered chapter again
@@ -958,11 +953,11 @@
       \bookmarksetupnext{level=part}%
     	\ifbool{polytech@firstlastonly}{%
     	}{%
-    		\csuse{polytech@output@weeklyreportspart}%
+    		\csuse{polytech@output@weeklyreportspart}%    		
     		\bookmarksetupnext{level=part}%
-    		\printbibliography[heading=bibintoc,type=online,resetnumbers=1,prefixnumbers=WWW,title={\csuse{polytech@output@webography@\csuse{polytech@lang}}}]%
+        \printbibliography[type=online,resetnumbers,prefixnumbers=WWW,title={\csuse{polytech@output@webography@\csuse{polytech@lang}}}]%
     		\bookmarksetupnext{level=part}%
-    		\printbibliography[heading=bibintoc,nottype=online,resetnumbers=1]%
+    		\printbibliography[nottype=online,resetnumbers]%    		
     		\ifbool{polytech@noposter}{%
     		  % no poster required
     		}{%
