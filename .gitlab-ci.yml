@@ -25,6 +25,8 @@ test_16.04_latex_texlive_2015:
 
 deploy:
   stage: deploy
+  only:
+    - tags
   script:
     - ./deploy.sh
 
