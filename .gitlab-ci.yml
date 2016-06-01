@@ -27,8 +27,7 @@ test_16.04_latex_texlive_2015:
 deploy:
   stage: deploy
   script:
-    - export
     - zip -r polytech.zip polytech/
-    - true || curl -v -u $NEXUS_USER:$NEXUS_PASSWORD --upload-file polytech.zip https://nexus.projectsforge.org/repository/gitlab_public_artifacts//org/foo/1.0/foo-1.0.pom
+    - ./upload.sh
 
     
