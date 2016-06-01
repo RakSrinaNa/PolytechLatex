@@ -27,7 +27,6 @@ test_16.04_latex_texlive_2015:
 deploy:
   stage: deploy
   script:
-    - zip -r polytech.zip polytech/
-    - ./upload.sh
+    - ./deploy.sh
 
     
