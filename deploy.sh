@@ -16,7 +16,7 @@ ARCHIVE="polytech-$FILES_VERSION-$FILES_DATE.zip"
 zip -r $ARCHIVE polytech/
 
 # Upload archive
-curl -v -u $NEXUS_USER:$NEXUS_PASSWORD --upload-file $ARCHIVE $BASEURL/$ARCHIVE
+curl -u $NEXUS_USER:$NEXUS_PASSWORD --upload-file $ARCHIVE $BASEURL/$ARCHIVE
 
 # Retreive archive list
 curl -f -u $NEXUS_USER:$NEXUS_PASSWORD $REPOSITORY/list.txt 2> /dev/null > oldlist.txt
@@ -27,7 +27,7 @@ echo $ARCHIVE > list.txt
 # Check for missing files
 cat oldlist.txt | while read f; do
     if [ ! "$ARCHIVE" = "$f" ]; then
-	curl -v -f -u $NEXUS_USER:$NEXUS_PASSWORD $BASEURL/$f
+	curl -f -u $NEXUS_USER:$NEXUS_PASSWORD $BASEURL/$f
 	result=$?
 	if [ "$result" = "0" ]; then
     	    echo "Found $f"
