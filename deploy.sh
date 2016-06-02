@@ -5,7 +5,7 @@ PROJECT_PATH=$(echo ${CI_BUILD_REPO} | sed "s~http[s]*://[^/]*\(.*\).git$~\1~")
 # where is the raw nexus repository
 NEXUS_REPOSITORY="https://nexus.projectsforge.org/repository/gitlab_public_artifacts"
 # compute the base url including branch
-BASEURL="$NEXUS_REPOSITORY/$PROJECT_PATH/$CI_BUILD_REF_NAME/"
+BASEURL="$NEXUS_REPOSITORY/$PROJECT_PATH/"
 
 # Extract version and date from LaTeX document class
 FILES_VERSION=$(grep '\\def\\polytechfileversion' polytech/polytech.cls | sed 's~\\def\\polytechfileversion{\(.*\)}~\1~' )
