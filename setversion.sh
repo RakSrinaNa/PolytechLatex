@@ -9,8 +9,8 @@ VERSION="$1"
 DATE="$(date +%y/%m/%d)"
 echo "Setting version to $VERSION - $DATE"
 
-sed -i "s~\(\\def\\polytechfileversion{\).*\(}\)~\1$VERSION\2~" polytech/polytech.cls
-sed -i "s~\(\\def\\polytechfiledate{\).*\(}\)~\1$DATE\2~" polytech/polytech.cls
+sed -i "s/\(\\polytechfileversion{\)..*\(}\)/\1$VERSION\2/g" polytech/polytech.cls
+sed -i "s~\(\\polytechfiledate{\)..*\(}\)~\1$DATE\2~g" polytech/polytech.cls
 
 git add -u 
 git commit -m "Bump version before tagging"
