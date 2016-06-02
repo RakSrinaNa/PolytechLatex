@@ -424,6 +424,9 @@
 \RequirePackage[calc]{adjustbox} % box sizing utilities
 \RequirePackage{placeins} % to flush pending floats
 \RequirePackage{enumitem} % to typeset enums
+\RequirePackage{array}
+\RequirePackage{multirow}
+
 
 \usetikzlibrary{decorations.pathmorphing,calc,patterns,positioning,fit}
 
