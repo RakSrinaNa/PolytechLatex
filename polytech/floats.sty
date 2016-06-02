@@ -145,13 +145,13 @@
     \ifcsdef{polytech@figure@caption}{%
       \caption{\csuse{polytech@figure@caption}}%
     }{%
-      \polytechwarning{Missing caption on figure}%
+      \polytechwarning{Missing caption on table}%
     }%
   }%
   \ifcsdef{polytech@ref@savedlabel}{%
     \label{\csuse{polytech@ref@savedlabel}}%
   }{%
-    \polytechwarning{Missing label on figure}%
+    \polytechwarning{Missing label on table}%
   }%
   % restore normal \label behavior 
   \global\boolfalse{polytech@ref@savelabel}%
@@ -185,13 +185,13 @@
       \ifcsdef{polytech@figure@caption}{%
         \caption{\csuse{polytech@figure@caption}}%
       }{%
-        \polytechwarning{Missing caption on figure}%
+        \polytechwarning{Missing caption on algorithm}%
       }%
     }%
     \ifcsdef{polytech@ref@savedlabel}{%
       \label{\csuse{polytech@ref@savedlabel}}%
     }{%
-      \polytechwarning{Missing label on figure}%
+      \polytechwarning{Missing label on algorithm}%
     }%
     % restore normal \label behavior 
     \global\boolfalse{polytech@ref@savelabel}%
