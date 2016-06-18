@@ -19,7 +19,7 @@ zip -r $ARCHIVE polytech/
 curl -u $NEXUS_USER:$NEXUS_PASSWORD --upload-file $ARCHIVE $BASEURL/$ARCHIVE
 
 # Retreive archive list
-curl -f -u $NEXUS_USER:$NEXUS_PASSWORD $REPOSITORY/list.txt 2> /dev/null > oldlist.txt
+curl -f -u $NEXUS_USER:$NEXUS_PASSWORD $BASEURL/list.txt 2> /dev/null > oldlist.txt
 
 # Create the new list
 echo $ARCHIVE > list.txt
