@@ -326,27 +326,33 @@
 
 % used to store a defined label
 \newcommand{\polytech@label@newlabel}[1]{%
-  \catcode`\:=12% make : an ordinary letter
-  \csgdef{polytech@label@newlabel@\arabic{polytech@label@counter}}{#1}%
-  \stepcounter{polytech@label@counter}%
+  % switch to english to disable babel active characters like : in french
+  \begin{otherlanguage}{english}%
+    \csgdef{polytech@label@newlabel@\arabic{polytech@label@counter}}{#1}%
+    \stepcounter{polytech@label@counter}%
+  \end{otherlanguage}%
 }
 
 % used to register an used label (\ref, \autoref, ...)
 \newcommand{\polytech@label@register}[1]{%
-  \catcode`\:=12% make : an ordinary letter
-  \csgdef{polytech@label@registered@#1}{}%
+  % switch to english to disable babel active characters like : in french
+  \begin{otherlanguage}{english}%
+    \csgdef{polytech@label@registered@#1}{}%
+  \end{otherlanguage}%
 }
 
 % used to check for unused labels
 \newcommand{\polytech@label@check}{%
-  \catcode`\:=12% make : an ordinary letter
-  \setcounter{polytech@label@loopcounter}{0}%
-  \forloop{polytech@label@loopcounter}{0}{\value{polytech@label@loopcounter} < \value{polytech@label@counter}}{%
-    \ifcsdef{polytech@label@registered@\csuse{polytech@label@newlabel@\arabic{polytech@label@loopcounter}}}{%
-    }{%
-      \polytechwarning{Label defined but unused : \csuse{polytech@label@newlabel@\arabic{polytech@label@loopcounter}}}%
+  % switch to english to disable babel active characters like : in french
+  \begin{otherlanguage}{english}%
+    \setcounter{polytech@label@loopcounter}{0}%
+    \forloop{polytech@label@loopcounter}{0}{\value{polytech@label@loopcounter} < \value{polytech@label@counter}}{%
+      \ifcsdef{polytech@label@registered@\csuse{polytech@label@newlabel@\arabic{polytech@label@loopcounter}}}{%
+      }{%
+        \polytechwarning{Label defined but unused : \csuse{polytech@label@newlabel@\arabic{polytech@label@loopcounter}}}%
+      }%
     }%
-  }%
+  \end{otherlanguage}
 }
 
 \AtEndDocument{
