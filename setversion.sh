@@ -6,7 +6,7 @@ if [ -z "$1" ]; then
 fi
 
 VERSION="$1"
-DATE="$(date +%y/%m/%d)"
+DATE="$(date +%Y/%m/%d)"
 echo "Setting version to $VERSION - $DATE"
 
 sed -i "s/\(\\polytechfileversion{\)..*\(}\)/\1$VERSION\2/g" polytech/polytech.cls
