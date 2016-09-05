@@ -115,7 +115,7 @@
        \draw[line width=0pt,color=polytech@sectionning@chapter@title@border,fill=polytech@sectionning@chapter@title@bg] (0,0) rectangle (\textwidth-2pt,2.5);%
        \draw[color=polytech@sectionning@chapter@num@border,fill=polytech@sectionning@chapter@num@bg] (0.25,0.25) rectangle (3.25,3.25);%
        \ifbool{polytech@titlesec@hasnumber}{%
-         \node[inner sep=2em,color=polytech@sectionning@chapter@num@fg,align=center] at (1.75,1.75) {%
+         \node[inner sep=0em,color=polytech@sectionning@chapter@num@fg,align=center] at (1.75,1.75) {%
             \csuse{polytech@chapter@numberfont}%
             \thechapter%
          };%

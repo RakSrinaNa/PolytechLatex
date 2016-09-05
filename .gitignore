@@ -6,3 +6,9 @@ tests/*/polytech
 builds
 *-blx.bib
 test.pdf
+
+*.aux
+*.bcf
+*.synctex.gz
+*.toc
+
