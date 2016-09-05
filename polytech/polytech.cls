@@ -1,6 +1,6 @@
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
-\def\polytechfileversion{2.1.1}
-\def\polytechfiledate{16/06/18}
+\def\polytechfileversion{2.1.2}
+\def\polytechfiledate{2016/09/05}
 \ProvidesClass{polytech/polytech}[\polytechfiledate\space Polytech document class by Sebastien Aupetit <aupetit@univ-tours.fr>, V\polytechfileversion]
 
 %###
