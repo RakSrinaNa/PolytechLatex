@@ -513,9 +513,9 @@
         \href{\csuse{polytech@company@db@website}}{\url{\csuse{polytech@company@db@websitewithoutprotocol}}}%
       };
       \node[color=black,align=right,anchor=east,inner sep=0.1cm] at (\textwidth - 0.2cm - \fboxrule - \fboxrule,0) {
-        \ifstrequal{\csuse{polytech@company@db@logo}}{}{ }{
+        \ifcsdef{polytech@company@db@logo}{
           \fitimagetobox{0.5\textwidth}{2cm}{\csuse{polytech@company@db@logo}}%
-        }
+        }{}%
       };
   \end{tikzpicture}%
 }
