@@ -955,8 +955,10 @@
     	}{%
     		\csuse{polytech@output@weeklyreportspart}%    		
     		\bookmarksetupnext{level=part}%
-        \printbibliography[type=online,resetnumbers,prefixnumbers=WWW,title={\csuse{polytech@output@webography@\csuse{polytech@lang}}}]%
+    		\newrefcontext[labelprefix=WWW]%
+            \printbibliography[type=online,resetnumbers,title={\csuse{polytech@output@webography@\csuse{polytech@lang}}}]%
     		\bookmarksetupnext{level=part}%
+    		\newrefcontext%
     		\printbibliography[nottype=online,resetnumbers]%    		
     		\ifbool{polytech@noposter}{%
     		  % no poster required
