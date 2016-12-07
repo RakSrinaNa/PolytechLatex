@@ -11,4 +11,4 @@ test.pdf
 *.bcf
 *.synctex.gz
 *.toc
-
+dummy.bib
