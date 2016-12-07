@@ -1,0 +1,10 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{polytech/glossaries}[\polytechfiledate\space\polytechfileversion\space Polytech document class sub package]
+
+\makeindex
+
+% enable glossaries
+\makeglossaries
+
+\preto{\printglossaries}{\booltrue{polytech@allownewpagesection}}
+\appto{\printglossaries}{\boolfalse{polytech@allownewpagesection}}

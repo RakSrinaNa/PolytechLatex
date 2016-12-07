@@ -12,3 +12,8 @@ test.pdf
 *.synctex.gz
 *.toc
 dummy.bib
+latexmkrc
+latexmkrc.*
+*.ist
+*.glo
+*.idx

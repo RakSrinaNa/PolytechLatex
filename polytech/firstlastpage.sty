@@ -945,36 +945,36 @@
 }
 
 % we add a dummy entry to be sure there is at least 1 entry
-\begin{filecontents}{dummy.bib}
-@online{dummy1,
-	title="dummy entry to make biblatex happy"
-}
-@misc{dummy2,
-	title="dummy entry to make biblatex happy"
-}
-\end{filecontents}
+%\begin{filecontents}{dummy.bib}
+%@online{dummy1,
+%	title="dummy entry to make biblatex happy"
+%}
+%@misc{dummy2,
+%	title="dummy entry to make biblatex happy"
+%}
+%\end{filecontents}
 
-\addglobalbib{dummy.bib}
+\addglobalbib{polytech/dummy.bib}
 
 \csdef{blx@warn@bibempty}{}
 
 % print the bibliography handling biblatex deprecation parameter
 \csdef{polytech@printbibliography}{%
-	\ifcsdef{DeclareRefcontext}{
-		\DeclareRefcontext{online}{labelprefix=WWW}
+	\ifcsdef{DeclareRefcontext}{%
+		\DeclareRefcontext{online}{labelprefix=WWW}%
 		\bookmarksetupnext{level=part}%
 		\begin{refcontext}[labelprefix=WWW]%
 			\printbibliography[type=online,resetnumbers,title={\csuse{polytech@output@webography@\csuse{polytech@lang}}}]%
-		\end{refcontext}
+		\end{refcontext}%
 		\bookmarksetupnext{level=part}%
 		\begin{refcontext}[labelprefix=]%
 			\printbibliography[nottype=online,resetnumbers]%    		
-		\end{refcontext}
-	}{
-		\ifcsdef{blx@type@\the\c@refsection @online}{
+		\end{refcontext}%
+	}{%
+		\ifcsdef{blx@type@\the\c@refsection @online}{%
 			\bookmarksetupnext{level=part}%
 			\printbibliography[type=online,prefixnumbers=WWW,resetnumbers,title={\csuse{polytech@output@webography@\csuse{polytech@lang}}}]%
-		}{}
+		}{}%
 		\bookmarksetupnext{level=part}%
 		\printbibliography[nottype=online,resetnumbers]%    		
 	}
@@ -990,7 +990,9 @@
     	\ifbool{polytech@firstlastonly}{%
     	}{%
     		\csuse{polytech@output@weeklyreportspart}%    		
-    		\csuse{polytech@printbibliography}
+    		\csuse{polytech@printbibliography}%
+    		\printglossaries%
+    		\printindex%
     		\ifbool{polytech@noposter}{%
     		  % no poster required
     		}{%
