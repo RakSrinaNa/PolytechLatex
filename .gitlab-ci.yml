@@ -1,6 +1,6 @@
 
-test_14.04_latex_default:
-  image: projectsforge/ubuntu-14.04-latex-default
+test_16.04_latex_texlive_2015:
+  image: projectsforge/ubuntu-16.04-latex-texlive-2015
   stage: test
   script:
     - tests/runtests.sh
@@ -11,17 +11,6 @@ test_16.04_latex_default:
   script:
     - tests/runtests.sh
 
-test_14.04_latex_texlive_2015:
-  image: projectsforge/ubuntu-14.04-latex-texlive-2015
-  stage: test
-  script:
-    - tests/runtests.sh
-
-test_16.04_latex_texlive_2015:
-  image: projectsforge/ubuntu-16.04-latex-texlive-2015
-  stage: test
-  script:
-    - tests/runtests.sh
 
 deploy:
   stage: deploy

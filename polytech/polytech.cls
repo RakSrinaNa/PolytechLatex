@@ -466,7 +466,6 @@ $cleanup_includes_generated = 1;
 \RequirePackage{enumitem} % to typeset enums
 \RequirePackage{array}
 \RequirePackage{multirow}
-\RequirePackage{makeidx}
 
 
 \usetikzlibrary{decorations.pathmorphing,calc,patterns,positioning,fit}
@@ -496,7 +495,7 @@ $cleanup_includes_generated = 1;
 
 \RequirePackage{bookmark}
 \RequirePackage{pageslts} % to have total page count of the document. Must be at the end for proper functionning
-\RequirePackage{glossaries}
+\RequirePackage[acronyms]{glossaries}
 
 % colors
 \definecolor{polytechdarkblue}{RGB}{0,74,117}
@@ -549,6 +548,7 @@ $cleanup_includes_generated = 1;
 \RequirePackage{polytech/weeklyreports}
 \RequirePackage{polytech/listings}
 \RequirePackage{polytech/poster}
+\RequirePackage{polytech/index}
 \RequirePackage{polytech/glossaries}
 
 \setlength{\parskip}{1ex plus 0.2ex minus 0.2ex}

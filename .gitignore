@@ -17,3 +17,12 @@ latexmkrc.*
 *.ist
 *.glo
 *.idx
+*.acn 
+*.acr 
+*.alg 
+*.fdb_latexmk 
+*.fls 
+*.glg 
+*.gls 
+*.ilg 
+*.ind
