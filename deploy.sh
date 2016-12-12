@@ -41,7 +41,7 @@ done
 # Create the index
 echo "<html><body><h1>Liste des fichiers disponibles</h1><ul>" > index.html
 FIRST=1
-cat list.txt | sort -r | while read f; do
+cat list.txt | sort -r --version-sort | while read f; do
     if [ "$FIRST" = "1" ]; then
 	FIRST=0
 	echo "<li><a href='$f'><b><font color="red">$f</font><b></a></li>" >> index.html
