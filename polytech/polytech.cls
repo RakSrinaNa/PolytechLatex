@@ -16,11 +16,11 @@ $pdflatex="pdflatex -synctex=1 -interaction=nonstopmode --shell-escape %O %S";  
 add_cus_dep( 'glo', 'gls', 0, 'makeglossaries' );
 add_cus_dep( 'acn', 'acr', 0, 'makeglossaries' );
 sub makeglossaries {
-	if ( $silent ) {
-		system( "makeglossaries -q \"$_[0]\"" );
-	} else {
-		system( "makeglossaries \"$_[0]\"" );
-	}	
+  if ( $silent ) {
+    system( "makeglossaries -q \"$_[0]\"" );
+  } else {
+    system( "makeglossaries \"$_[0]\"" );
+  }	
 }
 push @generated_exts, 'glo', 'gls', 'glg';
 push @generated_exts, 'acn', 'acr', 'alg';
@@ -28,7 +28,7 @@ $clean_ext .= '.ist';
 
 add_cus_dep( 'uml', 'png', 0, 'makeplantuml' );
 sub makeplantuml {
-	system( "java -jar polytech/plantuml.jar -tpng \"$_[0].uml\" \"$_[0].png\"" );
+  system( "java -jar polytech/plantuml.jar -tpng \"$_[0].uml\" \"$_[0].png\"" );
 }	
 
 rename 'latexmkrc.REMOVE_MY_EXTENSION', 'latexmkrc' if -e 'latexmkrc.REMOVE_MY_EXTENSION';

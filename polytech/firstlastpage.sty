@@ -958,10 +958,13 @@
 
 \csdef{blx@warn@bibempty}{}
 
+\ifcsdef{DeclareRefcontext}{%
+	\DeclareRefcontext{online}{labelprefix=WWW}%
+}{}	
+
 % print the bibliography handling biblatex deprecation parameter
 \csdef{polytech@printbibliography}{%
 	\ifcsdef{DeclareRefcontext}{%
-		\DeclareRefcontext{online}{labelprefix=WWW}%
 		\bookmarksetupnext{level=part}%
 		\begin{refcontext}[labelprefix=WWW]%
 			\printbibliography[type=online,resetnumbers,title={\csuse{polytech@output@webography@\csuse{polytech@lang}}}]%
