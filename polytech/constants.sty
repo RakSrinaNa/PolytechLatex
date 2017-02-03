@@ -54,7 +54,7 @@
 %%% TYPE OF REPORT %%%
 \csdef{polytech@typereport@name@none}{}
 
-
+% PeiP
 \csdef{polytech@typereport@name@peip1}{Projet Parcours des écoles d'ingénieurs Polytech 1}
 \csdef{polytech@typereport@hook@peip1}{%
   \schooldepartment{peip}
@@ -75,7 +75,7 @@
   \csgdef{polytech@students@defaultgrade}{peip1}
 }
 
-
+%DI
 \csdef{polytech@typereport@name@prddi5}{Projet Recherche \& Développement}
 \csdef{polytech@typereport@hook@prddi5}{%
   \schooldepartment{di}%
@@ -143,6 +143,73 @@
   \csgdef{polytech@students@defaultgrade}{di5}
   \csgdef{polytech@academicsupervisors@defaultaffiliation}{di}%
 }
+
+%DEE
+\csdef{polytech@typereport@name@pfedee5}{Projet de Fin d'\'Etudes}
+\csdef{polytech@typereport@hook@pfedee5}{%
+  \schooldepartment{di}%
+  \csgdef{polytech@students@defaultgrade}{dee5}%
+  \csgdef{polytech@academicsupervisors@defaultaffiliation}{dee}%
+}
+\csdef{polytech@typereport@name@bibtex@pfedee5}{Projet de Fin d'\'Etudes}
+
+\csdef{polytech@typereport@name@pldee5}{Projet libre}
+\csdef{polytech@typereport@hook@pldee5}{%
+  \schooldepartment{dee}
+  \csgdef{polytech@students@defaultgrade}{dee5}%
+  \csgdef{polytech@academicsupervisors@defaultaffiliation}{dee}%
+}
+
+\csdef{polytech@typereport@name@pcidee4}{Projet collectif intensif}
+\csdef{polytech@typereport@hook@pcidee4}{%
+  \schooldepartment{di}%
+  \csgdef{polytech@students@defaultgrade}{dee4}%
+  \csgdef{polytech@academicsupervisors@defaultaffiliation}{dee}%
+}
+
+\csdef{polytech@typereport@name@pldee4}{Projet libre}
+\csdef{polytech@typereport@hook@pldee4}{%
+  \schooldepartment{dee}
+  \csgdef{polytech@students@defaultgrade}{dee4}%
+  \csgdef{polytech@academicsupervisors@defaultaffiliation}{dee}%
+}
+
+\csdef{polytech@typereport@name@pldee3}{Projet libre}
+\csdef{polytech@typereport@hook@pldee3}{%
+  \schooldepartment{dee}
+  \csgdef{polytech@students@defaultgrade}{dee3}%
+  \csgdef{polytech@academicsupervisors@defaultaffiliation}{dee}%
+}
+
+\csdef{polytech@typereport@name@pcrdee3}{Projet de conception et de réalisation}
+\csdef{polytech@typereport@hook@pcrdee3}{%
+  \schooldepartment{dee}
+  \csgdef{polytech@students@defaultgrade}{dee3}%
+  \csgdef{polytech@academicsupervisors@defaultaffiliation}{dee}%
+}
+
+\csdef{polytech@typereport@name@stagedee3}{Rapport de stage}
+\csdef{polytech@typereport@hook@stagedee3}{%
+  \schooldepartment{dee}
+  \csgdef{polytech@students@defaultgrade}{dee3}
+  \csgdef{polytech@academicsupervisors@defaultaffiliation}{dee}%
+}
+
+\csdef{polytech@typereport@name@stagedee4}{Rapport de stage}
+\csdef{polytech@typereport@hook@stagedee4}{%
+  \schooldepartment{dee}
+  \csgdef{polytech@students@defaultgrade}{dee4}
+  \csgdef{polytech@academicsupervisors@defaultaffiliation}{dee}%
+}
+
+\csdef{polytech@typereport@name@stagedee5}{Rapport de stage de fin d'études}
+\csdef{polytech@typereport@hook@stagedee5}{%
+  \schooldepartment{dee}
+  \csgdef{polytech@students@defaultgrade}{dee5}
+  \csgdef{polytech@academicsupervisors@defaultaffiliation}{dee}%
+}
+
+
 
 %%% CONFIDENTIAL %%%
 \csdef{polytech@output@confidential@fr}{Confidentiel}
