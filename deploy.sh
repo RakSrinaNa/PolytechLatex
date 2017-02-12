@@ -1,11 +1,9 @@
 #!/bin/bash
 
 # extract project path in gitlab
-PROJECT_PATH=$(echo ${CI_BUILD_REPO} | sed "s~http[s]*://[^/]*\(.*\).git$~\1~")
-# where is the raw nexus repository
-NEXUS_REPOSITORY="https://nexus.projectsforge.org/repository/gitlab_public_artifacts"
-# compute the base url including branch
-BASEURL="$NEXUS_REPOSITORY/$PROJECT_PATH/"
+PROJECT_PATH=`echo ${CI_BUILD_REPO} | sed "s~http[s]*://[^/]*\(.*\).git$~\1~" | sed 's-/--'` 
+
+SFTP="sftp -P 2223 gitlab@static.projectsforge.org:/gitlab/"
 
 # Extract version and date from LaTeX document class
 FILES_VERSION=$(grep '\\def\\polytechfileversion' polytech/polytech.cls | sed 's~\\def\\polytechfileversion{\(.*\)}~\1~' )
@@ -16,10 +14,26 @@ ARCHIVE="polytech-$FILES_VERSION-$FILES_DATE.zip"
 zip -r $ARCHIVE polytech/
 
 # Upload archive
-curl -u $NEXUS_USER:$NEXUS_PASSWORD --upload-file $ARCHIVE $BASEURL/$ARCHIVE
+(
+    IFS='/' read -r -a array <<< "$PROJECT_PATH"; 
+    for element in "${array[@]}"; do 
+        echo "mkdir $element";
+        echo "cd $element"; 
+    done
+    echo "put $ARCHIVE"
+) | $SFTP
+
 
 # Retreive archive list
-curl -f -u $NEXUS_USER:$NEXUS_PASSWORD $BASEURL/list.txt 2> /dev/null > oldlist.txt
+rm oldlist.txt
+(
+    IFS='/' read -r -a array <<< "$PROJECT_PATH"; 
+    for element in "${array[@]}"; do 
+        echo "mkdir $element";
+        echo "cd $element"; 
+    done
+    echo "get list.txt oldlist.txt"
+) | $SFTP
 
 # Create the new list
 echo $ARCHIVE > list.txt
@@ -51,10 +65,16 @@ cat list.txt | sort -r --version-sort | while read f; do
 done
 echo "</ul></body></html>" >> index.html
 
-# Upload the new list.txt
-curl -f -u $NEXUS_USER:$NEXUS_PASSWORD --upload-file list.txt $BASEURL/list.txt
-# Upload the new index.html
-curl -f -u $NEXUS_USER:$NEXUS_PASSWORD --upload-file index.html $BASEURL/index.html
+# Upload files
+(
+    IFS='/' read -r -a array <<< "$PROJECT_PATH"; 
+    for element in "${array[@]}"; do 
+        echo "mkdir $element";
+        echo "cd $element"; 
+    done
+    echo "put list.txt"
+    echo "put index.html"
+) | $SFTP
 
 
 
