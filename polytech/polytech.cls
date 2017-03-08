@@ -369,9 +369,9 @@ $cleanup_includes_generated = 1;
   \let\polytech@newpage@oldpart\part
   
   \RenewDocumentCommand{\part}{som}{%
+    \booltrue{polytech@allownewpagesection}%
     \csuse{FloatBarrier}% flush floats before a new part
     \boolfalse{polytech@ref@section}%
-    \booltrue{polytech@allownewpagesection}%
     \IfBooleanTF{#1}{% starred
       \polytech@newpage@oldpart*{#3}%
     }{%
