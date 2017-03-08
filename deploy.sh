@@ -38,10 +38,12 @@ rm oldlist.txt
 # Create the new list
 echo $ARCHIVE > list.txt
 
+BASEURL="https://static.projectsforge.org/gitlab/polytech/polytech/"
+
 # Check for missing files
 cat oldlist.txt | while read f; do
     if [ ! "$ARCHIVE" = "$f" ]; then
-	curl -f -u $NEXUS_USER:$NEXUS_PASSWORD $BASEURL/$f
+	curl -f -u $NEXUS_USER:$NEXUS_PASSWORD $BASEURL/$f > /dev/null 2> /dev/null
 	result=$?
 	if [ "$result" = "0" ]; then
     	    echo "Found $f"
