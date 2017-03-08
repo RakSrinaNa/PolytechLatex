@@ -334,8 +334,8 @@ $cleanup_includes_generated = 1;
 % replace \chapter definition to automatically register unnumbered chapter in toc and set heading marks
 % need to be before hyperref
 \RenewDocumentCommand{\chapter}{som}{%  
-  \csuse{FloatBarrier}% flush floats before a new chapter
   \booltrue{polytech@allownewpagesection}%
+  \csuse{FloatBarrier}% flush floats before a new chapter
   \boolfalse{polytech@ref@section}%
   \booltrue{polytech@ref@inchapter}%
   \polytech@chapter%
