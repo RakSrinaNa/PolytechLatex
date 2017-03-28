@@ -52,7 +52,7 @@
             \polytechwarning{Reference '#1': You can not self reference this unnumbered chapter.}%
             \textbf{ERROR}%
           }{%
-          }
+          }%
         }{%
         }%
       }%
@@ -77,22 +77,21 @@
 	      {%
 	        \csuse{polytech@ref@from@appendix@\polytech@lang}{\polytech@ref@chapter}%
 	      }%
-	      \xspace%
 	    }%
 	  }%
 	 }{% it is a subfloat subref => add nothing
-	 }%
+	 }%	 
 }
 
 % Get the chapter/appendix of ref
-\newcommand{\refchapterof}[1]{  
-	\zref@def@extract{\polytech@ref@chapter}{#1}{chapter}%
-	\zref@def@extract{\polytech@ref@chapternumber}{#1}{chapternumber}%
-	\zref@def@extract{\polytech@ref@isappendix}{#1}{isappendix}%
-	\zref@def@extract{\polytech@ref@issection}{#1}{issection}%
-	\zref@def@extract{\polytech@ref@isequation}{#1}{isequation}%
+\newcommand{\refchapterof}[1]{%  
+  \zref@def@extract{\polytech@ref@chapter}{#1}{chapter}%
+  \zref@def@extract{\polytech@ref@chapternumber}{#1}{chapternumber}%
+  \zref@def@extract{\polytech@ref@isappendix}{#1}{isappendix}%
+  \zref@def@extract{\polytech@ref@issection}{#1}{issection}%
+  \zref@def@extract{\polytech@ref@isequation}{#1}{isequation}%
   \zref@def@extract{\polytech@ref@issubfloat}{#1}{issubfloat}%
-	\ifcsempty{polytech@ref@chapternumber}{%
+  \ifcsempty{polytech@ref@chapternumber}{%
     \protect\G@refundefinedtrue%
     \nfss@text{\reset@font\bfseries ??}%
     \polytechwarning{Reference '#1': Can not compute referenced chapter from undefined reference.}% 
@@ -109,7 +108,8 @@
 	    }%
 	    \xspace%
 	  }%
-	}{}%
+	}{%
+	}%
 }
 
 % redefine label to store additional data with zref
@@ -161,7 +161,7 @@
 
 \def\polytech@ref@newrefx#1{%
 	\begingroup%
-		\shortref{#1}%
+		\polytech@oldref{#1}%
 		\Hy@safe@activestrue%
 		\expandafter\polytech@ref@addchapter \csname r@#1\endcsname{#1}%
 	\endgroup%
@@ -193,7 +193,8 @@
 	  \edef\polytech@ref@thistype{\expandafter\polytech@ref@type \polytech@ref@thisref\\}%
 	  \Hy@safe@activesfalse%
 		\ifcsdef{polytech@ref@isequation@\polytech@ref@thistype}{%
-			\textup{\tagform@{\polytech@oldref{#2}}}\polytech@ref@refchapter{#2}%
+			\textup{\tagform@{\polytech@oldref{#2}}}%
+			\polytech@ref@refchapter{#2}%
 		}{%
 		  \polytechwarning{Reference '#2': This is not an equation. Use \string\ref\space or \string\autoref\space instead.}%
 		  \textbf{ERROR}%
@@ -273,6 +274,7 @@
   	  \polytech@ref@refchapter{#1}%
   	}%
   	\polytech@label@register{#1}%
+  	\xspace%
   }
   \robustify{\autoref} 
   
@@ -316,6 +318,7 @@
   \renewcommand{\eqref}[1]{%
     \polytech@ref@eqref{#1}%
     \polytech@label@register{#1}%
+    \xspace%
   }
   \robustify{\eqref}
 }
