@@ -967,19 +967,19 @@
 	\ifcsdef{DeclareRefcontext}{%
 		\bookmarksetupnext{level=part}%
 		\begin{refcontext}[labelprefix=WWW]%
-			\printbibliography[type=online,resetnumbers,title={\csuse{polytech@output@webography@\csuse{polytech@lang}}}]%
+			\printbibliography[type=online,heading=bibnumbered,title={\csuse{polytech@output@webography@\csuse{polytech@lang}}}]%
 		\end{refcontext}%
 		\bookmarksetupnext{level=part}%
 		\begin{refcontext}[labelprefix=]%
-			\printbibliography[nottype=online,resetnumbers]%    		
+			\printbibliography[nottype=online,heading=bibnumbered]%    		
 		\end{refcontext}%
 	}{%
 		\ifcsdef{blx@type@\the\c@refsection @online}{%
 			\bookmarksetupnext{level=part}%
-			\printbibliography[type=online,prefixnumbers=WWW,resetnumbers,title={\csuse{polytech@output@webography@\csuse{polytech@lang}}}]%
+			\printbibliography[type=online,prefixnumbers=WWW,heading=bibnumbered,title={\csuse{polytech@output@webography@\csuse{polytech@lang}}}]%
 		}{}%
 		\bookmarksetupnext{level=part}%
-		\printbibliography[nottype=online,resetnumbers]%    		
+		\printbibliography[nottype=online,heading=bibnumbered]%    		
 	}
 }
 
