@@ -635,3 +635,47 @@ $cleanup_includes_generated = 1;
 %        {\ListProperties(Progressive*=3ex, Start1=1)}
 %        {}
 %        {}
+\RequirePackage{ifthen}
+\RequirePackage{lmodern}
+\RequirePackage{textcomp}
+
+\RequirePackage{float}
+\RequirePackage{ltablex}
+\RequirePackage{graphicx}
+\RequirePackage[justification=centering]{caption}
+
+\RequirePackage{tabularx}
+\RequirePackage{dirtree}
+
+\newcommand{\img}[4][]{%
+	\begin{center}
+		\centering%
+		\IfFileExists{./Images/#2}{%
+			\ifthenelse{\equal{#4}{}}{
+				\includegraphics[width=\textwidth,keepaspectratio]{./Images/#2}%
+			}{
+				\includegraphics[scale=#4]{./Images/#2}%
+			}
+		}{%
+			\PackageError{TODO}{Image #2 missing!}{#3}%
+			$\boxed{Image\;#1\;missing}$%
+		}%
+		\captionof{figure}{#3}%
+		\label{fig:#1}%
+	\end{center}
+}
+\newcommand{\codec}[1]{\texttt{#1}}
+\newcommand{\graph}[2][]{
+	\begin{figure}[H]%
+		\centering%
+		\IfFileExists{./Graphs/#2.tex}{%
+			\input{./Graphs/#2.tex}%
+		}{%
+			\PackageError{TODO}{Graph #2 missing!}{#2}%
+			$\boxed{Graph\;#2\;missing}$%
+		}%
+		\captionof{figure}{#1}%
+		\label{gr:#2}%
+	\end{figure}%
+}
+
