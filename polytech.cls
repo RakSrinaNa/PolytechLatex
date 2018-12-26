@@ -342,7 +342,7 @@ $cleanup_includes_generated = 1;
   \IfBooleanTF{#1}{% starred
     % if unnumbered appendix => error
     \ifbool{polytech@ref@appendix}{%
-      \polytechfatalerror{Appendix chapter must be numbered. \string\chapter* is forbidden here.}%
+      %\polytechfatalerror{Appendix chapter must be numbered. \string\chapter* is forbidden here.}%
     }{}%
     \global\booltrue{polytech@ref@unnumberedchapter}%
     \@schapter{#3}%
@@ -455,9 +455,9 @@ $cleanup_includes_generated = 1;
 \RequirePackage{fancyvrb}
 \RequirePackage{makerobust}
 \RequirePackage[figure,table,lstlisting]{totalcount}
-\RequirePackage[lined,boxed]{algorithm2e}
+%\RequirePackage[lined,boxed]{algorithm2e}
 % to count algorithm using totalcount
-\DeclareTotalCounter{algocf}
+%\DeclareTotalCounter{algocf}
 \RequirePackage{pax} % for proper handling of pdfpages with hyperref
 \RequirePackage{pdfpages}
 \RequirePackage[user]{zref} % allow for better \ref and  \label
@@ -647,6 +647,17 @@ $cleanup_includes_generated = 1;
 \RequirePackage{tabularx}
 \RequirePackage{dirtree}
 
+\RequirePackage{xargs}
+\RequirePackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
+\newcommandx{\todoo}[2][1=]{%
+	\todo[linecolor=red,backgroundcolor=red!25,bordercolor=red,#1]{#2}%
+	%\PackageError{MCC}{TODO}{#2}%
+}
+\newcommandx{\todooi}[2][1=]{%
+	\todo[linecolor=red,backgroundcolor=red!25,bordercolor=red,inline,inlinewidth=0.9\textwidth,#1]{#2}%
+	%\PackageError{MCC}{TODO}{#2}%
+}
+
 \newcommand{\img}[4][]{%
 	\begin{center}
 		\centering%
@@ -654,11 +665,11 @@ $cleanup_includes_generated = 1;
 			\ifthenelse{\equal{#4}{}}{
 				\includegraphics[width=\textwidth,keepaspectratio]{./Images/#2}%
 			}{
-				\includegraphics[scale=#4]{./Images/#2}%
+				\includegraphics[#4]{./Images/#2}%
 			}
 		}{%
-			\PackageError{TODO}{Image #2 missing!}{#3}%
-			$\boxed{Image\;#1\;missing}$%
+			\missingfigure{#2 - #3}
+			%\PackageError{MCC}{TODO}{Image #2}%
 		}%
 		\captionof{figure}{#3}%
 		\label{fig:#1}%
@@ -671,11 +682,90 @@ $cleanup_includes_generated = 1;
 		\IfFileExists{./Graphs/#2.tex}{%
 			\input{./Graphs/#2.tex}%
 		}{%
-			\PackageError{TODO}{Graph #2 missing!}{#2}%
-			$\boxed{Graph\;#2\;missing}$%
+			\missingfigure{Graph #2 - #1}
+			%\PackageError{MCC}{TODO}{Graph #2}%
 		}%
 		\captionof{figure}{#1}%
 		\label{gr:#2}%
 	\end{figure}%
 }
 
+\RequirePackage{algorithm}
+%\RequirePackage{algorithmicx}
+\RequirePackage{algpseudocode}
+\RequirePackage{mathtools}
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}%
+\DeclarePairedDelimiter\norm{\lVert}{\rVert}%
+\makeatletter
+	\let\oldabs\abs
+	\def\abs{\@ifstar{\oldabs}{\oldabs*}}
+	\let\oldnorm\norm
+	\def\norm{\@ifstar{\oldnorm}{\oldnorm*}}
+\makeatother
+
+\newcommand{\tend}[1]{\underset{#1}{\longrightarrow}}
+\newcommand{\prive}[1]{\setminus\left\lbrace #1\right\rbrace}
+\newcommand{\parmi}[2]{\binom{#2}{#1}}
+\newcommand{\ssi}{si et seulement si~}
+\newcommand{\va}{variable aléatoire~}
+\newcommand{\vas}{variables aléatoires~}
+\newcommand{\qfc}{quasi-fortement connexe~}
+\newcommand{\smallo}[1]{\overline{o}\left(#1\right)}
+\newcommand{\bigo}[1]{\underline{O}\left(#1\right)}
+\newcommand{\cqfd}{\begin{flushright}\textit{Quod erat demonstrandum}~\qedsymbol\end{flushright}}
+\newcommand{\tq}{\text{ tq }}
+\newcommand{\rr}{\mathbb{R}}
+\newcommand{\kk}{\mathbb{K}}
+\newcommand{\cc}{\mathbb{C}}
+\newcommand{\nn}{\mathbb{N}}
+\newcommand{\zz}{\mathbb{Z}}
+\newcommand{\erange}[2]{\llbracket #1 ; #2 \rrbracket}
+\newcommand{\e}[1]{e^{#1}}
+\newcommand{\rg}[1]{\text{rg}\left(#1\right)}
+\newcommand{\dl}[2]{DL_{#1}(#2)}
+\newcommand{\PP}[1]{P\left( #1 \right)}
+\newcommand{\PS}[2]{P_{#1}\left( #2 \right)}
+\newcommand{\BR}[2]{%
+	\par\smallskip%
+   	\noindent\makebox[\textwidth][l]{$\left.
+    	\begin{minipage}{\textwidth}
+    	#1
+    	\end{minipage}
+  		\right\}\text{#2}\nulldelimiterspace=0pt$
+  	}\par\smallskip
+}
+\newcommand{\set}[1]{\left\{#1\right\}}
+\newcommand{\cpl}[2]{\left(#1,#2\right)}
+
+\floatplacement{figure}{H}
+\floatplacement{table}{H}
+
+\everymath{\displaystyle}
+
+\definecolor{mcc@delim}{RGB}{20,105,176}
+\colorlet{mcc@punct}{red!60!black}
+\colorlet{mcc@numb}{magenta!60!black}
+
+\lstdefinelanguage{json}{
+	morestring=[b]",
+	literate=%
+	{:}{{{\color{mcc@punct}{:}}}}{1}
+	{,}{{{\color{mcc@punct}{,}}}}{1}
+	{\{}{{{\color{mcc@delim}{\{}}}}{1}
+	{\}}{{{\color{mcc@delim}{\}}}}}{1}
+	{[}{{{\color{mcc@delim}{[}}}}{1}
+	{]}{{{\color{mcc@delim}{]}}}}{1},
+	literate=%
+	*{0}{{{\color{mcc@numb}0}}}{1}
+	{1}{{{\color{mcc@numb}1}}}{1}
+	{2}{{{\color{mcc@numb}2}}}{1}
+	{3}{{{\color{mcc@numb}3}}}{1}
+	{4}{{{\color{mcc@numb}4}}}{1}
+	{5}{{{\color{mcc@numb}5}}}{1}
+	{6}{{{\color{mcc@numb}6}}}{1}
+	{7}{{{\color{mcc@numb}7}}}{1}
+	{8}{{{\color{mcc@numb}8}}}{1}
+	{9}{{{\color{mcc@numb}9}}}{1}
+}
+
+\newsourceformat{json}{JSON}
