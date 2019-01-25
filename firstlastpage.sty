@@ -647,12 +647,11 @@
 	}{}%
 	{%
   	\small%
-  	\begin{longtabu}{|X[-1,c]X[c]X[c,-1]|}%
+  	\begin{tabularx}{\textwidth}{@{}|*3Y|@{}}%
   		\hline%
-  		\rowfont{\bfseries}%
-   		\csuse{polytech@contributorspage@name@\csuse{polytech@lang}}&%
-   		\csuse{polytech@contributorspage@mail@\csuse{polytech@lang}}&%
-   		\csuse{polytech@contributorspage@quality@\csuse{polytech@lang}}\\\hline%
+   		\textbf{\csuse{polytech@contributorspage@name@\csuse{polytech@lang}}}&%
+   		\textbf{\csuse{polytech@contributorspage@mail@\csuse{polytech@lang}}}&%
+   		\textbf{\csuse{polytech@contributorspage@quality@\csuse{polytech@lang}}}\\\hline%
    		\endhead
    		\csuse{polytech@output@students@split}\hline%
   		\ifcsdef{polytech@output@academicsupervisors@split}{%
@@ -661,7 +660,7 @@
   		\ifcsdef{polytech@output@industrialsupervisors@split}{%
   			\csuse{polytech@output@industrialsupervisors@split}\hline%
   		}{}%
-  	\end{longtabu}%
+  	\end{tabularx}%
   	\vfill%
 	}%
 	%\newpage%

@@ -446,7 +446,7 @@ $cleanup_includes_generated = 1;
 \RequirePackage{fancybox}
 \RequirePackage{longtable}
 \RequirePackage{colortbl}
-\RequirePackage{tabu}
+%\RequirePackage{tabu}
 \RequirePackage{lscape}
 \RequirePackage{comment}
 \RequirePackage{tikz}
@@ -578,8 +578,6 @@ $cleanup_includes_generated = 1;
 }
 
 \renewcommand{\arraystretch}{1.2}
-\extrarowsep=1mm
-\tabulinesep=1mm
 
 % patch \addcontentsline to remove empty chapter from the list of figures and tables
 
@@ -645,6 +643,8 @@ $cleanup_includes_generated = 1;
 \RequirePackage[justification=centering]{caption}
 
 \RequirePackage{tabularx}
+\newcolumntype{Y}{>{\centering\arraybackslash}X}
+
 \RequirePackage{dirtree}
 
 \RequirePackage{xargs}
