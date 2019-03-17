@@ -767,5 +767,13 @@ $cleanup_includes_generated = 1;
 	{8}{{{\color{mcc@numb}8}}}{1}
 	{9}{{{\color{mcc@numb}9}}}{1}
 }
+\lstdefinelanguage{csv}{
+	literate=%
+	{;}{{{\color{mcc@punct}{;}}}}{1}
+	{,}{{{\color{mcc@punct}{,}}}}{1}
+}
 
 \newsourceformat{json}{JSON}
+\newsourceformat{csv}{CSV}
+
+\def\checkmark{\tikz\fill[scale=0.4](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;} 
