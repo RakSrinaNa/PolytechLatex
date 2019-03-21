@@ -565,7 +565,7 @@ $cleanup_includes_generated = 1;
 \widowpenalty=300
 \clubpenalty=300
 
-\setcounter{tocdepth}{3}
+\setcounter{tocdepth}{5}
 \renewcommand{\@dotsep}{0.1}
 \setcounter{secnumdepth}{3}
 
@@ -621,7 +621,7 @@ $cleanup_includes_generated = 1;
 \ifbool{polytech@twoside}{}{\renewcommand{\cleardoublepage}{\clearpage}}
 
 % \nocite is fordibben
-\csundef{nocite}
+%\csundef{nocite}
 
 % allow line break on any character
 \renewcommand{\UrlBreaks}{\do\-\do\&\do\=\do\_\do\+\do\a\do\b\do\c\do\d\do\e\do\f\do\g\do\h\do\i\do\j\do\k\do\l\do\m\do\n\do\o\do\p\do\q\do\r\do\s\do\t\do\u\do\v\do\w\do\x\do\y\do\z\do\A\do\B\do\C\do\D\do\E\do\F\do\G\do\H\do\I\do\J\do\K\do\L\do\M\do\N\do\O\do\P\do\Q\do\R\do\S\do\T\do\U\do\V\do\W\do\X\do\Y\do\Z}
@@ -777,3 +777,4 @@ $cleanup_includes_generated = 1;
 \newsourceformat{csv}{CSV}
 
 \def\checkmark{\tikz\fill[scale=0.4](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;} 
+\raggedbottom
