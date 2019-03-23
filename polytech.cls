@@ -442,7 +442,7 @@ $cleanup_includes_generated = 1;
 \RequirePackage{amsfonts}
 \RequirePackage{marvosym}
 \RequirePackage{stmaryrd}
-\RequirePackage[final]{listings}[2015/06/04]
+\RequirePackage[final]{listings}
 \RequirePackage{fancybox}
 \RequirePackage{longtable}
 \RequirePackage{colortbl}
