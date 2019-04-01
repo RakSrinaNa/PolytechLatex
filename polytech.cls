@@ -663,7 +663,7 @@ $cleanup_includes_generated = 1;
 				\includegraphics[#4]{./Images/#2}%
 			}
 		}{%
-			\missingfigure{#2 - #3}
+			\missingfigure{./Images/#2 - #3}
 			%\PackageError{MCC}{TODO}{Image #2}%
 		}%
 		\captionof{figure}{#3}%
