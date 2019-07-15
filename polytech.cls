@@ -504,10 +504,10 @@
 \RequirePackage{polytech/sectionning}
 \RequirePackage{polytech/floats}
 \RequirePackage{polytech/weeklyreports}
-\RequirePackage{polytech/listings}
+\RequirePackage{polytech/pollistings}
 \RequirePackage{polytech/poster}
 \RequirePackage{polytech/index}
-\RequirePackage{polytech/glossaries}
+\RequirePackage{polytech/polglossaries}
 
 \setlength{\parskip}{1ex plus 0.2ex minus 0.2ex}
 \setlength{\topsep}{1pt plus 1pt minus 1pt}
