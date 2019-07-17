@@ -32,24 +32,26 @@
 }
 
 \newcommand{\img}[4][]{%
-	\begin{center}
-		\centering%
-		\IfFileExists{./Images/#2}{%
-			\ifthenelse{\equal{#4}{}}{
-				\includegraphics[width=\textwidth,keepaspectratio]{./Images/#2}%
+	\ifbool{polytech@noimg}{}{
+		\begin{center}
+			\centering%
+			\IfFileExists{./Images/#2}{%
+				\ifthenelse{\equal{#4}{}}{
+					\includegraphics[width=\textwidth,keepaspectratio]{./Images/#2}%
+				}{
+					\includegraphics[#4]{./Images/#2}%
+				}
+			}{%
+				\missingfigure{./Images/#2 - #3}
+				%\PackageError{MCC}{TODO}{Image #2}%
+			}%
+			\captionof{figure}{#3}%
+			\ifthenelse{\equal{#1}{}}{
 			}{
-				\includegraphics[#4]{./Images/#2}%
+				\label{fig:#1}%
 			}
-		}{%
-			\missingfigure{./Images/#2 - #3}
-			%\PackageError{MCC}{TODO}{Image #2}%
-		}%
-        \captionof{figure}{#3}%
-        \ifthenelse{\equal{#1}{}}{
-        }{
-            \label{fig:#1}%
-        }
-	\end{center}
+		\end{center}
+	}
 }
 \newcommand{\codec}[1]{\texttt{#1}}
 \newcommand{\graph}[2][]{

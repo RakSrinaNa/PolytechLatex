@@ -93,6 +93,9 @@
 \newbool{polytech@onlyposter}
 \DeclareOption{onlyposter}{\booltrue{polytech@onlyposter}\booltrue{polytech@poster}}
 
+\newbool{polytech@noimg}
+\DeclareOption{noimg}{\booltrue{polytech@noimg}}
+
 \DeclareOption*{\PackageWarning{polytech}{Unknown option `\CurrentOption'}}
 
 \ProcessOptions\relax
