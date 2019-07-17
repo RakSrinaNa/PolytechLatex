@@ -161,20 +161,43 @@
 }
 
 \newcommand{\polytech@newsourceformat@code}[2]{
-	\expandafter\newcommand\csname #1\endcsname[2][]{\texorpdfstring{\lstinline[style=polytech@lst@inline,language=#2,##1]{##2}}{##2}}
+	\expandafter\newcommand\csname #1\endcsname[2][]{
+		\ifbool{polytech@noimg}{}{
+			\texorpdfstring{
+				\lstinline[style=polytech@lst@inline,language=#2,##1]{##2}
+			}{##2}
+		}
+	}
 	\expandafter\MakeRobustCommand\csname #1\endcsname
 }
 
 \newcommand{\polytech@newsourceformat@codeintab}[2]{
-	\expandafter\def\csname #1\endcsname{\lstset{style=polytech@lst@inline,language=#2}\lstinline}
+	\expandafter\def\csname #1\endcsname{
+		\ifbool{polytech@noimg}{}{
+			\lstset{style=polytech@lst@inline,language=#2}\lstinline
+		}
+	}
 }
 
 \newcommand{\polytech@newsourceformat@file}[2]{
-	\expandafter\newcommand\csname #1\endcsname[2][]{\lstset{style=polytech@lst@base,language=#2,##1}\lstinputlisting{##2}}
+	\expandafter\newcommand\csname #1\endcsname[2][]{
+		\ifbool{polytech@noimg}{}{
+			\lstset{style=polytech@lst@base,language=#2,##1}\lstinputlisting{##2}
+		}
+	}
 }
 
 \newcommand{\polytech@newsourceformat@env}[2]{%
-	\lstnewenvironment{#1}[1][]{\lstset{style=polytech@lst@base,language=#2,##1}\csuse{\@lst @SetFirstNumber}}{\csuse{\@lst @SaveFirstNumber}}
+	\lstnewenvironment{#1}[1][]{
+		\ifbool{polytech@noimg}{}{
+			\lstset{style=polytech@lst@base,language=#2,##1}\csuse{\@lst @SetFirstNumber}
+		}
+	}
+	{
+		\ifbool{polytech@noimg}{}{
+			\csuse{\@lst @SaveFirstNumber}
+		}
+	}
 }
 
 % standard languages
