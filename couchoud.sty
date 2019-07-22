@@ -35,6 +35,7 @@
 	\ifbool{polytech@noimg}{}{
 		\begin{center}
 			\centering%
+			\captionsetup{type=figure}%
 			\IfFileExists{./Images/#2}{%
 				\ifthenelse{\equal{#4}{}}{
 					\includegraphics[width=\textwidth,keepaspectratio]{./Images/#2}%
