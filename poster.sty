@@ -207,7 +207,7 @@
   		\node[anchor=north west, color=polytechdarkblue,align=justify,inner sep=0cm, outer sep=0cm, text width=14.5cm, yshift=-0.5cm] (authors) at (title.south west) {%
   		  \parskip0pt%
   			{\csuse{polytech@font@poster@authors}\csuse{polytech@output@students@simple}}\par\vspace{0.5em}%
-  			{\csuse{polytech@font@poster@supervisors}Encadrement : \csuse{polytech@output@academicsupervisors@simple}}%
+  			{\csuse{polytech@font@poster@supervisors}\csuse{polytech@poster@encadrement@\csuse{polytech@lang}} : \csuse{polytech@output@academicsupervisors@simple}}%
   		};
   		\path (authors.south); \pgfgetlastxy{\authorsxS}{\authorsyS}
   		\path (authors.north); \pgfgetlastxy{\authorsxN}{\authorsyN}
@@ -221,13 +221,13 @@
   				\vspace{0.5\polytechposterlogoheight}%
   				\par%
   			}%
-  			{\csuse{polytech@font@poster@company}En collaboration avec~\linebreak[0]\csuse{polytech@output@company@simple}}%
+  			{\csuse{polytech@font@poster@company}\csuse{polytech@poster@collab@\csuse{polytech@lang}}~\linebreak[0]\csuse{polytech@output@company@simple}}%
   		};
   	}{
   		\node[anchor=north west, color=polytechdarkblue,align=justify,inner sep=0cm, outer sep=0cm, text width=20cm, yshift=-0.5cm] (authors) at (title.south west) {%
   		  \parskip0pt%
   			\csuse{polytech@font@poster@authors}\csuse{polytech@output@students@simple}\par\vspace{0.5em}%
-  			\csuse{polytech@font@poster@supervisors}Encadrement : \csuse{polytech@output@academicsupervisors@simple}%
+  			\csuse{polytech@font@poster@supervisors}\csuse{polytech@poster@encadrement@\csuse{polytech@lang}} : \csuse{polytech@output@academicsupervisors@simple}%
   		};
   		\path (authors.south); \pgfgetlastxy{\authorsxS}{\authorsyS}
   		\path (authors.north); \pgfgetlastxy{\authorsxN}{\authorsyN}
@@ -237,13 +237,13 @@
   	\node[anchor=south west,color=polytechdarkblue,align=right,inner sep=0cm, outer sep=0cm,text width=13.5cm] (0cm,1cm) {%
   		\csuse{polytech@font@poster@school}\csuse{polytech@output@poster@school}%
   	};
-  	\setlength{\polytechposterschooldepartmentshift}{\csuse{polytech@schooldepartment@postershift@\polytech@schooldepartment}}
+  	\setlength{\polytechposterschooldepartmentshift}{\csuse{polytech@schooldepartment@postershift@\csuse{polytech@schooldepartment}@\csuse{polytech@lang}}}
   	\node[anchor=south east,color=black,inner sep=0cm, outer sep=0cm,align=center,text width=6cm,yshift=\polytechposterschooldepartmentshift] (logo) at (20cm,0cm) {%
   	  \fitimagetowidth{6cm}{polytech/polytech}%
   	};
   	\path (logo.north); \pgfgetlastxy{\logoxN}{\logoyN}
   	\node[anchor=south east,color=polytechdarkblue,inner sep=0cm, outer sep=0cm,align=right,text width=6cm] at (20cm,0cm) {%
-  		\csuse{polytech@font@poster@department}\csuse{polytech@schooldepartment@poster@\polytech@schooldepartment}%
+  		\csuse{polytech@font@poster@department}\csuse{polytech@schooldepartment@poster@\csuse{polytech@schooldepartment}@\csuse{polytech@lang}}%
   	};
   	\draw[line width=0.3cm,color=polytechorange] (0cm,\logoyN-0.15cm)--(13.5cm,\logoyN-0.15cm);
   	\node[anchor=north west, color=polytechdarkblue,align=left,inner sep=0cm, outer sep=0cm, text width=20cm] (footer) at (0cm,\logoyN+0.2cm) {};
@@ -298,7 +298,7 @@
       \node[anchor=north west, color=polytechdarkblue,align=justify,inner sep=0cm, outer sep=0cm, text width=20cm, yshift=-0.3cm] (authors) at (title.south west) {%
         \parskip0pt%
         {\csuse{polytech@font@poster@authors}\csuse{polytech@output@students@simple}}\par\vspace{0.5em}%
-        {\csuse{polytech@font@poster@supervisors}Encadrement : \csuse{polytech@output@academicsupervisors@simple}}%
+        {\csuse{polytech@font@poster@supervisors}\csuse{polytech@poster@encadrement@\csuse{polytech@lang}} : \csuse{polytech@output@academicsupervisors@simple}}%
       };
       \path (authors.south); \pgfgetlastxy{\authorsxS}{\authorsyS}
       \path (authors.north); \pgfgetlastxy{\authorsxN}{\authorsyN}
@@ -312,13 +312,13 @@
           \vspace{0.5\polytechposterlogoheight}%
           \par%
         }%
-        {\csuse{polytech@font@poster@company}En collaboration avec~\linebreak[0] \csuse{polytech@output@company@simple}}%
+        {\csuse{polytech@font@poster@company}\csuse{polytech@poster@collab@\csuse{polytech@lang}}~\linebreak[0] \csuse{polytech@output@company@simple}}%
       };
     }{
       \node[anchor=north west, color=polytechdarkblue,align=justify,inner sep=0cm, outer sep=0cm, text width=28cm, yshift=-0.3cm] (authors) at (title.south west) {%
         \parskip0pt%
         \csuse{polytech@font@poster@authors}\csuse{polytech@output@students@simple}\par\vspace{0.5em}%
-        \csuse{polytech@font@poster@supervisors}Encadrement : \csuse{polytech@output@academicsupervisors@simple}%
+        \csuse{polytech@font@poster@supervisors}\csuse{polytech@poster@encadrement@\csuse{polytech@lang}} : \csuse{polytech@output@academicsupervisors@simple}%
       };
       \path (authors.south); \pgfgetlastxy{\authorsxS}{\authorsyS}
       \path (authors.north); \pgfgetlastxy{\authorsxN}{\authorsyN}
@@ -329,13 +329,13 @@
     \node[anchor=south west,color=polytechdarkblue,align=right,inner sep=0cm, outer sep=0cm,text width=21.5cm] (0cm,1cm) {%
       \csuse{polytech@font@poster@school}\csuse{polytech@output@poster@school}%
     };
-    \setlength{\polytechposterschooldepartmentshift}{\csuse{polytech@schooldepartment@postershift@\polytech@schooldepartment}}
+    \setlength{\polytechposterschooldepartmentshift}{\csuse{polytech@schooldepartment@postershift@\csuse{polytech@schooldepartment}@\csuse{polytech@lang}}}
     \node[anchor=south east,color=black,inner sep=0cm, outer sep=0cm,align=center,text width=6cm,yshift=\polytechposterschooldepartmentshift] (logo) at (28cm,0cm) {%
       \fitimagetowidth{6cm}{polytech/polytech}%
     };
     \path (logo.north); \pgfgetlastxy{\logoxN}{\logoyN}
     \node[anchor=south east,color=polytechdarkblue,inner sep=0cm, outer sep=0cm,align=right,text width=6cm] at (28cm,0cm) {%
-      \csuse{polytech@font@poster@department}\csuse{polytech@schooldepartment@poster@\polytech@schooldepartment}%
+      \csuse{polytech@font@poster@department}\csuse{polytech@schooldepartment@poster@\csuse{polytech@schooldepartment}@\csuse{polytech@lang}}%
     };
     \draw[line width=0.3cm,color=polytechorange] (0cm,\logoyN-0.15cm)--(21.5cm,\logoyN-0.15cm);
     \node[anchor=north west, color=polytechdarkblue,align=left,inner sep=0cm, outer sep=0cm, text width=21.5cm] (footer) at (0cm,\logoyN) {};
