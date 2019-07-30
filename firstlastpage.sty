@@ -63,7 +63,7 @@
   \ifstrequal{#1}{custom}{%
     % defer check for custom definition with \typereportname
   }{%
-    \ifcsdef{polytech@typereport@name@#1}{}{%
+    \ifcsdef{polytech@typereport@name@#1@\csuse{polytech@lang}}{}{%
       \polytechfatalerror{\string\typereport\space called with an invalid argument.}%
     }%
   }%
@@ -102,12 +102,12 @@
 }
 
 % Output a text containing the expanded type of report
-\csdef{polytech@output@typereport}{\csuse{polytech@typereport@name@\csuse{polytech@typereport}}}
+\csdef{polytech@output@typereport}{\csuse{polytech@typereport@name@\csuse{polytech@typereport}@\csuse{polytech@lang}}}
 
 % Output a text containing the expanded type of report suitable for a bibtex entry
 \csdef{polytech@output@typereport@bibtex}{%
-	\ifcsdef{polytech@typereport@name@bibtex@\csuse{polytech@typereport}}{%
-		\csuse{polytech@typereport@name@bibtex@\csuse{polytech@typereport}}%
+	\ifcsdef{polytech@typereport@name@bibtex@\csuse{polytech@typereport}@\csuse{polytech@lang}}{%
+		\csuse{polytech@typereport@name@bibtex@\csuse{polytech@typereport}@\csuse{polytech@lang}}%
 	}{%
 		\csuse{polytech@output@typereport}%
 	}%
