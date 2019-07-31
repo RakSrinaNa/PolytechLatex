@@ -58,8 +58,13 @@
        		\draw[color=polytech@sectionning@part@num@border,fill=polytech@sectionning@part@num@bg] (1cm,3) rectangle (\textwidth-0.4pt-1cm,4.4);
        		\node[right,text width=\textwidth-1cm,align=center] at (0,3.7) {%
        		   \color{polytech@sectionning@part@num@fg}%
-       		   \csuse{polytech@part@numberfont}%
-       		   \partname%
+              \csuse{polytech@part@numberfont}%
+              \ifbool{polytech@english}{
+                \partname~\thepart%
+              }
+              {
+                \partname%
+              }
        	  };
        }{}
        \draw[color=polytech@sectionning@part@title@border,fill=polytech@sectionning@part@title@bg] (0,0) rectangle (\textwidth-0.4pt,3);

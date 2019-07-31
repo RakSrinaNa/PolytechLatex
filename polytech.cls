@@ -121,11 +121,11 @@
 
 % babel
 \ifbool{polytech@english}{
-    \PassOptionsToPackage{french,main=english}{babel} % english document
+    \PassOptionsToPackage{french,british}{babel} % english document
     \RequirePackage{babel}
     \PassOptionsToPackage{english}{algorithm2e}
 }{
-    \PassOptionsToPackage{english,main=french}{babel}  % french document
+    \PassOptionsToPackage{english,french}{babel}  % french document
     \RequirePackage{babel}
     \frenchbsetup{StandardEnumerateEnv=true}
     \frenchspacing
