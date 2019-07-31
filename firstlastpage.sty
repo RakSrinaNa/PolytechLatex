@@ -375,7 +375,7 @@
 	#2 \textsc{#3}&%
 	\href{mailto:#4}{\url{#4}}&%
 	\csuse{polytech@academicsupervisors@title@singular@\csuse{polytech@lang}}%
-	\ifstrequal{#1}{}{}{,\linebreak{}\csuse{polytech@academicsupervisors@affiliation@#1}}\\%
+	\ifstrequal{#1}{}{}{,\linebreak{}\csuse{polytech@academicsupervisors@affiliation@#1@\csuse{polytech@lang}}}\\%
 }%
 
 % Define an academic supervisor
@@ -401,7 +401,7 @@
     }%
   }{%
     % check there is an affiliation
-    \ifcsdef{polytech@academicsupervisors@affiliation@#1}{}{%
+    \ifcsdef{polytech@academicsupervisors@affiliation@#1@\csuse{polytech@lang}}{}{%
       \polytechfatalerror{\string\academicsupervisor\space has been called with an invalid affiliation (#1).}%
     }%
     \csappto{polytech@output@academicsupervisors@compact}{\polytech@output@academicsupervisor@compact{#1}{#2}{#3}{#4}}%
