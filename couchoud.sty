@@ -54,6 +54,31 @@
 		\end{center}
 	}
 }
+
+\newcommand{\imgl}[5][]{%
+	\ifbool{polytech@noimg}{}{
+		\begin{center}
+			\centering%
+			\captionsetup{type=figure}%
+			\IfFileExists{./Images/#2}{%
+				\ifthenelse{\equal{#5}{}}{
+					\includegraphics[width=\textwidth,keepaspectratio]{./Images/#2}%
+				}{
+					\includegraphics[#5]{./Images/#2}%
+				}
+			}{%
+				\missingfigure{./Images/#2 - #3}
+				%\PackageError{MCC}{TODO}{Image #2}%
+			}%
+			\captionof{figure}[#4]{#3}%
+			\ifthenelse{\equal{#1}{}}{
+			}{
+				\label{fig:#1}%
+			}
+		\end{center}
+	}
+}
+
 \newcommand{\codec}[1]{\texttt{#1}}
 \newcommand{\graph}[2][]{
 	\begin{figure}[H]%
