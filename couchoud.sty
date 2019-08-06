@@ -32,6 +32,8 @@
 }
 
 \newcommand{\img}[4][]{%
+	\begingroup
+	\catcode`\_=12\relax
 	\ifbool{polytech@noimg}{}{
 		\begin{center}
 			\centering%
@@ -53,9 +55,12 @@
 			}
 		\end{center}
 	}
+	\endgroup
 }
 
 \newcommand{\imgl}[5][]{%
+	\begingroup
+	\catcode`\_=12\relax
 	\ifbool{polytech@noimg}{}{
 		\begin{center}
 			\centering%
@@ -77,6 +82,7 @@
 			}
 		\end{center}
 	}
+	\endgroup
 }
 
 \newcommand{\codec}[1]{\texttt{#1}}
