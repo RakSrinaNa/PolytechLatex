@@ -1,6 +1,6 @@
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
-\def\polytechfileversion{2.5.1}
-\def\polytechfiledate{2019/08/01}
+\def\polytechfileversion{2.5.2}
+\def\polytechfiledate{2019/08/07}
 \ProvidesClass{polytech/polytech}[\polytechfiledate\space Polytech document class by Thomas Couchoud <thomas.couchoud@gmail.com> (forked from Sebastien Aupetit <aupetit@univ-tours.fr>), V\polytechfileversion]
  
 % -----------------------------------------------------------------------------
@@ -95,6 +95,9 @@
 
 \newbool{polytech@noimg}
 \DeclareOption{noimg}{\booltrue{polytech@noimg}}
+
+\newbool{polytech@glossaries}
+\DeclareOption{glossaries}{\booltrue{polytech@glossaries}}
 
 \DeclareOption*{\PackageWarning{polytech}{Unknown option `\CurrentOption'}}
 
@@ -456,7 +459,13 @@
 
 \RequirePackage{bookmark}
 \RequirePackage{pageslts} % to have total page count of the document. Must be at the end for proper functionning
-\RequirePackage[acronyms,toc,numberedsection]{glossaries}
+
+\ifbool{polytech@glossaries}{
+  \RequirePackage[record,nomain,acronyms,toc,numberedsection,shortcuts]{glossaries-extra}
+}{
+  \RequirePackage[acronyms,toc,numberedsection]{glossaries}
+}
+
 
 % colors
 \definecolor{polytechdarkblue}{RGB}{0,74,117}
